@@ -4,25 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maikol Jordan</title>
-
-<!-- SEO -->
-<meta name="description" content="Zapatillas Nike, Jordan, Balenciaga, Louis Vuitton y más. Envíos a todo Chile por $5.000.">
-<meta name="keywords" content="zapatillas Chile, Nike, Jordan, Balenciaga, Louis Vuitton, Dior, comprar zapatillas">
-<meta name="author" content="Maikol Jordan">
-
-<!-- Open Graph (preview en WhatsApp, Instagram, Facebook) -->
-<meta property="og:title" content="Maikol Jordan — Zapatillas Nike, Jordan & Luxury">
-<meta property="og:description" content="Zapatillas originales a los mejores precios. Envío a todo Chile $5.000.">
-<meta property="og:image" content="logo.webp">
-<meta property="og:url" content="https://maikoljordancl.github.io">
-<meta property="og:type" content="website">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Maikol Jordan">
-<meta name="twitter:description" content="Zapatillas Nike, Jordan & Luxury. Envío $5.000 a todo Chile.">
-<meta name="twitter:image" content="logo.webp">
-
 <style>
 *{
   margin:0;
@@ -34,8 +15,6 @@ body{
   background:#0b0b0b;
   color:white;
 }
-
-/* HEADER */
 header{
   background:#000;
   padding:30px;
@@ -61,8 +40,6 @@ h1{
   margin-top:8px;
   opacity:0.8;
 }
-
-/* SEARCH */
 .search{
   padding:20px;
 }
@@ -76,8 +53,6 @@ h1{
   font-size:16px;
   outline:none;
 }
-
-/* CATEGORIAS */
 .categorias{
   display:flex;
   gap:10px;
@@ -101,16 +76,12 @@ h1{
 .categorias button.active{
   background:#e60012;
 }
-
-/* GRID */
 .produtos{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:20px;
   padding:20px;
 }
-
-/* CARD */
 .card{
   background:#151515;
   border-radius:18px;
@@ -143,8 +114,6 @@ h1{
   font-size:22px;
   font-weight:bold;
 }
-
-/* SELECT TALLAS */
 select{
   width:100%;
   padding:10px;
@@ -156,8 +125,6 @@ select{
   outline:none;
   cursor:pointer;
 }
-
-/* BTN */
 .btn{
   background:#e60012;
   border:none;
@@ -171,8 +138,6 @@ select{
 .btn:hover{
   background:#b8000e;
 }
-
-/* WHATSAPP */
 .whatsapp{
   position:fixed;
   bottom:20px;
@@ -186,8 +151,6 @@ select{
   z-index:999;
   box-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
-
-/* FOOTER */
 footer{
   text-align:center;
   padding:30px;
@@ -197,7 +160,6 @@ footer{
 }
 </style>
 </head>
-
 <body>
 
 <header>
@@ -235,50 +197,49 @@ footer{
 </footer>
 
 <script>
-// Tallas estándar por tipo de producto
-const tallasNike    = [36,37,38,39,40,41,42,43,44,45,46];
-const tallasLujo    = [37,38,39,40,41,42,43,44,45];
-const tallasNB      = [36,37,38,39,40,41,42,43,44,45];
+const tallasNike = [36,37,38,39,40,41,42,43,44,45,46];
+const tallasLujo = [37,38,39,40,41,42,43,44,45];
+const tallasNB   = [36,37,38,39,40,41,42,43,44,45];
 
 const productos = [
   // NIKE
-  {cat:"Nike", tags:["Nike"],               nombre:"Nike TN",                    precio:75000,  imagen:"tn.webp",              tallas:tallasNike},
-  {cat:"Nike", tags:["Nike"],               nombre:"Nike TN Plus",               precio:75000,  imagen:"tn_plus.webp",         tallas:tallasNike},
-  {cat:"Nike", tags:["Nike"],               nombre:"Nike Shox",                  precio:70000,  imagen:"shox.webp",            tallas:tallasNike},
-  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1",                precio:70000,  imagen:"af1.webp",             tallas:tallasNike},
-  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1 Mid",            precio:75000,  imagen:"af1_mid.webp",         tallas:tallasNike},
-  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1 Supreme Nocta",  precio:85000,  imagen:"af1_supreme.webp",     tallas:tallasNike},
-  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1 CPFM",           precio:70000,  imagen:"af1_cpfm.webp",        tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Nike TN", precio:75000, imagen:"tn.webp", tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Nike TN Plus", precio:75000, imagen:"tn_plus.webp", tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Nike Shox", precio:70000, imagen:"shox.webp", tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Air Force 1", precio:70000, imagen:"af1.webp", tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Air Force 1 Mid", precio:75000, imagen:"af1_mid.webp", tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Air Force 1 Supreme Nocta", precio:85000, imagen:"af1_supreme.webp", tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"], nombre:"Air Force 1 CPFM", precio:70000, imagen:"af1_cpfm.webp", tallas:tallasNike},
 
   // JORDAN
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 1",             precio:70000,  imagen:"jordan1.webp",         tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 3",             precio:75000,  imagen:"jordan3.webp",         tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 4",             precio:75000,  imagen:"jordan4.webp",         tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 5",             precio:75000,  imagen:"jordan5.webp",         tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 6",             precio:75000,  imagen:"jordan6.webp",         tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 8",             precio:75000,  imagen:"jordan8.webp",         tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 11",            precio:80000,  imagen:"jordan11.webp",        tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 12",            precio:75000,  imagen:"jordan12.webp",        tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 13",            precio:75000,  imagen:"jordan13.webp",        tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 14",            precio:80000,  imagen:"jordan14.webp",        tallas:tallasNike},
-  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 312",           precio:90000,  imagen:"jordan312.webp",       tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 1", precio:70000, imagen:"jordan1.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 3", precio:75000, imagen:"jordan3.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 4", precio:75000, imagen:"jordan4.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 5", precio:75000, imagen:"jordan5.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 6", precio:75000, imagen:"jordan6.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 8", precio:75000, imagen:"jordan8.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 11", precio:80000, imagen:"jordan11.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 12", precio:75000, imagen:"jordan12.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 13", precio:75000, imagen:"jordan13.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp", tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"], nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp", tallas:tallasNike},
 
   // AIR MAX — aparece en "Air Max" Y en "Nike"
-  {cat:"Air Max", tags:["Air Max","Nike"],  nombre:"Air Max 95",                 precio:80000,  imagen:"airmax95.webp",        tallas:tallasNike},
-  {cat:"Air Max", tags:["Air Max","Nike"],  nombre:"Air Max 97",                 precio:80000,  imagen:"airmax97.webp",        tallas:tallasNike},
+  {cat:"Air Max", tags:["Air Max","Nike"], nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp", tallas:tallasNike},
+  {cat:"Air Max", tags:["Air Max","Nike"], nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp", tallas:tallasNike},
 
   // NEW BALANCE
-  {cat:"New Balance", tags:["New Balance"], nombre:"New Balance 9060",           precio:80000,  imagen:"nb9060.webp",          tallas:tallasNB},
+  {cat:"New Balance", tags:["New Balance"], nombre:"New Balance 9060", precio:80000, imagen:"nb9060.webp", tallas:tallasNB},
 
   // LUJO
-  {cat:"Balenciaga",      tags:["Balenciaga"],      nombre:"Balenciaga Runners",        precio:140000, imagen:"balenciaga_runner.webp", tallas:tallasLujo},
-  {cat:"Balenciaga",      tags:["Balenciaga"],      nombre:"Balenciaga Track LED",      precio:140000, imagen:"balenciaga_track.webp",  tallas:tallasLujo},
-  {cat:"Dolce & Gabbana", tags:["Dolce & Gabbana"], nombre:"Portofino",                 precio:100000, imagen:"portofino.webp",         tallas:tallasLujo},
-  {cat:"Giuseppe Zanotti",tags:["Giuseppe Zanotti"],nombre:"Giuseppe Zanotti",          precio:140000, imagen:"giuseppe.webp",          tallas:tallasLujo},
-  {cat:"Dior",            tags:["Dior"],            nombre:"Dior B22",                  precio:80000,  imagen:"diorb22.webp",           tallas:tallasLujo},
-  {cat:"Dior",            tags:["Dior"],            nombre:"Dior B30",                  precio:80000,  imagen:"diorb30.webp",           tallas:tallasLujo},
-  {cat:"Louis Vuitton",   tags:["Louis Vuitton"],   nombre:"Louis Vuitton Trainer",     precio:115000, imagen:"lv_trainer.webp",        tallas:tallasLujo},
-  {cat:"Louis Vuitton",   tags:["Louis Vuitton"],   nombre:"Louis Vuitton Skate",       precio:120000, imagen:"lv_skate.webp",          tallas:tallasLujo}
+  {cat:"Balenciaga", tags:["Balenciaga"], nombre:"Balenciaga Runners", precio:140000, imagen:"balenciaga_runner.webp", tallas:tallasLujo},
+  {cat:"Balenciaga", tags:["Balenciaga"], nombre:"Balenciaga Track LED", precio:140000, imagen:"balenciaga_track.webp", tallas:tallasLujo},
+  {cat:"Dolce & Gabbana", tags:["Dolce & Gabbana"], nombre:"Portofino", precio:100000, imagen:"portofino.webp", tallas:tallasLujo},
+  {cat:"Giuseppe Zanotti", tags:["Giuseppe Zanotti"], nombre:"Giuseppe Zanotti", precio:140000, imagen:"giuseppe.webp", tallas:tallasLujo},
+  {cat:"Dior", tags:["Dior"], nombre:"Dior B22", precio:80000, imagen:"diorb22.webp", tallas:tallasLujo},
+  {cat:"Dior", tags:["Dior"], nombre:"Dior B30", precio:80000, imagen:"diorb30.webp", tallas:tallasLujo},
+  {cat:"Louis Vuitton", tags:["Louis Vuitton"], nombre:"Louis Vuitton Trainer", precio:115000, imagen:"lv_trainer.webp", tallas:tallasLujo},
+  {cat:"Louis Vuitton", tags:["Louis Vuitton"], nombre:"Louis Vuitton Skate", precio:120000, imagen:"lv_skate.webp", tallas:tallasLujo}
 ];
 
 let categoriaActual = "todos";
@@ -315,15 +276,15 @@ function aplicar(){
   const texto = document.getElementById("buscar").value.toLowerCase();
   document.querySelectorAll(".card").forEach(card => {
     const nombre = card.querySelector("h3").innerText.toLowerCase();
-    const tags   = card.dataset.tags.split(",");
+    const tags = card.dataset.tags.split(",");
     const enCategoria = categoriaActual === "todos" || tags.includes(categoriaActual);
-    const enBusqueda  = nombre.includes(texto);
+    const enBusqueda = nombre.includes(texto);
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
 }
 
 function pedir(index){
-  const p     = productos[index];
+  const p = productos[index];
   const talla = document.getElementById(`talla-${index}`).value;
   const total = p.precio + 5000;
 
