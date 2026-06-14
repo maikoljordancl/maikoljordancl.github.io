@@ -120,13 +120,13 @@ transform:translateY(-5px);
 box-shadow:0 10px 20px rgba(0,0,0,0.5);
 }
 
-/* NUEVO: Estilos para las imágenes de los productos */
+/* AQUÍ CONTROLAMOS EL TAMAÑO DE LA FOTO EN LA PÁGINA */
 .img-producto {
 width:100%;
 height:200px;
 object-fit:cover;
 border-radius:12px;
-background:#222; /* Fondo gris por si la imagen tarda en cargar */
+background:#222; /* Fondo gris mientras carga la foto */
 }
 
 .card h3{
@@ -233,7 +233,7 @@ opacity:0.8;
 
 <script>
 
-// NOTA: Reemplaza "tn.webp", "shox.webp", etc. por los nombres reales de tus imágenes guardadas en tu carpeta.
+/* EN LA PROPIEDAD "imagen" PONDRÁS TUS FOTOS (MIRA EL PASO SIGUIENTE) */
 const productos = [
   // NIKE
   {cat:"Nike", nombre:"Nike TN", precio:75000, imagen:"tn.webp"},
