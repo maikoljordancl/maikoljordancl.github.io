@@ -239,7 +239,8 @@ let categoriaActual = "todos";
 function render(){
   let cont = document.getElementById("productos");
 
-  cont.innerHTML = productos.map(p => `
+  // Usamos el índice del arreglo (index) para asociar cada botón con su respectiva lista desplegable de forma exacta
+  cont.innerHTML = productos.map((p, index) => `
     <div class="card" data-cat="${p.cat}">
       <h3>${p.nombre}</h3>
 
@@ -247,12 +248,12 @@ function render(){
         $${p.precio.toLocaleString("es-CL")}
       </div>
 
-      <select class="talla-select">
+      <select id="talla-${index}">
         ${Array.from({length:11},(_,i)=>36+i)
           .map(t=>`<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
       </select>
 
-      <button class="btn" onclick="pedir(this, '${p.nombre}','${p.precio}')">
+      <button class="btn" onclick="pedir(${index})">
         Pedir por WhatsApp
       </button>
     </div>
@@ -264,7 +265,6 @@ render();
 function filtrar(cat){
   categoriaActual = cat;
 
-  // Cambiar aspecto visual del botón seleccionado
   document.querySelectorAll('.categorias button').forEach(btn => {
     btn.classList.remove('active');
     if(btn.innerText === cat || (cat === 'todos' && btn.innerText === 'Todos')) {
@@ -292,21 +292,21 @@ function aplicarFiltros(){
   });
 }
 
-// CORRECCIÓN: Lee la talla del select directamente sin usar prompt
-function pedir(boton, modelo, precio){
-  let tarjeta = boton.parentElement;
-  let talla = tarjeta.querySelector('.talla-select').value;
+// SOLUCIÓN: La función ahora recibe el índice preciso del producto y lee su respectivo select sin fallar ni usar prompt
+function pedir(index){
+  let producto = productos[index];
+  let selectTalla = document.getElementById(`talla-${index}`);
+  let talla = selectTalla.value;
 
-  let total = parseInt(precio) + 5000;
+  let total = producto.precio + 5000;
 
-  // Formatear precios estéticamente para el mensaje de WhatsApp (ej: 70000 -> 70.000)
-  let precioFormateado = parseInt(precio).toLocaleString('es-CL');
+  let precioFormateado = producto.precio.toLocaleString('es-CL');
   let totalFormateado = total.toLocaleString('es-CL');
 
   let mensaje =
 `Hola, quiero comprar:
 
-👟 Modelo: ${modelo}
+👟 Modelo: ${producto.nombre}
 📏 Talla: ${talla}
 
 💵 Precio: $${precioFormateado}
