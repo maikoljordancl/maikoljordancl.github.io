@@ -61,6 +61,8 @@ padding:14px;
 border:none;
 border-radius:10px;
 font-size:16px;
+background: #1b1b1b;
+color: white;
 }
 
 .categorias{
@@ -78,9 +80,10 @@ padding:10px 15px;
 border-radius:20px;
 cursor:pointer;
 white-space:nowrap;
+transition: 0.3s;
 }
 
-.categorias button:hover{
+.categorias button:hover, .categorias button.active{
 background:#e60012;
 }
 
@@ -96,6 +99,9 @@ background:#1b1b1b;
 border-radius:15px;
 padding:15px;
 border:1px solid #333;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 }
 
 .card h3{
@@ -115,6 +121,9 @@ padding:10px;
 border:none;
 border-radius:8px;
 margin-bottom:10px;
+background: #333;
+color: white;
+font-weight: bold;
 }
 
 .btn{
@@ -127,6 +136,11 @@ border-radius:8px;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
+transition: 0.3s;
+}
+
+.btn:hover{
+background: #b8000e;
 }
 
 .whatsapp{
@@ -140,6 +154,7 @@ border-radius:50px;
 text-decoration:none;
 font-weight:bold;
 box-shadow:0 0 10px rgba(0,0,0,.5);
+z-index: 1000;
 }
 
 footer{
@@ -166,7 +181,7 @@ background:#000;
 </div>
 
 <div class="categorias">
-<button onclick="filtrar('todos')">Todos</button>
+<button onclick="filtrar('todos')" class="active">Todos</button>
 <button onclick="filtrar('Jordan')">Jordan</button>
 <button onclick="filtrar('Nike')">Nike</button>
 <button onclick="filtrar('Balenciaga')">Balenciaga</button>
@@ -177,7 +192,7 @@ background:#000;
 
 <div class="produtos" id="productos"></div>
 
-<a class="whatsapp" href="https://wa.me/56931402987" target="_blank">
+<a class="whatsapp" href="https://wa.me/56931402987?text=Hola!%20Tengo%20una%20consulta" target="_blank">
 WhatsApp
 </a>
 
@@ -189,7 +204,6 @@ WhatsApp
 <script>
 
 const productos = [
-
   // NIKE
   {cat:"Nike", nombre:"Nike TN", precio:75000},
   {cat:"Nike", nombre:"Nike Shox", precio:70000},
@@ -218,13 +232,11 @@ const productos = [
   {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000},
   {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000},
   {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000}
-
 ];
 
 let categoriaActual = "todos";
 
 function render(){
-
   let cont = document.getElementById("productos");
 
   cont.innerHTML = productos.map(p => `
@@ -235,63 +247,72 @@ function render(){
         $${p.precio.toLocaleString("es-CL")}
       </div>
 
-      <select>
+      <select class="talla-select">
         ${Array.from({length:11},(_,i)=>36+i)
-          .map(t=>`<option>${t}</option>`).join("")}
+          .map(t=>`<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
       </select>
 
-      <button class="btn" onclick="pedir('${p.nombre}','${p.precio}')">
+      <button class="btn" onclick="pedir(this, '${p.nombre}','${p.precio}')">
         Pedir por WhatsApp
       </button>
     </div>
   `).join("");
-
 }
 
 render();
 
 function filtrar(cat){
   categoriaActual = cat;
+
+  // Cambiar aspecto visual del botón seleccionado
+  document.querySelectorAll('.categorias button').forEach(btn => {
+    btn.classList.remove('active');
+    if(btn.innerText === cat || (cat === 'todos' && btn.innerText === 'Todos')) {
+      btn.classList.add('active');
+    }
+  });
+
   aplicarFiltros();
 }
 
 document.getElementById("buscar").addEventListener("keyup", aplicarFiltros);
 
 function aplicarFiltros(){
-
   let texto = document.getElementById("buscar").value.toLowerCase();
   let cards = document.querySelectorAll(".card");
 
   cards.forEach(card => {
-
     let nombre = card.querySelector("h3").innerText.toLowerCase();
     let cat = card.dataset.cat;
 
     let okCat = (categoriaActual === "todos" || cat === categoriaActual);
     let okBus = nombre.includes(texto);
 
-    card.style.display = (okCat && okBus) ? "block" : "none";
+    card.style.display = (okCat && okBus) ? "flex" : "none";
   });
-
 }
 
-function pedir(modelo,precio){
-
-  let talla = prompt("Ingrese su talla (36-46)");
-  if(!talla) return;
+// CORRECCIÓN: Lee la talla del select directamente sin usar prompt
+function pedir(boton, modelo, precio){
+  let tarjeta = boton.parentElement;
+  let talla = tarjeta.querySelector('.talla-select').value;
 
   let total = parseInt(precio) + 5000;
+
+  // Formatear precios estéticamente para el mensaje de WhatsApp (ej: 70000 -> 70.000)
+  let precioFormateado = parseInt(precio).toLocaleString('es-CL');
+  let totalFormateado = total.toLocaleString('es-CL');
 
   let mensaje =
 `Hola, quiero comprar:
 
-Modelo: ${modelo}
-Talla: ${talla}
+👟 Modelo: ${modelo}
+📏 Talla: ${talla}
 
-Precio: $${precio}
-Envío: $5000
+💵 Precio: $${precioFormateado}
+🚚 Envío: $5.000
 
-Total: $${total}`;
+💰 Total: $${totalFormateado}`;
 
   window.open(
     `https://wa.me/56931402987?text=${encodeURIComponent(mensaje)}`,
