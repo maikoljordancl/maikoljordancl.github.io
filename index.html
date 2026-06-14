@@ -169,92 +169,13 @@ background:#000;
 <button onclick="filtrar('todos')">Todos</button>
 <button onclick="filtrar('Jordan')">Jordan</button>
 <button onclick="filtrar('Nike')">Nike</button>
-<button onclick="filtrar('New Balance')">New Balance</button>
 <button onclick="filtrar('Balenciaga')">Balenciaga</button>
 <button onclick="filtrar('Dior')">Dior</button>
 <button onclick="filtrar('Louis Vuitton')">Louis Vuitton</button>
 <button onclick="filtrar('Dolce & Gabbana')">Dolce & Gabbana</button>
 </div>
 
-<div class="produtos" id="productos">
-<div class="card" data-cat="Jordan">
-<h3>Jordan Retro 1</h3>
-<div class="precio">$70.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Jordan Retro 1','70000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Jordan">
-<h3>Jordan Retro 3</h3>
-<div class="precio">$75.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Jordan Retro 3','75000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Jordan">
-<h3>Jordan Retro 4</h3>
-<div class="precio">$75.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Jordan Retro 4','75000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Jordan">
-<h3>Jordan Retro 11</h3>
-<div class="precio">$80.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Jordan Retro 11','80000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Nike">
-<h3>Nike TN</h3>
-<div class="precio">$75.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Nike TN','75000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Nike">
-<h3>Nike Shox</h3>
-<div class="precio">$70.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Nike Shox','70000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="New Balance">
-<h3>New Balance 9060</h3>
-<div class="precio">$80.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('New Balance 9060','80000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Balenciaga">
-<h3>Balenciaga Runner</h3>
-<div class="precio">$140.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Balenciaga Runner','140000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Dior">
-<h3>Dior B22</h3>
-<div class="precio">$80.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Dior B22','80000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Louis Vuitton">
-<h3>LV Skate</h3>
-<div class="precio">$120.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('LV Skate','120000')">Pedir por WhatsApp</button>
-</div>
-
-<div class="card" data-cat="Dolce & Gabbana">
-<h3>Dolce & Gabbana Portofino</h3>
-<div class="precio">$100.000</div>
-<select><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option></select>
-<button class="btn" onclick="pedir('Dolce & Gabbana Portofino','100000')">Pedir por WhatsApp</button>
-</div>
-
-</div>
+<div class="produtos" id="productos"></div>
 
 <a class="whatsapp" href="https://wa.me/56931402987" target="_blank">
 WhatsApp
@@ -267,15 +188,101 @@ WhatsApp
 
 <script>
 
+const productos = [
+
+  // NIKE
+  {cat:"Nike", nombre:"Nike TN", precio:75000},
+  {cat:"Nike", nombre:"Nike Shox", precio:70000},
+  {cat:"Nike", nombre:"AF1", precio:70000},
+  {cat:"Nike", nombre:"AF1 Mid", precio:75000},
+  {cat:"Nike", nombre:"AF1 Supreme-Nocta", precio:85000},
+  {cat:"Nike", nombre:"AF1 CPFM", precio:70000},
+
+  // JORDAN
+  {cat:"Jordan", nombre:"Jordan 1", precio:70000},
+  {cat:"Jordan", nombre:"Jordan 3", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 4", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 11", precio:80000},
+  {cat:"Jordan", nombre:"Jordan 5", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 6", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 8", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 12", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 13", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 14", precio:80000},
+  {cat:"Jordan", nombre:"Jordan 312", precio:90000},
+
+  // OTROS
+  {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000},
+  {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000},
+  {cat:"Dior", nombre:"Dior B22-B30", precio:80000},
+  {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000},
+  {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000},
+  {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000}
+
+];
+
+let categoriaActual = "todos";
+
+function render(){
+
+  let cont = document.getElementById("productos");
+
+  cont.innerHTML = productos.map(p => `
+    <div class="card" data-cat="${p.cat}">
+      <h3>${p.nombre}</h3>
+
+      <div class="precio">
+        $${p.precio.toLocaleString("es-CL")}
+      </div>
+
+      <select>
+        ${Array.from({length:11},(_,i)=>36+i)
+          .map(t=>`<option>${t}</option>`).join("")}
+      </select>
+
+      <button class="btn" onclick="pedir('${p.nombre}','${p.precio}')">
+        Pedir por WhatsApp
+      </button>
+    </div>
+  `).join("");
+
+}
+
+render();
+
+function filtrar(cat){
+  categoriaActual = cat;
+  aplicarFiltros();
+}
+
+document.getElementById("buscar").addEventListener("keyup", aplicarFiltros);
+
+function aplicarFiltros(){
+
+  let texto = document.getElementById("buscar").value.toLowerCase();
+  let cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+
+    let nombre = card.querySelector("h3").innerText.toLowerCase();
+    let cat = card.dataset.cat;
+
+    let okCat = (categoriaActual === "todos" || cat === categoriaActual);
+    let okBus = nombre.includes(texto);
+
+    card.style.display = (okCat && okBus) ? "block" : "none";
+  });
+
+}
+
 function pedir(modelo,precio){
 
-let talla = prompt("Ingrese su talla (36-46)");
+  let talla = prompt("Ingrese su talla (36-46)");
+  if(!talla) return;
 
-if(!talla) return;
+  let total = parseInt(precio) + 5000;
 
-let total = parseInt(precio) + 5000;
-
-let mensaje =
+  let mensaje =
 `Hola, quiero comprar:
 
 Modelo: ${modelo}
@@ -286,49 +293,11 @@ Envío: $5000
 
 Total: $${total}`;
 
-window.open(
-`https://wa.me/56931402987?text=${encodeURIComponent(mensaje)}`,
-'_blank'
-);
+  window.open(
+    `https://wa.me/56931402987?text=${encodeURIComponent(mensaje)}`,
+    "_blank"
+  );
 }
-
-function filtrar(cat){
-
-let cards = document.querySelectorAll('.card');
-
-cards.forEach(card => {
-
-if(cat === 'todos'){
-card.style.display='block';
-}else{
-card.style.display =
-card.dataset.cat === cat ? 'block' : 'none';
-}
-
-});
-
-}
-
-document.getElementById('buscar')
-.addEventListener('keyup', function(){
-
-let texto = this.value.toLowerCase();
-
-document.querySelectorAll('.card')
-.forEach(card=>{
-
-let nombre =
-card.querySelector('h3')
-.innerText.toLowerCase();
-
-card.style.display =
-nombre.includes(texto)
-? 'block'
-: 'none';
-
-});
-
-});
 
 </script>
 
