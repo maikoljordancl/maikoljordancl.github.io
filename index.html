@@ -5,293 +5,294 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maikol Jordan</title>
 
+<!-- SEO -->
+<meta name="description" content="Zapatillas Nike, Jordan, Balenciaga, Louis Vuitton y más. Envíos a todo Chile por $5.000.">
+<meta name="keywords" content="zapatillas Chile, Nike, Jordan, Balenciaga, Louis Vuitton, Dior, comprar zapatillas">
+<meta name="author" content="Maikol Jordan">
+
+<!-- Open Graph (preview en WhatsApp, Instagram, Facebook) -->
+<meta property="og:title" content="Maikol Jordan — Zapatillas Nike, Jordan & Luxury">
+<meta property="og:description" content="Zapatillas originales a los mejores precios. Envío a todo Chile $5.000.">
+<meta property="og:image" content="logo.webp">
+<meta property="og:url" content="https://maikoljordancl.github.io">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Maikol Jordan">
+<meta name="twitter:description" content="Zapatillas Nike, Jordan & Luxury. Envío $5.000 a todo Chile.">
+<meta name="twitter:image" content="logo.webp">
+
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
 }
-
 body{
-background:#0b0b0b;
-color:white;
+  background:#0b0b0b;
+  color:white;
 }
 
 /* HEADER */
 header{
-background:#000;
-padding:30px;
-text-align:center;
-border-bottom:3px solid #e60012;
+  background:#000;
+  padding:30px;
+  text-align:center;
+  border-bottom:3px solid #e60012;
 }
-
 .logo{
-width:130px;
-height:130px;
-object-fit:cover;
-border-radius:50%;
-border:3px solid #e60012;
+  width:130px;
+  height:130px;
+  object-fit:cover;
+  border-radius:50%;
+  border:3px solid #e60012;
 }
-
 h1{
-margin-top:10px;
-font-size:34px;
+  margin-top:10px;
+  font-size:34px;
 }
-
 .sub{
-color:#e60012;
-font-weight:bold;
+  color:#e60012;
+  font-weight:bold;
 }
-
 .envio{
-margin-top:8px;
-opacity:0.8;
+  margin-top:8px;
+  opacity:0.8;
 }
 
 /* SEARCH */
 .search{
-padding:20px;
+  padding:20px;
 }
-
 .search input{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#1c1c1c;
-color:white;
-font-size:16px;
-outline:none;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#1c1c1c;
+  color:white;
+  font-size:16px;
+  outline:none;
 }
 
 /* CATEGORIAS */
 .categorias{
-display:flex;
-gap:10px;
-overflow-x:auto;
-padding:10px 20px;
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:10px 20px;
 }
-
-.categorias::-webkit-scrollbar {
-  display: none;
+.categorias::-webkit-scrollbar{
+  display:none;
 }
-
 .categorias button{
-background:#1a1a1a;
-color:white;
-border:none;
-padding:10px 16px;
-border-radius:20px;
-cursor:pointer;
-transition:0.3s;
-white-space:nowrap;
+  background:#1a1a1a;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:0.3s;
+  white-space:nowrap;
 }
-
 .categorias button:hover,
 .categorias button.active{
-background:#e60012;
+  background:#e60012;
 }
 
 /* GRID */
 .produtos{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:20px;
-padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+  padding:20px;
 }
 
-/* CARD PRO */
+/* CARD */
 .card{
-background:#151515;
-border-radius:18px;
-padding:15px;
-border:1px solid #2a2a2a;
-transition:0.3s;
-display:flex;
-flex-direction:column;
-gap:10px;
-justify-content: space-between;
+  background:#151515;
+  border-radius:18px;
+  padding:15px;
+  border:1px solid #2a2a2a;
+  transition:0.3s;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  justify-content:space-between;
 }
-
 .card:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 20px rgba(0,0,0,0.5);
+  transform:translateY(-5px);
+  box-shadow:0 10px 20px rgba(0,0,0,0.5);
 }
-
-.img-producto {
-display: block;
-width:100%;
-height:200px;
-object-fit:cover;
-border-radius:12px;
-background:#222; 
+.img-producto{
+  display:block;
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:12px;
+  background:#222;
 }
-
 .card h3{
-font-size:18px;
-margin-top:5px;
+  font-size:18px;
+  margin-top:5px;
 }
-
 .precio{
-color:#e60012;
-font-size:22px;
-font-weight:bold;
+  color:#e60012;
+  font-size:22px;
+  font-weight:bold;
 }
 
-/* ESTILO SELECT DE TALLAS */
+/* SELECT TALLAS */
 select{
-width:100%;
-padding:10px;
-border:none;
-border-radius:8px;
-background:#222;
-color:white;
-font-weight:bold;
-outline:none;
-cursor:pointer;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#222;
+  color:white;
+  font-weight:bold;
+  outline:none;
+  cursor:pointer;
 }
 
 /* BTN */
 .btn{
-background:#e60012;
-border:none;
-padding:12px;
-border-radius:10px;
-color:white;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
+  background:#e60012;
+  border:none;
+  padding:12px;
+  border-radius:10px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
 }
-
 .btn:hover{
-background:#b8000e;
+  background:#b8000e;
 }
 
 /* WHATSAPP */
 .whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:14px 18px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-z-index:999;
-box-shadow:0 4px 10px rgba(0,0,0,0.4);
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25D366;
+  color:white;
+  padding:14px 18px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:bold;
+  z-index:999;
+  box-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
 
 /* FOOTER */
 footer{
-text-align:center;
-padding:30px;
-margin-top:20px;
-background:#000;
-opacity:0.8;
+  text-align:center;
+  padding:30px;
+  margin-top:20px;
+  background:#000;
+  opacity:0.8;
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
-<img src="logo.webp" class="logo">
-<h1>MAIKOL JORDAN</h1>
-<div class="sub">Jordan • Nike • Luxury</div>
-<div class="envio">🚚 Envíos a todo Chile $5.000</div>
+  <img src="logo.webp" class="logo" alt="Maikol Jordan Logo">
+  <h1>MAIKOL JORDAN</h1>
+  <div class="sub">Jordan • Nike • Luxury</div>
+  <div class="envio">🚚 Envíos a todo Chile $5.000</div>
 </header>
 
 <div class="search">
-<input type="text" id="buscar" placeholder="Buscar modelo...">
+  <input type="text" id="buscar" placeholder="Buscar modelo...">
 </div>
 
 <div class="categorias">
-<button onclick="filtrar('todos', this)" class="active">Todos</button>
-<button onclick="filtrar('Nike', this)">Nike</button>
-<button onclick="filtrar('Jordan', this)">Jordan</button>
-<button onclick="filtrar('Air Max', this)">Air Max</button>
-<button onclick="filtrar('New Balance', this)">New Balance</button>
-<button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
-<button onclick="filtrar('Dior', this)">Dior</button>
-<button onclick="filtrar('Louis Vuitton', this)">Louis Vuitton</button>
-<button onclick="filtrar('Dolce & Gabbana', this)">Dolce & Gabbana</button>
-<button onclick="filtrar('Giuseppe Zanotti', this)">Giuseppe Zanotti</button>
+  <button onclick="filtrar('todos', this)" class="active">Todos</button>
+  <button onclick="filtrar('Nike', this)">Nike</button>
+  <button onclick="filtrar('Jordan', this)">Jordan</button>
+  <button onclick="filtrar('Air Max', this)">Air Max</button>
+  <button onclick="filtrar('New Balance', this)">New Balance</button>
+  <button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
+  <button onclick="filtrar('Dior', this)">Dior</button>
+  <button onclick="filtrar('Louis Vuitton', this)">Louis Vuitton</button>
+  <button onclick="filtrar('Dolce & Gabbana', this)">Dolce & Gabbana</button>
+  <button onclick="filtrar('Giuseppe Zanotti', this)">Giuseppe Zanotti</button>
 </div>
 
 <div class="produtos" id="productos"></div>
 
 <a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
-💬 Consultas
+  💬 Consultas
 </a>
 
 <footer>
-© 2026 MAIKOL JORDAN
+  © 2026 MAIKOL JORDAN
 </footer>
 
 <script>
+// Tallas estándar por tipo de producto
+const tallasNike    = [36,37,38,39,40,41,42,43,44,45,46];
+const tallasLujo    = [37,38,39,40,41,42,43,44,45];
+const tallasNB      = [36,37,38,39,40,41,42,43,44,45];
 
 const productos = [
   // NIKE
-  {cat:"Nike", nombre:"Nike TN", precio:75000, imagen:"tn.webp"},
-  {cat:"Nike", nombre:"Nike TN Plus", precio:75000, imagen:"tn_plus.webp"},
-  {cat:"Nike", nombre:"Nike Shox", precio:70000, imagen:"shox.webp"},
-  {cat:"Nike", nombre:"Air Force 1", precio:70000, imagen:"af1.webp"},
-  {cat:"Nike", nombre:"Air Force 1 Mid", precio:75000, imagen:"af1_mid.webp"},
-  {cat:"Nike", nombre:"Air Force 1 Supreme Nocta", precio:85000, imagen:"af1_supreme.webp"},
-  {cat:"Nike", nombre:"Air Force 1 CPFM", precio:70000, imagen:"af1_cpfm.webp"},
+  {cat:"Nike", tags:["Nike"],               nombre:"Nike TN",                    precio:75000,  imagen:"tn.webp",              tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"],               nombre:"Nike TN Plus",               precio:75000,  imagen:"tn_plus.webp",         tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"],               nombre:"Nike Shox",                  precio:70000,  imagen:"shox.webp",            tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1",                precio:70000,  imagen:"af1.webp",             tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1 Mid",            precio:75000,  imagen:"af1_mid.webp",         tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1 Supreme Nocta",  precio:85000,  imagen:"af1_supreme.webp",     tallas:tallasNike},
+  {cat:"Nike", tags:["Nike"],               nombre:"Air Force 1 CPFM",           precio:70000,  imagen:"af1_cpfm.webp",        tallas:tallasNike},
 
   // JORDAN
-  {cat:"Jordan", nombre:"Jordan Retro 1", precio:70000, imagen:"jordan1.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 3", precio:75000, imagen:"jordan3.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 4", precio:75000, imagen:"jordan4.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 5", precio:75000, imagen:"jordan5.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 6", precio:75000, imagen:"jordan6.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 8", precio:75000, imagen:"jordan8.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 11", precio:80000, imagen:"jordan11.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 12", precio:75000, imagen:"jordan12.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 13", precio:75000, imagen:"jordan13.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp"},
-  {cat:"Jordan", nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp"},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 1",             precio:70000,  imagen:"jordan1.webp",         tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 3",             precio:75000,  imagen:"jordan3.webp",         tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 4",             precio:75000,  imagen:"jordan4.webp",         tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 5",             precio:75000,  imagen:"jordan5.webp",         tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 6",             precio:75000,  imagen:"jordan6.webp",         tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 8",             precio:75000,  imagen:"jordan8.webp",         tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 11",            precio:80000,  imagen:"jordan11.webp",        tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 12",            precio:75000,  imagen:"jordan12.webp",        tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 13",            precio:75000,  imagen:"jordan13.webp",        tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 14",            precio:80000,  imagen:"jordan14.webp",        tallas:tallasNike},
+  {cat:"Jordan", tags:["Jordan"],           nombre:"Jordan Retro 312",           precio:90000,  imagen:"jordan312.webp",       tallas:tallasNike},
 
-  // AIR MAX
-  {cat:"Air Max", nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp"},
-  {cat:"Air Max", nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp"},
+  // AIR MAX — aparece en "Air Max" Y en "Nike"
+  {cat:"Air Max", tags:["Air Max","Nike"],  nombre:"Air Max 95",                 precio:80000,  imagen:"airmax95.webp",        tallas:tallasNike},
+  {cat:"Air Max", tags:["Air Max","Nike"],  nombre:"Air Max 97",                 precio:80000,  imagen:"airmax97.webp",        tallas:tallasNike},
 
   // NEW BALANCE
-  {cat:"New Balance", nombre:"New Balance 9060", precio:80000, imagen:"nb9060.webp"},
+  {cat:"New Balance", tags:["New Balance"], nombre:"New Balance 9060",           precio:80000,  imagen:"nb9060.webp",          tallas:tallasNB},
 
-  // LUJO (Nombres de Louis Vuitton actualizados)
-  {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000, imagen:"balenciaga_runner.webp"},
-  {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000, imagen:"balenciaga_track.webp"},
-  {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000, imagen:"portofino.webp"},
-  {cat:"Giuseppe Zanotti", nombre:"Giuseppe Zanotti", precio:140000, imagen:"giuseppe.webp"},
-  {cat:"Dior", nombre:"Dior B22", precio:80000, imagen:"diorb22.webp"},
-  {cat:"Dior", nombre:"Dior B30", precio:80000, imagen:"diorb30.webp"},
-  {cat:"Louis Vuitton", nombre:"Louis Vuitton Trainer", precio:115000, imagen:"lv_trainer.webp"},
-  {cat:"Louis Vuitton", nombre:"Louis Vuitton Skate", precio:120000, imagen:"lv_skate.webp"}
+  // LUJO
+  {cat:"Balenciaga",      tags:["Balenciaga"],      nombre:"Balenciaga Runners",        precio:140000, imagen:"balenciaga_runner.webp", tallas:tallasLujo},
+  {cat:"Balenciaga",      tags:["Balenciaga"],      nombre:"Balenciaga Track LED",      precio:140000, imagen:"balenciaga_track.webp",  tallas:tallasLujo},
+  {cat:"Dolce & Gabbana", tags:["Dolce & Gabbana"], nombre:"Portofino",                 precio:100000, imagen:"portofino.webp",         tallas:tallasLujo},
+  {cat:"Giuseppe Zanotti",tags:["Giuseppe Zanotti"],nombre:"Giuseppe Zanotti",          precio:140000, imagen:"giuseppe.webp",          tallas:tallasLujo},
+  {cat:"Dior",            tags:["Dior"],            nombre:"Dior B22",                  precio:80000,  imagen:"diorb22.webp",           tallas:tallasLujo},
+  {cat:"Dior",            tags:["Dior"],            nombre:"Dior B30",                  precio:80000,  imagen:"diorb30.webp",           tallas:tallasLujo},
+  {cat:"Louis Vuitton",   tags:["Louis Vuitton"],   nombre:"Louis Vuitton Trainer",     precio:115000, imagen:"lv_trainer.webp",        tallas:tallasLujo},
+  {cat:"Louis Vuitton",   tags:["Louis Vuitton"],   nombre:"Louis Vuitton Skate",       precio:120000, imagen:"lv_skate.webp",          tallas:tallasLujo}
 ];
 
 let categoriaActual = "todos";
 
 function render(){
-  let cont = document.getElementById("productos");
-
+  const cont = document.getElementById("productos");
   cont.innerHTML = productos.map((p, index) => `
-    <div class="card" data-cat="${p.cat}">
+    <div class="card" data-cat="${p.cat}" data-tags="${p.tags.join(",")}">
       <img src="${p.imagen}" class="img-producto" alt="${p.nombre}">
-      
       <h3>${p.nombre}</h3>
       <div class="precio">$${p.precio.toLocaleString("es-CL")}</div>
-      
       <select id="talla-${index}">
-        ${Array.from({length:11},(_,i)=>36+i)
-          .map(t=>`<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
+        ${p.tallas.map(t => `<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
       </select>
-
       <button class="btn" onclick="pedir(${index})">
         Comprar por WhatsApp
       </button>
@@ -303,57 +304,41 @@ render();
 
 function filtrar(cat, btnElemento){
   categoriaActual = cat;
-
-  document.querySelectorAll(".categorias button")
-  .forEach(b => b.classList.remove("active"));
-
+  document.querySelectorAll(".categorias button").forEach(b => b.classList.remove("active"));
   btnElemento.classList.add("active");
-
   aplicar();
 }
 
 document.getElementById("buscar").addEventListener("keyup", aplicar);
 
 function aplicar(){
-  let texto = document.getElementById("buscar").value.toLowerCase();
-
+  const texto = document.getElementById("buscar").value.toLowerCase();
   document.querySelectorAll(".card").forEach(card => {
-    let nombre = card.querySelector("h3").innerText.toLowerCase();
-    let cat = card.dataset.cat;
-
-    let ok = (categoriaActual === "todos" || cat === categoriaActual)
-             && nombre.includes(texto);
-
-    card.style.display = ok ? "flex" : "none";
+    const nombre = card.querySelector("h3").innerText.toLowerCase();
+    const tags   = card.dataset.tags.split(",");
+    const enCategoria = categoriaActual === "todos" || tags.includes(categoriaActual);
+    const enBusqueda  = nombre.includes(texto);
+    card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
 }
 
 function pedir(index){
-  let producto = productos[index];
-  let selectTalla = document.getElementById(`talla-${index}`);
-  let talla = selectTalla.value;
+  const p     = productos[index];
+  const talla = document.getElementById(`talla-${index}`).value;
+  const total = p.precio + 5000;
 
-  let total = producto.precio + 5000;
-
-  let precioFormateado = producto.precio.toLocaleString('es-CL');
-  let totalFormateado = total.toLocaleString('es-CL');
-
-  let msg =
+  const msg =
 `Hola, quiero comprar:
 
-👟 Modelo: ${producto.nombre}
+👟 Modelo: ${p.nombre}
 📏 Talla: ${talla}
 
-💰 Precio: $${precioFormateado}
+💰 Precio: $${p.precio.toLocaleString('es-CL')}
 🚚 Envío: $5.000
-TOTAL: $${totalFormateado}`;
+TOTAL: $${total.toLocaleString('es-CL')}`;
 
-  window.open(
-    "https://wa.me/56931402987?text=" + encodeURIComponent(msg),
-    "_blank"
-  );
+  window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
 }
-
 </script>
 
 </body>
