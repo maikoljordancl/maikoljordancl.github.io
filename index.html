@@ -177,7 +177,6 @@ footer{
   <button onclick="filtrar('todos', this)" class="active">Todos</button>
   <button onclick="filtrar('Nike', this)">Nike</button>
   <button onclick="filtrar('Jordan', this)">Jordan</button>
-  <button onclick="filtrar('Air Max', this)">Air Max</button>
   <button onclick="filtrar('New Balance', this)">New Balance</button>
   <button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
   <button onclick="filtrar('Dior', this)">Dior</button>
@@ -224,9 +223,9 @@ const productos = [
   {tags:["Jordan"], nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp", tallas:tallasNike},
   {tags:["Jordan"], nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp", tallas:tallasNike},
 
-  // AIR MAX — aparece en "Air Max" Y en "Nike"
-  {tags:["Air Max","Nike"], nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp", tallas:tallasNike},
-  {tags:["Air Max","Nike"], nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp", tallas:tallasNike},
+  // AIR MAX — Ahora clasificados directamente bajo la etiqueta "Nike"
+  {tags:["Nike"], nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp", tallas:tallasNike},
+  {tags:["Nike"], nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp", tallas:tallasNike},
 
   // NEW BALANCE
   {tags:["New Balance"], nombre:"New Balance 9060", precio:80000, imagen:"nb9060.webp", tallas:tallasNB},
@@ -292,7 +291,7 @@ function pedir(index){
   const msg =
 `Hola, quiero comprar:
 
-👟 Modelo: ${p.nombre}
+👟 Modelo: ${p.p.nombre}
 📏 Talla: ${talla}
 
 💰 Precio: $${p.precio.toLocaleString('es-CL')}
