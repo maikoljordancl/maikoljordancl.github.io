@@ -127,20 +127,6 @@ height:200px;
 object-fit:cover;
 border-radius:12px;
 background:#222; 
-position: relative;
-}
-
-.img-producto::before {
-content: "📷 Sin imagen";
-position: absolute;
-top: 0; left: 0; width: 100%; height: 100%;
-background: #222;
-color: #666;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 14px;
-border-radius:12px;
 }
 
 .card h3{
@@ -228,7 +214,8 @@ opacity:0.8;
 <button onclick="filtrar('Nike', this)">Nike</button>
 <button onclick="filtrar('Jordan', this)">Jordan</button>
 <button onclick="filtrar('Air Max', this)">Air Max</button>
-<button onclick="filtrar('New Balance', this)">New Balance</button> <button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
+<button onclick="filtrar('New Balance', this)">New Balance</button>
+<button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
 <button onclick="filtrar('Dior', this)">Dior</button>
 <button onclick="filtrar('Louis Vuitton', this)">Louis Vuitton</button>
 <button onclick="filtrar('Dolce & Gabbana', this)">Dolce & Gabbana</button>
@@ -250,6 +237,7 @@ opacity:0.8;
 const productos = [
   // NIKE
   {cat:"Nike", nombre:"Nike TN", precio:75000, imagen:"tn.webp"},
+  {cat:"Nike", nombre:"Nike TN Plus", precio:75000, imagen:"tn_plus.webp"}, /* NUEVO MODELO */
   {cat:"Nike", nombre:"Nike Shox", precio:70000, imagen:"shox.webp"},
   {cat:"Nike", nombre:"AF1", precio:70000, imagen:"af1.webp"},
   {cat:"Nike", nombre:"AF1 Mid", precio:75000, imagen:"af1_mid.webp"},
@@ -273,7 +261,7 @@ const productos = [
   {cat:"Air Max", nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp"},
   {cat:"Air Max", nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp"},
 
-  // NEW BALANCE (Le asigné un precio estimado de 80.000, puedes cambiarlo si gustas)
+  // NEW BALANCE
   {cat:"New Balance", nombre:"New Balance 9060", precio:80000, imagen:"nb9060.webp"},
 
   // LUJO
