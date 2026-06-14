@@ -43,7 +43,6 @@ font-size:34px;
 .sub{
 color:#e60012;
 font-weight:bold;
-margin-top:5px;
 }
 
 .envio{
@@ -73,6 +72,11 @@ display:flex;
 gap:10px;
 overflow-x:auto;
 padding:10px 20px;
+}
+
+/* Ocultar barra de scroll horizontal en celulares por estética */
+.categorias::-webkit-scrollbar {
+  display: none;
 }
 
 .categorias button{
@@ -127,16 +131,17 @@ font-size:22px;
 font-weight:bold;
 }
 
-/* NUEVO: Estilo para el selector de tallas integrado con el diseño */
+/* ESTILO SELECT DE TALLAS */
 select{
 width:100%;
 padding:10px;
 border:none;
 border-radius:8px;
-background:#252525;
+background:#222;
 color:white;
 font-weight:bold;
 outline:none;
+cursor:pointer;
 }
 
 /* BTN */
@@ -166,7 +171,8 @@ padding:14px 18px;
 border-radius:50px;
 text-decoration:none;
 font-weight:bold;
-z-index: 1000;
+z-index:999;
+box-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
 
 /* FOOTER */
@@ -196,16 +202,19 @@ opacity:0.8;
 
 <div class="categorias">
 <button onclick="filtrar('todos', this)" class="active">Todos</button>
-<button onclick="filtrar('Jordan', this)">Jordan</button>
 <button onclick="filtrar('Nike', this)">Nike</button>
+<button onclick="filtrar('Jordan', this)">Jordan</button>
+<button onclick="filtrar('Air Max', this)">Air Max</button>
 <button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
 <button onclick="filtrar('Dior', this)">Dior</button>
 <button onclick="filtrar('Louis Vuitton', this)">Louis Vuitton</button>
+<button onclick="filtrar('Dolce & Gabbana', this)">Dolce & Gabbana</button>
+<button onclick="filtrar('Giuseppe Zanotti', this)">Giuseppe Zanotti</button>
 </div>
 
 <div class="produtos" id="productos"></div>
 
-<a class="whatsapp" href="https://wa.me/56931402987?text=Hola!%20Tengo%20una%20consulta" target="_blank">
+<a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
 💬 Consultas
 </a>
 
@@ -216,14 +225,37 @@ opacity:0.8;
 <script>
 
 const productos = [
+  // NIKE
   {cat:"Nike", nombre:"Nike TN", precio:75000},
   {cat:"Nike", nombre:"Nike Shox", precio:70000},
   {cat:"Nike", nombre:"AF1", precio:70000},
+  {cat:"Nike", nombre:"AF1 Mid", precio:75000},
+  {cat:"Nike", nombre:"AF1 Supreme-Nocta", precio:85000},
+  {cat:"Nike", nombre:"AF1 CPFM", precio:70000},
+
+  // JORDAN
   {cat:"Jordan", nombre:"Jordan 1", precio:70000},
+  {cat:"Jordan", nombre:"Jordan 3", precio:75000},
   {cat:"Jordan", nombre:"Jordan 4", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 5", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 6", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 8", precio:75000},
   {cat:"Jordan", nombre:"Jordan 11", precio:80000},
-  {cat:"Balenciaga", nombre:"Balenciaga Runner", precio:140000},
-  {cat:"Dior", nombre:"Dior B22", precio:80000},
+  {cat:"Jordan", nombre:"Jordan 12", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 13", precio:75000},
+  {cat:"Jordan", nombre:"Jordan 14", precio:80000},
+  {cat:"Jordan", nombre:"Jordan 312", precio:90000},
+
+  // AIR MAX
+  {cat:"Air Max", nombre:"Air Max 95-97", precio:80000},
+
+  // LUJO
+  {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000},
+  {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000},
+  {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000},
+  {cat:"Giuseppe Zanotti", nombre:"Giuseppe Zanotti", precio:140000},
+  {cat:"Dior", nombre:"Dior B22-B30", precio:80000},
+  {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000},
   {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000}
 ];
 
@@ -232,7 +264,7 @@ let categoriaActual = "todos";
 function render(){
   let cont = document.getElementById("productos");
 
-  // Usamos el index para identificar de forma exacta el select de cada zapatilla
+  // Añadimos 'index' para enlazar de forma única cada tarjeta con su respectivo menú de tallas
   cont.innerHTML = productos.map((p, index) => `
     <div class="card" data-cat="${p.cat}">
       <h3>${p.nombre}</h3>
@@ -244,7 +276,7 @@ function render(){
       </select>
 
       <button class="btn" onclick="pedir(${index})">
-        Comprar
+        Comprar por WhatsApp
       </button>
     </div>
   `).join("");
@@ -252,14 +284,14 @@ function render(){
 
 render();
 
-// CORRECCIÓN: Añadido 'botonElemento' para reemplazar de forma segura el problemático 'event.target'
-function filtrar(cat, botonElemento){
+// CORRECCIÓN: Añadido 'btnElemento' para asegurar compatibilidad total en smartphones
+function filtrar(cat, btnElemento){
   categoriaActual = cat;
 
   document.querySelectorAll(".categorias button")
   .forEach(b => b.classList.remove("active"));
 
-  botonElemento.classList.add("active");
+  btnElemento.classList.add("active");
 
   aplicar();
 }
@@ -270,7 +302,6 @@ function aplicar(){
   let texto = document.getElementById("buscar").value.toLowerCase();
 
   document.querySelectorAll(".card").forEach(card => {
-
     let nombre = card.querySelector("h3").innerText.toLowerCase();
     let cat = card.dataset.cat;
 
@@ -281,7 +312,7 @@ function aplicar(){
   });
 }
 
-// CORRECCIÓN: Ahora lee dinámicamente el producto e inyecta la talla seleccionada
+// CORRECCIÓN: Procesa la talla seleccionada en pantalla y formatea los precios para Chile
 function pedir(index){
   let producto = productos[index];
   let selectTalla = document.getElementById(`talla-${index}`);
