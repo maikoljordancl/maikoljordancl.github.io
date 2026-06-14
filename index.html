@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maikol Jordan</title>
 
+<style>
+body{
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
+margin:0;
+padding:0;
+}
+
+header{
+text-align:center;
+padding:20px;
+background:#000;
+}
+
+.logo{
+max-width:220px;
+border-radius:50%;
+}
+
+h1{
+color:#e60012;
+}
+
+.productos{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.producto{
+background:#1c1c1c;
+padding:15px;
+border-radius:12px;
+text-align:center;
+}
+
+.producto img{
+width:100%;
+border-radius:10px;
+}
+
+button{
+background:#e60012;
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+width:100%;
+font-size:16px;
+cursor:pointer;
+}
+
+footer{
+text-align:center;
+padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>MAIKOL JORDAN</h1>
+<p>Estilo • Calidad • Exclusividad</p>
+<p>🚚 Envíos a todo Chile $5.000</p>
+</header>
+
+<section class="productos">
+
+<div class="producto">
+<h2>Jordan 1</h2>
+<p>$70.000</p>
+<button onclick="pedir('Jordan 1','$70.000')">Pedir por WhatsApp</button>
+</div>
+
+<div class="producto">
+<h2>Jordan 3 Black Cat</h2>
+<p>$75.000</p>
+<button onclick="pedir('Jordan 3 Black Cat','$75.000')">Pedir por WhatsApp</button>
+</div>
+
+<div class="producto">
+<h2>Jordan 4 Bred</h2>
+<p>$75.000</p>
+<button onclick="pedir('Jordan 4 Bred','$75.000')">Pedir por WhatsApp</button>
+</div>
+
+<div class="producto">
+<h2>Jordan 12</h2>
+<p>$75.000</p>
+<button onclick="pedir('Jordan 12','$75.000')">Pedir por WhatsApp</button>
+</div>
+
+</section>
+
+<footer>
+📱 WhatsApp: +56 9 3140 2987
+</footer>
+
+<script>
+function pedir(modelo,precio){
+
+let talla = prompt("Ingrese talla (35-46)");
+
+let mensaje =
+`Hola, quiero comprar:
+
+Modelo: ${modelo}
+Talla: ${talla}
+
+Precio: ${precio}
+Envío: $5.000`;
+
+window.open(
+`https://wa.me/56931402987?text=${encodeURIComponent(mensaje)}`,
+'_blank'
+);
+}
+</script>
+
+</body>
+</html>
