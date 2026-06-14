@@ -120,13 +120,27 @@ transform:translateY(-5px);
 box-shadow:0 10px 20px rgba(0,0,0,0.5);
 }
 
-/* AQUÍ CONTROLAMOS EL TAMAÑO DE LA FOTO EN LA PÁGINA */
 .img-producto {
+display: block;
 width:100%;
 height:200px;
 object-fit:cover;
 border-radius:12px;
-background:#222; /* Fondo gris mientras carga la foto */
+background:#222; 
+position: relative;
+}
+
+.img-producto::before {
+content: "📷 Sin imagen";
+position: absolute;
+top: 0; left: 0; width: 100%; height: 100%;
+background: #222;
+color: #666;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+border-radius:12px;
 }
 
 .card h3{
@@ -233,7 +247,6 @@ opacity:0.8;
 
 <script>
 
-/* EN LA PROPIEDAD "imagen" PONDRÁS TUS FOTOS (MIRA EL PASO SIGUIENTE) */
 const productos = [
   // NIKE
   {cat:"Nike", nombre:"Nike TN", precio:75000, imagen:"tn.webp"},
@@ -243,28 +256,33 @@ const productos = [
   {cat:"Nike", nombre:"AF1 Supreme-Nocta", precio:85000, imagen:"af1_supreme.webp"},
   {cat:"Nike", nombre:"AF1 CPFM", precio:70000, imagen:"af1_cpfm.webp"},
 
-  // JORDAN
-  {cat:"Jordan", nombre:"Jordan 1", precio:70000, imagen:"jordan1.webp"},
-  {cat:"Jordan", nombre:"Jordan 3", precio:75000, imagen:"jordan3.webp"},
-  {cat:"Jordan", nombre:"Jordan 4", precio:75000, imagen:"jordan4.webp"},
-  {cat:"Jordan", nombre:"Jordan 5", precio:75000, imagen:"jordan5.webp"},
-  {cat:"Jordan", nombre:"Jordan 6", precio:75000, imagen:"jordan6.webp"},
-  {cat:"Jordan", nombre:"Jordan 8", precio:75000, imagen:"jordan8.webp"},
-  {cat:"Jordan", nombre:"Jordan 11", precio:80000, imagen:"jordan11.webp"},
-  {cat:"Jordan", nombre:"Jordan 12", precio:75000, imagen:"jordan12.webp"},
-  {cat:"Jordan", nombre:"Jordan 13", precio:75000, imagen:"jordan13.webp"},
-  {cat:"Jordan", nombre:"Jordan 14", precio:80000, imagen:"jordan14.webp"},
-  {cat:"Jordan", nombre:"Jordan 312", precio:90000, imagen:"jordan312.webp"},
+  // JORDAN (Actualizados a Jordan Retro)
+  {cat:"Jordan", nombre:"Jordan Retro 1", precio:70000, imagen:"jordan1.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 3", precio:75000, imagen:"jordan3.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 4", precio:75000, imagen:"jordan4.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 5", precio:75000, imagen:"jordan5.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 6", precio:75000, imagen:"jordan6.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 8", precio:75000, imagen:"jordan8.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 11", precio:80000, imagen:"jordan11.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 12", precio:75000, imagen:"jordan12.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 13", precio:75000, imagen:"jordan13.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp"},
+  {cat:"Jordan", nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp"},
 
-  // AIR MAX
-  {cat:"Air Max", nombre:"Air Max 95-97", precio:80000, imagen:"airmax.webp"},
+  // AIR MAX (Separados)
+  {cat:"Air Max", nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp"},
+  {cat:"Air Max", nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp"},
 
   // LUJO
   {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000, imagen:"balenciaga_runner.webp"},
   {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000, imagen:"balenciaga_track.webp"},
   {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000, imagen:"portofino.webp"},
   {cat:"Giuseppe Zanotti", nombre:"Giuseppe Zanotti", precio:140000, imagen:"giuseppe.webp"},
-  {cat:"Dior", nombre:"Dior B22-B30", precio:80000, imagen:"dior.webp"},
+  
+  // DIOR (Separados)
+  {cat:"Dior", nombre:"Dior B22", precio:80000, imagen:"diorb22.webp"},
+  {cat:"Dior", nombre:"Dior B30", precio:80000, imagen:"diorb30.webp"},
+  
   {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000, imagen:"lv_trainer.webp"},
   {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000, imagen:"lv_skate.webp"}
 ];
