@@ -223,7 +223,7 @@ const productos = [
   {tags:["Jordan"], nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp", tallas:tallasNike},
   {tags:["Jordan"], nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp", tallas:tallasNike},
 
-  // AIR MAX — Ahora clasificados directamente bajo la etiqueta "Nike"
+  // AIR MAX (Integradas a Nike)
   {tags:["Nike"], nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp", tallas:tallasNike},
   {tags:["Nike"], nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp", tallas:tallasNike},
 
@@ -288,10 +288,11 @@ function pedir(index){
   const talla = document.getElementById(`talla-${index}`).value;
   const total = p.precio + 5000;
 
+  // CORREGIDO: Se cambió p.p.nombre por p.nombre
   const msg =
 `Hola, quiero comprar:
 
-👟 Modelo: ${p.p.nombre}
+👟 Modelo: ${p.nombre}
 📏 Talla: ${talla}
 
 💰 Precio: $${p.precio.toLocaleString('es-CL')}
