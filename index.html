@@ -74,7 +74,6 @@ overflow-x:auto;
 padding:10px 20px;
 }
 
-/* Ocultar barra de scroll horizontal en celulares por estética */
 .categorias::-webkit-scrollbar {
   display: none;
 }
@@ -121,8 +120,18 @@ transform:translateY(-5px);
 box-shadow:0 10px 20px rgba(0,0,0,0.5);
 }
 
+/* NUEVO: Estilos para las imágenes de los productos */
+.img-producto {
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:12px;
+background:#222; /* Fondo gris por si la imagen tarda en cargar */
+}
+
 .card h3{
 font-size:18px;
+margin-top:5px;
 }
 
 .precio{
@@ -224,39 +233,40 @@ opacity:0.8;
 
 <script>
 
+// NOTA: Reemplaza "tn.webp", "shox.webp", etc. por los nombres reales de tus imágenes guardadas en tu carpeta.
 const productos = [
   // NIKE
-  {cat:"Nike", nombre:"Nike TN", precio:75000},
-  {cat:"Nike", nombre:"Nike Shox", precio:70000},
-  {cat:"Nike", nombre:"AF1", precio:70000},
-  {cat:"Nike", nombre:"AF1 Mid", precio:75000},
-  {cat:"Nike", nombre:"AF1 Supreme-Nocta", precio:85000},
-  {cat:"Nike", nombre:"AF1 CPFM", precio:70000},
+  {cat:"Nike", nombre:"Nike TN", precio:75000, imagen:"tn.webp"},
+  {cat:"Nike", nombre:"Nike Shox", precio:70000, imagen:"shox.webp"},
+  {cat:"Nike", nombre:"AF1", precio:70000, imagen:"af1.webp"},
+  {cat:"Nike", nombre:"AF1 Mid", precio:75000, imagen:"af1_mid.webp"},
+  {cat:"Nike", nombre:"AF1 Supreme-Nocta", precio:85000, imagen:"af1_supreme.webp"},
+  {cat:"Nike", nombre:"AF1 CPFM", precio:70000, imagen:"af1_cpfm.webp"},
 
   // JORDAN
-  {cat:"Jordan", nombre:"Jordan 1", precio:70000},
-  {cat:"Jordan", nombre:"Jordan 3", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 4", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 5", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 6", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 8", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 11", precio:80000},
-  {cat:"Jordan", nombre:"Jordan 12", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 13", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 14", precio:80000},
-  {cat:"Jordan", nombre:"Jordan 312", precio:90000},
+  {cat:"Jordan", nombre:"Jordan 1", precio:70000, imagen:"jordan1.webp"},
+  {cat:"Jordan", nombre:"Jordan 3", precio:75000, imagen:"jordan3.webp"},
+  {cat:"Jordan", nombre:"Jordan 4", precio:75000, imagen:"jordan4.webp"},
+  {cat:"Jordan", nombre:"Jordan 5", precio:75000, imagen:"jordan5.webp"},
+  {cat:"Jordan", nombre:"Jordan 6", precio:75000, imagen:"jordan6.webp"},
+  {cat:"Jordan", nombre:"Jordan 8", precio:75000, imagen:"jordan8.webp"},
+  {cat:"Jordan", nombre:"Jordan 11", precio:80000, imagen:"jordan11.webp"},
+  {cat:"Jordan", nombre:"Jordan 12", precio:75000, imagen:"jordan12.webp"},
+  {cat:"Jordan", nombre:"Jordan 13", precio:75000, imagen:"jordan13.webp"},
+  {cat:"Jordan", nombre:"Jordan 14", precio:80000, imagen:"jordan14.webp"},
+  {cat:"Jordan", nombre:"Jordan 312", precio:90000, imagen:"jordan312.webp"},
 
   // AIR MAX
-  {cat:"Air Max", nombre:"Air Max 95-97", precio:80000},
+  {cat:"Air Max", nombre:"Air Max 95-97", precio:80000, imagen:"airmax.webp"},
 
   // LUJO
-  {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000},
-  {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000},
-  {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000},
-  {cat:"Giuseppe Zanotti", nombre:"Giuseppe Zanotti", precio:140000},
-  {cat:"Dior", nombre:"Dior B22-B30", precio:80000},
-  {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000},
-  {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000}
+  {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000, imagen:"balenciaga_runner.webp"},
+  {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000, imagen:"balenciaga_track.webp"},
+  {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000, imagen:"portofino.webp"},
+  {cat:"Giuseppe Zanotti", nombre:"Giuseppe Zanotti", precio:140000, imagen:"giuseppe.webp"},
+  {cat:"Dior", nombre:"Dior B22-B30", precio:80000, imagen:"dior.webp"},
+  {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000, imagen:"lv_trainer.webp"},
+  {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000, imagen:"lv_skate.webp"}
 ];
 
 let categoriaActual = "todos";
@@ -264,9 +274,10 @@ let categoriaActual = "todos";
 function render(){
   let cont = document.getElementById("productos");
 
-  // Añadimos 'index' para enlazar de forma única cada tarjeta con su respectivo menú de tallas
   cont.innerHTML = productos.map((p, index) => `
     <div class="card" data-cat="${p.cat}">
+      <img src="${p.imagen}" class="img-producto" alt="${p.nombre}">
+      
       <h3>${p.nombre}</h3>
       <div class="precio">$${p.precio.toLocaleString("es-CL")}</div>
       
@@ -284,7 +295,6 @@ function render(){
 
 render();
 
-// CORRECCIÓN: Añadido 'btnElemento' para asegurar compatibilidad total en smartphones
 function filtrar(cat, btnElemento){
   categoriaActual = cat;
 
@@ -312,7 +322,6 @@ function aplicar(){
   });
 }
 
-// CORRECCIÓN: Procesa la talla seleccionada en pantalla y formatea los precios para Chile
 function pedir(index){
   let producto = productos[index];
   let selectTalla = document.getElementById(`talla-${index}`);
