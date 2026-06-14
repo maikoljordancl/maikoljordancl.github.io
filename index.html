@@ -15,42 +15,43 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#0f0f0f;
+background:#0b0b0b;
 color:white;
 }
 
+/* HEADER */
 header{
 background:#000;
-padding:25px;
+padding:30px;
 text-align:center;
 border-bottom:3px solid #e60012;
 }
 
 .logo{
-width:140px;
-height:140px;
+width:130px;
+height:130px;
 object-fit:cover;
 border-radius:50%;
 border:3px solid #e60012;
 }
 
 h1{
-margin-top:15px;
-font-size:32px;
-color:#fff;
+margin-top:10px;
+font-size:34px;
 }
 
 .sub{
 color:#e60012;
-margin-top:10px;
 font-weight:bold;
+margin-top:5px;
 }
 
 .envio{
-margin-top:10px;
-font-size:18px;
+margin-top:8px;
+opacity:0.8;
 }
 
+/* SEARCH */
 .search{
 padding:20px;
 }
@@ -59,109 +60,122 @@ padding:20px;
 width:100%;
 padding:14px;
 border:none;
-border-radius:10px;
+border-radius:12px;
+background:#1c1c1c;
+color:white;
 font-size:16px;
-background: #1b1b1b;
-color: white;
+outline:none;
 }
 
+/* CATEGORIAS */
 .categorias{
 display:flex;
 gap:10px;
 overflow-x:auto;
-padding:10px 20px 20px;
+padding:10px 20px;
 }
 
 .categorias button{
-background:#1f1f1f;
+background:#1a1a1a;
 color:white;
 border:none;
-padding:10px 15px;
+padding:10px 16px;
 border-radius:20px;
 cursor:pointer;
+transition:0.3s;
 white-space:nowrap;
-transition: 0.3s;
 }
 
-.categorias button:hover, .categorias button.active{
+.categorias button:hover,
+.categorias button.active{
 background:#e60012;
 }
 
+/* GRID */
 .produtos{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:20px;
 padding:20px;
 }
 
+/* CARD PRO */
 .card{
-background:#1b1b1b;
-border-radius:15px;
+background:#151515;
+border-radius:18px;
 padding:15px;
-border:1px solid #333;
-display: flex;
-flex-direction: column;
+border:1px solid #2a2a2a;
+transition:0.3s;
+display:flex;
+flex-direction:column;
+gap:10px;
 justify-content: space-between;
 }
 
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 20px rgba(0,0,0,0.5);
+}
+
 .card h3{
-margin-bottom:10px;
+font-size:18px;
 }
 
 .precio{
-font-size:22px;
 color:#e60012;
+font-size:22px;
 font-weight:bold;
-margin-bottom:15px;
 }
 
+/* NUEVO: Estilo para el selector de tallas integrado con el diseño */
 select{
 width:100%;
 padding:10px;
 border:none;
 border-radius:8px;
-margin-bottom:10px;
-background: #333;
-color: white;
-font-weight: bold;
+background:#252525;
+color:white;
+font-weight:bold;
+outline:none;
 }
 
+/* BTN */
 .btn{
-width:100%;
 background:#e60012;
-color:white;
 border:none;
 padding:12px;
-border-radius:8px;
-font-size:16px;
+border-radius:10px;
+color:white;
 font-weight:bold;
 cursor:pointer;
-transition: 0.3s;
+transition:0.3s;
 }
 
 .btn:hover{
-background: #b8000e;
+background:#b8000e;
 }
 
+/* WHATSAPP */
 .whatsapp{
 position:fixed;
 bottom:20px;
 right:20px;
 background:#25D366;
 color:white;
-padding:15px 20px;
+padding:14px 18px;
 border-radius:50px;
 text-decoration:none;
 font-weight:bold;
-box-shadow:0 0 10px rgba(0,0,0,.5);
 z-index: 1000;
 }
 
+/* FOOTER */
 footer{
-padding:30px;
 text-align:center;
+padding:30px;
 margin-top:20px;
 background:#000;
+opacity:0.8;
 }
 
 </style>
@@ -172,7 +186,7 @@ background:#000;
 <header>
 <img src="logo.webp" class="logo">
 <h1>MAIKOL JORDAN</h1>
-<div class="sub">Jordan • Nike • Lujo</div>
+<div class="sub">Jordan • Nike • Luxury</div>
 <div class="envio">🚚 Envíos a todo Chile $5.000</div>
 </header>
 
@@ -181,57 +195,36 @@ background:#000;
 </div>
 
 <div class="categorias">
-<button onclick="filtrar('todos')" class="active">Todos</button>
-<button onclick="filtrar('Jordan')">Jordan</button>
-<button onclick="filtrar('Nike')">Nike</button>
-<button onclick="filtrar('Balenciaga')">Balenciaga</button>
-<button onclick="filtrar('Dior')">Dior</button>
-<button onclick="filtrar('Louis Vuitton')">Louis Vuitton</button>
-<button onclick="filtrar('Dolce & Gabbana')">Dolce & Gabbana</button>
+<button onclick="filtrar('todos', this)" class="active">Todos</button>
+<button onclick="filtrar('Jordan', this)">Jordan</button>
+<button onclick="filtrar('Nike', this)">Nike</button>
+<button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
+<button onclick="filtrar('Dior', this)">Dior</button>
+<button onclick="filtrar('Louis Vuitton', this)">Louis Vuitton</button>
 </div>
 
 <div class="produtos" id="productos"></div>
 
 <a class="whatsapp" href="https://wa.me/56931402987?text=Hola!%20Tengo%20una%20consulta" target="_blank">
-WhatsApp
+💬 Consultas
 </a>
 
 <footer>
-© 2026 MAIKOL JORDAN<br>
-🚚 Envíos a todo Chile $5.000
+© 2026 MAIKOL JORDAN
 </footer>
 
 <script>
 
 const productos = [
-  // NIKE
   {cat:"Nike", nombre:"Nike TN", precio:75000},
   {cat:"Nike", nombre:"Nike Shox", precio:70000},
   {cat:"Nike", nombre:"AF1", precio:70000},
-  {cat:"Nike", nombre:"AF1 Mid", precio:75000},
-  {cat:"Nike", nombre:"AF1 Supreme-Nocta", precio:85000},
-  {cat:"Nike", nombre:"AF1 CPFM", precio:70000},
-
-  // JORDAN
   {cat:"Jordan", nombre:"Jordan 1", precio:70000},
-  {cat:"Jordan", nombre:"Jordan 3", precio:75000},
   {cat:"Jordan", nombre:"Jordan 4", precio:75000},
   {cat:"Jordan", nombre:"Jordan 11", precio:80000},
-  {cat:"Jordan", nombre:"Jordan 5", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 6", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 8", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 12", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 13", precio:75000},
-  {cat:"Jordan", nombre:"Jordan 14", precio:80000},
-  {cat:"Jordan", nombre:"Jordan 312", precio:90000},
-
-  // OTROS
-  {cat:"Balenciaga", nombre:"Balenciaga Runners", precio:140000},
-  {cat:"Balenciaga", nombre:"Balenciaga Track LED", precio:140000},
-  {cat:"Dior", nombre:"Dior B22-B30", precio:80000},
-  {cat:"Louis Vuitton", nombre:"LV Trainer", precio:115000},
-  {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000},
-  {cat:"Dolce & Gabbana", nombre:"Portofino", precio:100000}
+  {cat:"Balenciaga", nombre:"Balenciaga Runner", precio:140000},
+  {cat:"Dior", nombre:"Dior B22", precio:80000},
+  {cat:"Louis Vuitton", nombre:"LV Skate", precio:120000}
 ];
 
 let categoriaActual = "todos";
@@ -239,22 +232,19 @@ let categoriaActual = "todos";
 function render(){
   let cont = document.getElementById("productos");
 
-  // Usamos el índice del arreglo (index) para asociar cada botón con su respectiva lista desplegable de forma exacta
+  // Usamos el index para identificar de forma exacta el select de cada zapatilla
   cont.innerHTML = productos.map((p, index) => `
     <div class="card" data-cat="${p.cat}">
       <h3>${p.nombre}</h3>
-
-      <div class="precio">
-        $${p.precio.toLocaleString("es-CL")}
-      </div>
-
+      <div class="precio">$${p.precio.toLocaleString("es-CL")}</div>
+      
       <select id="talla-${index}">
         ${Array.from({length:11},(_,i)=>36+i)
           .map(t=>`<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
       </select>
 
       <button class="btn" onclick="pedir(${index})">
-        Pedir por WhatsApp
+        Comprar
       </button>
     </div>
   `).join("");
@@ -262,37 +252,36 @@ function render(){
 
 render();
 
-function filtrar(cat){
+// CORRECCIÓN: Añadido 'botonElemento' para reemplazar de forma segura el problemático 'event.target'
+function filtrar(cat, botonElemento){
   categoriaActual = cat;
 
-  document.querySelectorAll('.categorias button').forEach(btn => {
-    btn.classList.remove('active');
-    if(btn.innerText === cat || (cat === 'todos' && btn.innerText === 'Todos')) {
-      btn.classList.add('active');
-    }
-  });
+  document.querySelectorAll(".categorias button")
+  .forEach(b => b.classList.remove("active"));
 
-  aplicarFiltros();
+  botonElemento.classList.add("active");
+
+  aplicar();
 }
 
-document.getElementById("buscar").addEventListener("keyup", aplicarFiltros);
+document.getElementById("buscar").addEventListener("keyup", aplicar);
 
-function aplicarFiltros(){
+function aplicar(){
   let texto = document.getElementById("buscar").value.toLowerCase();
-  let cards = document.querySelectorAll(".card");
 
-  cards.forEach(card => {
+  document.querySelectorAll(".card").forEach(card => {
+
     let nombre = card.querySelector("h3").innerText.toLowerCase();
     let cat = card.dataset.cat;
 
-    let okCat = (categoriaActual === "todos" || cat === categoriaActual);
-    let okBus = nombre.includes(texto);
+    let ok = (categoriaActual === "todos" || cat === categoriaActual)
+             && nombre.includes(texto);
 
-    card.style.display = (okCat && okBus) ? "flex" : "none";
+    card.style.display = ok ? "flex" : "none";
   });
 }
 
-// SOLUCIÓN: La función ahora recibe el índice preciso del producto y lee su respectivo select sin fallar ni usar prompt
+// CORRECCIÓN: Ahora lee dinámicamente el producto e inyecta la talla seleccionada
 function pedir(index){
   let producto = productos[index];
   let selectTalla = document.getElementById(`talla-${index}`);
@@ -303,19 +292,18 @@ function pedir(index){
   let precioFormateado = producto.precio.toLocaleString('es-CL');
   let totalFormateado = total.toLocaleString('es-CL');
 
-  let mensaje =
+  let msg =
 `Hola, quiero comprar:
 
 👟 Modelo: ${producto.nombre}
 📏 Talla: ${talla}
 
-💵 Precio: $${precioFormateado}
+💰 Precio: $${precioFormateado}
 🚚 Envío: $5.000
-
-💰 Total: $${totalFormateado}`;
+TOTAL: $${totalFormateado}`;
 
   window.open(
-    `https://wa.me/56931402987?text=${encodeURIComponent(mensaje)}`,
+    "https://wa.me/56931402987?text=" + encodeURIComponent(msg),
     "_blank"
   );
 }
