@@ -356,6 +356,7 @@ function obtenerDatosComprador() {
   };
 }
 
+// Asegurar compatibilidad para entornos antiguos sin Array.map
 function validarFormulario(c) {
   if (!c.nombre || !c.whatsapp || !c.direccion || !c.region || !c.comuna) {
     alert("Por favor completa todos los datos de envío.");
@@ -368,51 +369,44 @@ async function confirmarPedido() {
   const comprador = obtenerDatosComprador();
   if (!validarFormulario(comprador)) return;
 
-  const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+  const subtotal = carrito.reduce(function(sum, item) { return sum + item.precio; }, 0);
   const total = subtotal + 5000;
 
   if (metodoPago === "wsp") {
-    const lineas = carrito.map((item, i) =>
-      `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
-    ).join("\n");
-    const msg =
-`Hola, quiero hacer el siguiente pedido:
-
-${lineas}
-
-📦 Datos de envío:
-👤 Nombre: ${comprador.nombre}
-📱 WhatsApp: ${comprador.whatsapp}
-📍 Dirección: ${comprador.direccion}
-🌎 ${comprador.comuna}, ${comprador.region}
-🏷️ Código postal: ${comprador.cp}
-
-💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
-🚚 Envío: $5.000
-TOTAL: $${total.toLocaleString("es-CL")}`;
+    const lineas = carrito.map(function(item, i) {
+      return (i + 1) + ". " + item.nombre + " | Talla: " + item.talla + " | $" + item.precio.toLocaleString("es-CL");
+    }).join("\n");
+    
+    const msg = "Hola, quiero hacer el siguiente pedido:\n\n" + lineas + "\n\n" +
+                "📦 Datos de envío:\n" +
+                "👤 Nombre: " + comprador.nombre + "\n" +
+                "📱 WhatsApp: " + comprador.whatsapp + "\n" +
+                "📍 Dirección: " + comprador.direccion + "\n" +
+                "🌎 " + comprador.comuna + ", " + comprador.region + "\n" +
+                "🏷️ Código postal: " + comprador.cp + "\n\n" +
+                "💰 Subtotal: $" + subtotal.toLocaleString("es-CL") + "\n" +
+                "🚚 Envío: $5.000\n" +
+                "TOTAL: $" + total.toLocaleString("es-CL");
+                
     window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
 
   } else if (metodoPago === "transferencia") {
-    const lineas = carrito.map((item, i) =>
-      `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
-    ).join("\n");
-    const msg =
-`Hola, quiero pagar por transferencia:
-
-${lineas}
-
-📦 Datos de envío:
-👤 Nombre: ${comprador.nombre}
-📱 WhatsApp: ${comprador.whatsapp}
-📍 Dirección: ${comprador.direccion}
-🌎 ${comprador.comuna}, ${comprador.region}
-🏷️ Código postal: ${comprador.cp}
-
-💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
-🚚 Envío: $5.000
-TOTAL: $${total.toLocaleString("es-CL")}
-
-(Adjuntaré el comprobante de transferencia)`;
+    const lineas = carrito.map(function(item, i) {
+      return (i + 1) + ". " + item.nombre + " | Talla: " + item.talla + " | $" + item.precio.toLocaleString("es-CL");
+    }).join("\n");
+    
+    const msg = "Hola, quiero pagar por transferencia:\n\n" + lineas + "\n\n" +
+                "📦 Datos de envío:\n" +
+                "👤 Nombre: " + comprador.nombre + "\n" +
+                "📱 WhatsApp: " + comprador.whatsapp + "\n" +
+                "📍 Dirección: " + comprador.direccion + "\n" +
+                "🌎 " + comprador.comuna + ", " + comprador.region + "\n" +
+                "🏷️ Código postal: " + comprador.cp + "\n\n" +
+                "💰 Subtotal: $" + subtotal.toLocaleString("es-CL") + "\n" +
+                "🚚 Envío: $5.000\n" +
+                "TOTAL: $" + total.toLocaleString("es-CL") + "\n\n" +
+                "(Adjuntaré el comprobante de transferencia)";
+                
     window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
 
   } else if (metodoPago === "mp") {
@@ -423,7 +417,7 @@ TOTAL: $${total.toLocaleString("es-CL")}
       const response = await fetch("/api/create-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: carrito, comprador })
+        body: JSON.stringify({ items: carrito, comprador: comprador })
       });
       const data = await response.json();
       if (data.init_point) {
