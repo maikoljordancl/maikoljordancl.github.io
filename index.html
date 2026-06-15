@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maikol Jordan</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-REEMPLAZA_AQUI"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-REEMPLAZA_AQUI'); // <-- Reemplaza aquí tu ID de medición G-XXXXXX
+</script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
@@ -53,12 +63,15 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .form-input{width:100%;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;}
 .form-input:focus{border-color:#e60012;}
 .form-input::placeholder{color:#555;}
+
 .metodo-pago{background:#222;border:2px solid #333;border-radius:10px;padding:14px;cursor:pointer;transition:0.3s;margin-bottom:8px;}
 .metodo-pago:hover{border-color:#e60012;}
 .metodo-pago.selected{border-color:#e60012;background:#2a1a1a;}
-.metodo-pago-header{display:flex;align-items:center;gap:10px;font-weight:bold;}
-.metodo-pago-icon{font-size:22px;}
+.metodo-pago-header{display:flex;align-items:center;justify-content:space-between;font-weight:bold;}
+.metodo-pago-titulo{display:flex;align-items:center;gap:10px;}
+.metodo-logo{height:20px;object-fit:contain;}
 .metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
+
 .cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
 .cart-total-final{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;}
 .btn-pago{width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;transition:0.3s;margin-bottom:8px;}
@@ -76,7 +89,11 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .toast.show{opacity:1;}
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
-footer{text-align:center;padding:30px;margin-top:20px;background:#000;opacity:0.8;}
+
+footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
+.footer-text{opacity:0.8;font-size:14px;margin-bottom:15px;}
+.footer-logos{display:flex;justify-content:center;align-items:center;gap:15px;flex-wrap:wrap;opacity:0.7;}
+.footer-logos img{height:22px;object-fit:contain;transition:0.3s;}
 </style>
 </head>
 <body>
@@ -138,17 +155,27 @@ footer{text-align:center;padding:30px;margin-top:20px;background:#000;opacity:0.
     <div class="checkout-section">
       <h3>💳 Método de pago</h3>
       <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
-        <div class="metodo-pago-header"><span class="metodo-pago-icon">💬</span> WhatsApp</div>
+        <div class="metodo-pago-header">
+          <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="metodo-logo" alt="WhatsApp">
+        </div>
         <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
       </div>
       <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
-        <div class="metodo-pago-header"><span class="metodo-pago-icon">🏦</span> Transferencia bancaria</div>
-        <div class="metodo-pago-desc">Transfiere y envía el comprobante</div>
+        <div class="metodo-pago-header">
+          <div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
+          <img src="https://img.icons8.com/color/48/bank.png" class="metodo-logo" alt="Banco">
+        </div>
+        <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
       </div>
       <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
-        <div class="metodo-pago-header"><span class="metodo-pago-icon">💳</span> Tarjeta crédito / débito</div>
-        <div class="metodo-pago-desc">Paga de forma segura con Mercado Pago</div>
+        <div class="metodo-pago-header">
+          <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
+          <img src="https://imgmp.mercadopago.com/resources/mp-logo.png" class="metodo-logo" alt="Mercado Pago">
+        </div>
+        <div class="metodo-pago-desc">Paga de forma segura con Saldo o Tarjetas</div>
       </div>
+      
       <div class="transferencia-info" id="transferencia-info">
         <p>Transfiere y envía el comprobante por WhatsApp:</p>
         <p>👤 <strong>Michael Gajardo</strong></p>
@@ -175,7 +202,13 @@ footer{text-align:center;padding:30px;margin-top:20px;background:#000;opacity:0.
   💬 Consultas
 </a>
 
-<footer>© 2026 MAIKOL JORDAN</footer>
+<footer>
+  <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
+  <div class="footer-logos">
+    <img src="https://imgmp.mercadopago.com/resources/mp-logo.png" alt="Mercado Pago">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  </div>
+</footer>
 
 <script>
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
@@ -356,7 +389,7 @@ function seleccionarMetodo(metodo) {
   } else if (metodo === "mp") {
     infoTransferencia.classList.remove("show");
     btnConfirmar.className = "btn-pago btn-mp";
-    btnConfirmar.textContent = "💳 Pagar con tarjeta";
+    btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
   } else {
     infoTransferencia.classList.remove("show");
     btnConfirmar.className = "btn-pago btn-wsp";
@@ -445,17 +478,16 @@ async function confirmarPedido() {
         window.location.href = data.init_point;
       } else {
         alert("Error al procesar el pago. Intenta de nuevo.");
-        btn.textContent = "💳 Pagar con tarjeta";
+        btn.textContent = "💳 Pagar con Mercado Pago";
         btn.disabled = false;
       }
     } catch (error) {
       alert("Error de conexión. Intenta de nuevo.");
-      btn.textContent = "💳 Pagar con tarjeta";
+      btn.textContent = "💳 Pagar con Mercado Pago";
       btn.disabled = false;
     }
   }
 }
 </script>
-
 </body>
 </html>
