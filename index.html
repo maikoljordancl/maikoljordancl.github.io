@@ -336,7 +336,6 @@
 
     <script>
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv';
-        // REEMPLAZA EL NÚMERO ABAJO CON EL TUYO PROPIO (Ej: "56912345678")
         const PHONE_NUMBER = "569XXXXXXXX"; 
 
         let productsArray = [];
@@ -377,6 +376,7 @@
 
         function buildCategoryFilters() {
             const container = document.getElementById('categories-container');
+            if(!container) return;
             const categories = ['todos', ...new Set(productsArray.map(p => p.categoria).filter(c => c !== ''))];
             
             container.innerHTML = '';
@@ -398,6 +398,7 @@
 
         function renderProducts() {
             const grid = document.getElementById('products-container');
+            if(!grid) return;
             grid.innerHTML = '';
 
             const filtered = selectedCategory === 'todos' 
@@ -464,6 +465,7 @@
             const badgeCount = document.getElementById('cart-badge-count');
             const totalText = document.getElementById('cart-total-amount');
             
+            if(!wrapper) return;
             wrapper.innerHTML = '';
             let total = 0;
             let itemsCount = 0;
@@ -491,13 +493,14 @@
                 });
             }
 
-            badgeCount.textContent = itemsCount;
-            totalText.textContent = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(total);
+            if(badgeCount) badgeCount.textContent = itemsCount;
+            if(totalText) totalText.textContent = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(total);
         }
 
         function toggleCart(show) {
             const sidebar = document.getElementById('cart-sidebar');
             const overlay = document.getElementById('cart-overlay');
+            if(!sidebar || !overlay) return;
             if (show) {
                 sidebar.classList.add('open');
                 overlay.classList.add('show');
