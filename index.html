@@ -89,6 +89,16 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .toast.show{opacity:1;}
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
 
+/* Estilos Redes Sociales Footer */
+.social-links{display:flex;justify-content:center;gap:20px;margin-bottom:20px;}
+.social-icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:#1a1a1a;border-radius:50%;transition:0.3s;}
+.social-icon:hover{background:#e60012;transform:scale(1.1);}
+.social-icon img{width:22px;height:22px;filter:invert(1);}
+
+/* Estilos Botón Volver Arriba */
+.scroll-top-btn{position:fixed;bottom:85px;right:25px;background:#1a1a1a;color:white;border:1px solid #333;width:45px;height:45px;border-radius:50%;font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.5);transition:0.3s;}
+.scroll-top-btn:hover{background:#e60012;border-color:#e60012;color:white;}
+
 footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
 .footer-text{opacity:0.8;font-size:14px;margin-bottom:15px;}
 .footer-logos{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;}
@@ -118,6 +128,8 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <button class="cart-btn" onclick="abrirCarrito()">
   🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
 </button>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="volverArriba()">↑</button>
 
 <div class="cart-overlay" id="cart-overlay" onclick="cerrarCarrito()"></div>
 
@@ -201,6 +213,18 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 </a>
 
 <footer>
+  <div class="social-links">
+    <a href="#" target="_blank" class="social-icon" title="Instagram">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
+    </a>
+    <a href="#" target="_blank" class="social-icon" title="TikTok">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
+    </a>
+    <a href="#" target="_blank" class="social-icon" title="Facebook">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
+    </a>
+  </div>
+
   <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
   <div class="footer-logos">
     <img src="mp-grande.png" alt="Mercado Pago Seguro" style="width: 180px; height: auto; display: block; margin: 10px auto 0 auto;">
@@ -285,7 +309,6 @@ function generarBotonesCategorias() {
   });
 }
 
-UX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
 function render() {
   const cont = document.getElementById("productos");
   if (productos.length === 0) {
@@ -528,6 +551,20 @@ function mostrarToast() {
   const t = document.getElementById("toast");
   t.classList.add("show");
   setTimeout(function() { t.classList.remove("show"); }, 2000);
+}
+
+// Lógica para mostrar/ocultar el botón Volver Arriba según el scroll
+window.onscroll = function() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    btn.style.display = "flex";
+  } else {
+    btn.style.display = "none";
+  }
+};
+
+function volverArriba() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 window.onload = cargarProductos;
