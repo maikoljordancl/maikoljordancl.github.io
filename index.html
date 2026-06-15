@@ -62,6 +62,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .form-input{width:100%;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;}
 .form-input:focus{border-color:#e60012;}
 .form-input::placeholder{color:#555;}
+
 .metodo-pago{background:#222;border:2px solid #333;border-radius:10px;padding:14px;cursor:pointer;transition:0.3s;margin-bottom:8px;}
 .metodo-pago:hover{border-color:#e60012;}
 .metodo-pago.selected{border-color:#e60012;background:#2a1a1a;}
@@ -69,6 +70,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .metodo-pago-titulo{display:flex;align-items:center;gap:10px;}
 .metodo-img-jpg{display:block;}
 .metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
+
 .cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
 .cart-total-final{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;}
 .btn-pago{width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;transition:0.3s;margin-bottom:8px;}
@@ -86,6 +88,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .toast.show{opacity:1;}
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
+
 footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
 .footer-text{opacity:0.8;font-size:14px;margin-bottom:15px;}
 .footer-logos{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;}
@@ -152,25 +155,25 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
       <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
-          <img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="WhatsApp">
+          <img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px; width:auto;" class="metodo-img-jpg" alt="WhatsApp">
         </div>
         <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
       </div>
       <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
-          <img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="Banco">
+          <img src="https://img.icons8.com/color/48/bank.png" style="height:20px; width:auto;" class="metodo-img-jpg" alt="Banco">
         </div>
         <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
       </div>
       <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
-          <img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width:auto;height:30px;display:block;">
+          <img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width: auto; height: 30px; display: block;">
         </div>
         <div class="metodo-pago-desc">Paga de forma segura usando tu cuenta o tarjetas</div>
       </div>
-
+      
       <div class="transferencia-info" id="transferencia-info">
         <p>Transfiere y envía el comprobante por WhatsApp:</p>
         <p>👤 <strong>Michael Gajardo</strong></p>
@@ -194,21 +197,25 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <div class="toast" id="toast">✅ Agregado al carrito</div>
 
 <a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
-  💬 Consultas
+  📊 Consultas
 </a>
 
 <footer>
   <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
   <div class="footer-logos">
-    <img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:180px;height:auto;display:block;margin:10px auto 0 auto;">
+    <img src="mp-grande.png" alt="Mercado Pago Seguro" style="width: 180px; height: auto; display: block; margin: 10px auto 0 auto;">
   </div>
 </footer>
 
 <script>
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
+const LINK_MERCADOPAGO_MANUAL = "https://mpago.li/2pZ9jS3"; 
+
+// 🚨 REEMPLAZA EL CÓDIGO ABAJO CON TU CÓDIGO DE FORMSPREE:
+const FORMSPREE_URL = "https://formspree.io/f/meewnqqo"; 
 
 let productos = [];
-let categoriaActual = "todos";
+let categoryActual = "todos";
 let carrito = [];
 let metodoPago = "wsp";
 
@@ -217,6 +224,7 @@ function parsearFilaCSV(linea) {
   let resultado = [];
   let dentroDeComillas = false;
   let valorActual = "";
+  
   for (let i = 0; i < linea.length; i++) {
     let char = linea[i];
     if (char === '"') {
@@ -236,8 +244,10 @@ async function cargarProductos() {
   try {
     const respuesta = await fetch(SHEETS_CSV_URL);
     const textoCSV = await respuesta.text();
-    if (!textoCSV) throw new Error("Vacío");
+    if(!textoCSV) throw new Error("Vacío");
+    
     const lineas = textoCSV.split("\n").map(function(l){ return l ? l.trim() : ""; }).filter(function(l){ return l.length > 0; });
+    
     productos = lineas.slice(1).map(function(linea) {
       const columnas = parsearFilaCSV(linea);
       return {
@@ -260,10 +270,11 @@ function generarBotonesCategorias() {
   const container = document.getElementById("categorias-container");
   const categoriasUnicas = ["todos"];
   productos.forEach(function(p) {
-    if (p.tags[0] && categoriasUnicas.indexOf(p.tags[0]) === -1) {
+    if(p.tags[0] && categoriasUnicas.indexOf(p.tags[0]) === -1) {
       categoriasUnicas.push(p.tags[0]);
     }
   });
+  
   container.innerHTML = "";
   categoriasUnicas.forEach(function(cat) {
     const btn = document.createElement("button");
@@ -280,12 +291,14 @@ function render() {
     cont.innerHTML = '<div class="loading">No hay productos disponibles.</div>';
     return;
   }
+  
   let html = "";
   productos.forEach(function(p, index) {
     let opcionesTalla = "";
     p.tallas.forEach(function(t) {
       opcionesTalla += '<option value="' + t + '" ' + (t === 41 ? 'selected' : '') + '>Talla: ' + t + '</option>';
     });
+
     html += '<div class="card" data-index="' + index + '">' +
               '<img src="' + p.imagen + '" class="img-producto" alt="' + p.nombre + '" onerror="this.src=\'logo.webp\'">' +
               '<h3>' + p.nombre + '</h3>' +
@@ -294,12 +307,13 @@ function render() {
               '<button class="btn" onclick="agregarAlCarrito(' + index + ')">🛒 Agregar al carrito</button>' +
             '</div>';
   });
+  
   cont.innerHTML = html;
   aplicar();
 }
 
 function filtrar(cat, btnElemento) {
-  categoriaActual = cat;
+  categoryActual = cat;
   document.querySelectorAll(".categorias button").forEach(function(b) { b.classList.remove("active"); });
   btnElemento.classList.add("active");
   aplicar();
@@ -313,7 +327,7 @@ function aplicar() {
     const index = parseInt(card.dataset.index);
     const p = productos[index];
     if (!p) return;
-    const enCategoria = categoriaActual === "todos" || p.tags.indexOf(categoriaActual) !== -1;
+    const enCategoria = categoryActual === "todos" || p.tags.indexOf(categoryActual) !== -1;
     const enBusqueda = p.nombre.toLowerCase().indexOf(texto) !== -1;
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
@@ -341,6 +355,7 @@ function actualizarCarrito() {
 
   let htmlItems = "";
   let subtotal = 0;
+  
   carrito.forEach(function(item, i) {
     subtotal += item.precio;
     htmlItems += '<div class="cart-item">' +
@@ -353,8 +368,10 @@ function actualizarCarrito() {
                    '<button class="cart-item-remove" onclick="removerDelCarrito(' + i + ')">✕</button>' +
                  '</div>';
   });
+
   itemsEl.innerHTML = htmlItems;
   formEl.style.display = "block";
+
   const total = subtotal + 5000;
   document.getElementById("cart-subtotal").textContent = "$" + subtotal.toLocaleString("es-CL");
   document.getElementById("cart-total").textContent = "$" + total.toLocaleString("es-CL");
@@ -369,13 +386,16 @@ function seleccionarMetodo(tipo) {
   metodoPago = tipo;
   document.querySelectorAll(".metodo-pago").forEach(function(el) { el.classList.remove("selected"); });
   document.getElementById("metodo-" + tipo).classList.add("selected");
+
   const transInfo = document.getElementById("transferencia-info");
   const btnConfirmar = document.getElementById("btn-confirmar");
+
   if (tipo === "transferencia") {
     transInfo.classList.add("show");
   } else {
     transInfo.classList.remove("show");
   }
+
   if (tipo === "mp") {
     btnConfirmar.className = "btn-pago btn-mp";
     btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
@@ -406,7 +426,35 @@ function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) 
   localStorage.setItem("m_cp", cp);
 }
 
-async function confirmarPedido() {
+// NUEVA FUNCIÓN DIRECTA POR FORMSPREE (NO REQUIERE BACKEND NI VARIABLES OCULTAS)
+async function respaldarPedidoPorEmail(datos) {
+  let listaProductosTexto = "";
+  datos.productos.forEach(function(item) {
+    listaProductosTexto += item.nombre + " (Talla: " + item.talla + ") - $" + item.precio.toLocaleString("es-CL") + " | ";
+  });
+
+  const datosFormulario = {
+    Cliente: datos.nombre,
+    WhatsApp: datos.whatsapp,
+    Direccion: datos.direccion + ", " + datos.comuna + " (" + datos.region + ")",
+    Codigo_Postal: datos.cp || "No indicado",
+    Metodo_Pago: datos.metodoPago.toUpperCase(),
+    Productos: listaProductosTexto,
+    Total_Pedido: "$" + datos.total.toLocaleString("es-CL")
+  };
+
+  try {
+    await fetch(FORMSPREE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(datosFormulario)
+    });
+  } catch (e) {
+    console.log("Error de red enviando a Formspree:", e);
+  }
+}
+
+function confirmarPedido() {
   const nombre = document.getElementById("c-nombre").value.trim();
   const whatsapp = document.getElementById("c-whatsapp").value.trim();
   const direccion = document.getElementById("c-direccion").value.trim();
@@ -421,53 +469,45 @@ async function confirmarPedido() {
 
   guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp);
 
+  let subtotal = 0;
+  carrito.forEach(function(item) { subtotal += item.precio; });
+  const totalFinal = subtotal + 5000;
+
+  // Ejecutamos el envío automático de datos a tu correo mediante Formspree
+  respaldarPedidoPorEmail({
+    nombre: nombre,
+    whatsapp: whatsapp,
+    direccion: direccion,
+    region: region,
+    comuna: comuna,
+    cp: cp,
+    productos: carrito,
+    total: totalFinal,
+    metodoPago: metodoPago
+  });
+
+  // Mensaje final estructurado para abrir en WhatsApp
   let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
   mensaje += "👤 *Cliente:* " + nombre + "\n";
   mensaje += "📱 *WhatsApp:* " + whatsapp + "\n";
   mensaje += "📍 *Dirección:* " + direccion + ", " + comuna + " (" + region + ")\n";
-  if (cp) { mensaje += "📮 *Cód. Postal:* " + cp + "\n"; }
+  if(cp) { mensaje += "📮 *Cód. Postal:* " + cp + "\n"; }
   mensaje += "💳 *Método de Pago:* " + metodoPago.toUpperCase() + "\n\n";
   mensaje += "👟 *Productos:* \n";
 
-  let subtotal = 0;
   carrito.forEach(function(item) {
-    subtotal += item.precio;
     mensaje += "- " + item.nombre + " (Talla: " + item.talla + ") - $" + item.precio.toLocaleString("es-CL") + "\n";
   });
 
-  const total = subtotal + 5000;
   mensaje += "\n💰 *Subtotal:* $" + subtotal.toLocaleString("es-CL");
   mensaje += "\n🚚 *Envío:* $5.000";
-  mensaje += "\n💵 *TOTAL A PAGAR:* $" + total.toLocaleString("es-CL");
+  mensaje += "\n💵 *TOTAL A PAGAR:* $" + totalFinal.toLocaleString("es-CL");
 
   const urlWsp = "https://wa.me/56931402987?text=" + encodeURIComponent(mensaje);
 
   if (metodoPago === "mp") {
-    const btn = document.getElementById("btn-confirmar");
-    btn.textContent = "Procesando...";
-    btn.disabled = true;
-    try {
-      const response = await fetch("/api/create-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: carrito,
-          comprador: { nombre, whatsapp, direccion, region, comuna, cp }
-        })
-      });
-      const data = await response.json();
-      if (data.init_point) {
-        window.location.href = data.init_point;
-      } else {
-        alert("Error al procesar el pago. Intenta de nuevo.");
-        btn.textContent = "💳 Pagar con Mercado Pago";
-        btn.disabled = false;
-      }
-    } catch (error) {
-      alert("Error de conexión. Intenta de nuevo.");
-      btn.textContent = "💳 Pagar con Mercado Pago";
-      btn.disabled = false;
-    }
+    alert("Serás redirigido a Mercado Pago para realizar tu pago de forma segura.");
+    window.open(LINK_MERCADOPAGO_MANUAL, "_blank");
   } else {
     window.open(urlWsp, "_blank");
   }
