@@ -5,357 +5,78 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maikol Jordan</title>
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-body{
-  background:#0b0b0b;
-  color:white;
-}
-header{
-  background:#000;
-  padding:30px;
-  text-align:center;
-  border-bottom:3px solid #e60012;
-}
-.logo{
-  width:130px;
-  height:130px;
-  object-fit:cover;
-  border-radius:50%;
-  border:3px solid #e60012;
-}
-h1{
-  margin-top:10px;
-  font-size:34px;
-}
-.sub{
-  color:#e60012;
-  font-weight:bold;
-}
-.envio{
-  margin-top:8px;
-  opacity:0.8;
-}
-.search{
-  padding:20px;
-}
-.search input{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#1c1c1c;
-  color:white;
-  font-size:16px;
-  outline:none;
-}
-.categorias{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px 20px;
-}
-.categorias::-webkit-scrollbar{
-  display:none;
-}
-.categorias button{
-  background:#1a1a1a;
-  color:white;
-  border:none;
-  padding:10px 16px;
-  border-radius:20px;
-  cursor:pointer;
-  transition:0.3s;
-  white-space:nowrap;
-}
-.categorias button:hover,
-.categorias button.active{
-  background:#e60012;
-}
-.produtos{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:20px;
-  padding:20px;
-}
-.card{
-  background:#151515;
-  border-radius:18px;
-  padding:15px;
-  border:1px solid #2a2a2a;
-  transition:0.3s;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  justify-content:space-between;
-}
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 10px 20px rgba(0,0,0,0.5);
-}
-.img-producto{
-  display:block;
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  border-radius:12px;
-  background:#222;
-}
-.card h3{
-  font-size:18px;
-  margin-top:5px;
-}
-.precio{
-  color:#e60012;
-  font-size:22px;
-  font-weight:bold;
-}
-select{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#222;
-  color:white;
-  font-weight:bold;
-  outline:none;
-  cursor:pointer;
-}
-.btn{
-  background:#e60012;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-.btn:hover{
-  background:#b8000e;
-}
-
-/* BOTÓN CARRITO FLOTANTE */
-.cart-btn{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  background:#e60012;
-  color:white;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:bold;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.4);
-  cursor:pointer;
-  border:none;
-  font-size:16px;
-}
-.cart-badge{
-  background:white;
-  color:#e60012;
-  border-radius:50%;
-  padding:2px 7px;
-  font-size:13px;
-  margin-left:5px;
-  font-weight:bold;
-}
-
-/* OVERLAY */
-.cart-overlay{
-  display:none;
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.6);
-  z-index:1000;
-}
-.cart-overlay.open{
-  display:block;
-}
-
-/* PANEL CARRITO */
-.cart-panel{
-  position:fixed;
-  top:0;right:-100%;
-  width:380px;
-  max-width:100%;
-  height:100%;
-  background:#111;
-  z-index:1001;
-  display:flex;
-  flex-direction:column;
-  transition:right 0.3s;
-  padding:20px;
-}
-.cart-panel.open{
-  right:0;
-}
-.cart-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-  border-bottom:2px solid #e60012;
-  padding-bottom:15px;
-}
-.cart-header h2{
-  font-size:22px;
-}
-.cart-close{
-  background:none;
-  border:none;
-  color:white;
-  font-size:26px;
-  cursor:pointer;
-}
-.cart-items{
-  flex:1;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.cart-item{
-  background:#1a1a1a;
-  border-radius:12px;
-  padding:12px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-.cart-item img{
-  width:70px;
-  height:70px;
-  object-fit:cover;
-  border-radius:8px;
-  background:#222;
-  flex-shrink:0;
-}
-.cart-item-info{
-  flex:1;
-}
-.cart-item-name{
-  font-weight:bold;
-  font-size:14px;
-  margin-bottom:3px;
-}
-.cart-item-talla{
-  color:#999;
-  font-size:13px;
-  margin-bottom:4px;
-}
-.cart-item-precio{
-  color:#e60012;
-  font-weight:bold;
-  font-size:15px;
-}
-.cart-item-remove{
-  background:none;
-  border:none;
-  color:#666;
-  font-size:22px;
-  cursor:pointer;
-  padding:0 4px;
-}
-.cart-item-remove:hover{
-  color:#e60012;
-}
-.cart-empty{
-  text-align:center;
-  color:#555;
-  margin-top:60px;
-  font-size:16px;
-}
-.cart-footer{
-  border-top:2px solid #222;
-  padding-top:15px;
-  margin-top:15px;
-}
-.cart-total-row{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:8px;
-  color:#aaa;
-  font-size:15px;
-}
-.cart-total-final{
-  display:flex;
-  justify-content:space-between;
-  font-size:20px;
-  font-weight:bold;
-  color:white;
-  margin-bottom:15px;
-}
-.cart-wsp-btn{
-  width:100%;
-  background:#25D366;
-  color:white;
-  border:none;
-  padding:15px;
-  border-radius:12px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-.cart-wsp-btn:hover{
-  background:#1ebe5d;
-}
-
-/* WHATSAPP */
-.whatsapp{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25D366;
-  color:white;
-  padding:14px 18px;
-  border-radius:50px;
-  text-decoration:none;
-  font-weight:bold;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.4);
-}
-
-/* TOAST */
-.toast{
-  position:fixed;
-  bottom:90px;
-  left:20px;
-  background:#e60012;
-  color:white;
-  padding:10px 18px;
-  border-radius:10px;
-  font-weight:bold;
-  z-index:9999;
-  opacity:0;
-  transition:opacity 0.3s;
-  pointer-events:none;
-}
-.toast.show{
-  opacity:1;
-}
-
-.loading {
-  text-align: center;
-  grid-column: 1 / -1;
-  padding: 40px;
-  font-size: 18px;
-  color: #aaa;
-}
-
-footer{
-  text-align:center;
-  padding:30px;
-  margin-top:20px;
-  background:#000;
-  opacity:0.8;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b0b0b;color:white;}
+header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
+.logo{width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid #e60012;}
+h1{margin-top:10px;font-size:34px;}
+.sub{color:#e60012;font-weight:bold;}
+.envio{margin-top:8px;opacity:0.8;}
+.search{padding:20px;}
+.search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;}
+.categorias{display:flex;gap:10px;overflow-x:auto;padding:10px 20px;}
+.categorias::-webkit-scrollbar{display:none;}
+.categorias button{background:#1a1a1a;color:white;border:none;padding:10px 16px;border-radius:20px;cursor:pointer;transition:0.3s;white-space:nowrap;}
+.categorias button:hover,.categorias button.active{background:#e60012;}
+.produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:20px;}
+.card{background:#151515;border-radius:18px;padding:15px;border:1px solid #2a2a2a;transition:0.3s;display:flex;flex-direction:column;gap:10px;justify-content:space-between;}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
+.img-producto{display:block;width:100%;height:200px;object-fit:cover;border-radius:12px;background:#222;}
+.card h3{font-size:18px;margin-top:5px;}
+.precio{color:#e60012;font-size:22px;font-weight:bold;}
+select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;color:white;font-weight:bold;outline:none;cursor:pointer;}
+.btn{background:#e60012;border:none;padding:12px;border-radius:10px;color:white;font-weight:bold;cursor:pointer;transition:0.3s;}
+.btn:hover{background:#b8000e;}
+.cart-btn{position:fixed;bottom:20px;left:20px;background:#e60012;color:white;padding:14px 18px;border-radius:50px;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);cursor:pointer;border:none;font-size:16px;}
+.cart-badge{background:white;color:#e60012;border-radius:50%;padding:2px 7px;font-size:13px;margin-left:5px;font-weight:bold;}
+.cart-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
+.cart-overlay.open{display:block;}
+.cart-panel{position:fixed;top:0;right:-100%;width:420px;max-width:100%;height:100%;background:#111;z-index:1001;display:flex;flex-direction:column;transition:right 0.3s;padding:20px;overflow-y:auto;}
+.cart-panel.open{right:0;}
+.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #e60012;padding-bottom:15px;}
+.cart-header h2{font-size:22px;}
+.cart-close{background:none;border:none;color:white;font-size:26px;cursor:pointer;}
+.cart-items{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.cart-item{background:#1a1a1a;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;}
+.cart-item img{width:70px;height:70px;object-fit:cover;border-radius:8px;background:#222;flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-weight:bold;font-size:14px;margin-bottom:3px;}
+.cart-item-talla{color:#999;font-size:13px;margin-bottom:4px;}
+.cart-item-precio{color:#e60012;font-weight:bold;font-size:15px;}
+.cart-item-remove{background:none;border:none;color:#666;font-size:22px;cursor:pointer;padding:0 4px;}
+.cart-item-remove:hover{color:#e60012;}
+.cart-empty{text-align:center;color:#555;margin-top:60px;font-size:16px;}
+.checkout-section{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:16px;}
+.checkout-section h3{font-size:16px;margin-bottom:14px;color:#e60012;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.form-row.single{grid-template-columns:1fr;}
+.form-input{width:100%;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;}
+.form-input:focus{border-color:#e60012;}
+.form-input::placeholder{color:#555;}
+.metodo-pago{background:#222;border:2px solid #333;border-radius:10px;padding:14px;cursor:pointer;transition:0.3s;margin-bottom:8px;}
+.metodo-pago:hover{border-color:#e60012;}
+.metodo-pago.selected{border-color:#e60012;background:#2a1a1a;}
+.metodo-pago-header{display:flex;align-items:center;gap:10px;font-weight:bold;}
+.metodo-pago-icon{font-size:22px;}
+.metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
+.cart-total-final{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;}
+.btn-pago{width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;transition:0.3s;margin-bottom:8px;}
+.btn-wsp{background:#25D366;color:white;}
+.btn-wsp:hover{background:#1ebe5d;}
+.btn-mp{background:#009EE3;color:white;}
+.btn-mp:hover{background:#0081bb;}
+.btn-transferencia{background:#f5a623;color:white;}
+.btn-transferencia:hover{background:#d4881a;}
+.transferencia-info{background:#222;border-radius:10px;padding:14px;margin-top:10px;display:none;}
+.transferencia-info.show{display:block;}
+.transferencia-info p{margin-bottom:6px;font-size:14px;color:#ccc;}
+.transferencia-info strong{color:white;}
+.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
+.toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.toast.show{opacity:1;}
+.loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
+footer{text-align:center;padding:30px;margin-top:20px;background:#000;opacity:0.8;}
 </style>
 </head>
 <body>
@@ -373,7 +94,7 @@ footer{
 
 <div class="categorias" id="categorias-container">
   <button onclick="filtrar('todos', this)" class="active">Todos</button>
-  </div>
+</div>
 
 <div class="produtos" id="productos">
   <div class="loading">Cargando catálogo...</div>
@@ -390,12 +111,58 @@ footer{
     <h2>🛒 Tu carrito</h2>
     <button class="cart-close" onclick="cerrarCarrito()">✕</button>
   </div>
-  <div class="cart-items" id="cart-items"></div>
-  <div class="cart-footer" id="cart-footer" style="display:none">
+
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">😕 Tu carrito está vacío</div>
+  </div>
+
+  <div id="checkout-form" style="display:none">
+    <div class="checkout-section">
+      <h3>📦 Datos de envío</h3>
+      <div class="form-row">
+        <input class="form-input" id="c-nombre" placeholder="Nombre completo" type="text">
+        <input class="form-input" id="c-whatsapp" placeholder="WhatsApp (+569...)" type="text">
+      </div>
+      <div class="form-row single">
+        <input class="form-input" id="c-direccion" placeholder="Dirección completa (Calle + N°)" type="text">
+      </div>
+      <div class="form-row">
+        <input class="form-input" id="c-region" placeholder="Región" type="text">
+        <input class="form-input" id="c-comuna" placeholder="Comuna" type="text">
+      </div>
+    </div>
+
+    <div class="checkout-section">
+      <h3>💳 Método de pago</h3>
+      <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
+        <div class="metodo-pago-header"><span class="metodo-pago-icon">💬</span> WhatsApp</div>
+        <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
+      </div>
+      <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
+        <div class="metodo-pago-header"><span class="metodo-pago-icon">🏦</span> Transferencia bancaria</div>
+        <div class="metodo-pago-desc">Transfiere y envía el comprobante</div>
+      </div>
+      <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
+        <div class="metodo-pago-header"><span class="metodo-pago-icon">💳</span> Tarjeta crédito / débito</div>
+        <div class="metodo-pago-desc">Paga de forma segura con Mercado Pago</div>
+      </div>
+      <div class="transferencia-info" id="transferencia-info">
+        <p>Transfiere y envía el comprobante por WhatsApp:</p>
+        <p>👤 <strong>Michael Gajardo</strong></p>
+        <p>🪪 <strong>RUT: 74654258</strong></p>
+        <p>🏦 <strong>Mercado Pago — Cuenta Vista</strong></p>
+        <p>🔢 <strong>N° cuenta: 1043755162</strong></p>
+        <p>📧 <strong>maikoljordancl@gmail.com</strong></p>
+      </div>
+    </div>
+
     <div class="cart-total-row"><span>Subtotal</span><span id="cart-subtotal"></span></div>
     <div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
     <div class="cart-total-final"><span>TOTAL</span><span id="cart-total"></span></div>
-    <button class="cart-wsp-btn" onclick="pedirCarrito()">💬 Pedir por WhatsApp</button>
+
+    <button class="btn-pago btn-wsp" id="btn-confirmar" onclick="confirmarPedido()">
+      💬 Confirmar por WhatsApp
+    </button>
   </div>
 </div>
 
@@ -405,9 +172,7 @@ footer{
   💬 Consultas
 </a>
 
-<footer>
-  © 2026 MAIKOL JORDAN
-</footer>
+<footer>© 2026 MAIKOL JORDAN</footer>
 
 <script>
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
@@ -415,15 +180,13 @@ const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9Qk
 let productos = [];
 let categoriaActual = "todos";
 let carrito = [];
+let metodoPago = "wsp";
 
 async function cargarProductos() {
   try {
     const respuesta = await fetch(SHEETS_CSV_URL);
     const textoCSV = await respuesta.text();
-    
     const lineas = textoCSV.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-    const encabezados = lineas[0].split(",").map(h => h.trim().toLowerCase());
-    
     productos = lineas.slice(1).map(linea => {
       const columnas = linea.split(",");
       return {
@@ -434,36 +197,32 @@ async function cargarProductos() {
         tallas: columnas[4] ? columnas[4].split(";").map(t => parseInt(t.trim())).filter(t => !isNaN(t)) : [37,38,39,40,41,42,43,44,45]
       };
     });
-    
     generarBotonesCategorias();
     render();
   } catch (error) {
-    console.error("Error cargando Google Sheets:", error);
     document.getElementById("productos").innerHTML = `<div class="loading">❌ Error al cargar el catálogo.</div>`;
   }
 }
 
 function generarBotonesCategorias() {
-    const container = document.getElementById("categorias-container");
-    const categoriasUnicas = ["todos", ...new Set(productos.map(p => p.tags[0]).filter(Boolean))];
-    
-    container.innerHTML = "";
-    categoriasUnicas.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.className = cat === "todos" ? "active" : "";
-        btn.textContent = cat === "todos" ? "Todos" : cat;
-        btn.onclick = (e) => filtrar(cat, e.target);
-        container.appendChild(btn);
-    });
+  const container = document.getElementById("categorias-container");
+  const categoriasUnicas = ["todos", ...new Set(productos.map(p => p.tags[0]).filter(Boolean))];
+  container.innerHTML = "";
+  categoriasUnicas.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = cat === "todos" ? "active" : "";
+    btn.textContent = cat === "todos" ? "Todos" : cat;
+    btn.onclick = (e) => filtrar(cat, e.target);
+    container.appendChild(btn);
+  });
 }
 
-function render(){
+function render() {
   const cont = document.getElementById("productos");
-  if(productos.length === 0) {
+  if (productos.length === 0) {
     cont.innerHTML = `<div class="loading">No hay productos disponibles.</div>`;
     return;
   }
-  
   cont.innerHTML = productos.map((p, index) => `
     <div class="card" data-index="${index}">
       <img src="${p.imagen}" class="img-producto" alt="${p.nombre}">
@@ -472,17 +231,15 @@ function render(){
       <select id="talla-${index}">
         ${p.tallas.map(t => `<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
       </select>
-      <button class="btn" onclick="agregarAlCarrito(${index})">
-        🛒 Agregar al carrito
-      </button>
+      <button class="btn" onclick="agregarAlCarrito(${index})">🛒 Agregar al carrito</button>
     </div>
   `).join("");
-  aplicar(); // Aplicar filtro actual si lo hay
+  aplicar();
 }
 
 cargarProductos();
 
-function filtrar(cat, btnElemento){
+function filtrar(cat, btnElemento) {
   categoriaActual = cat;
   document.querySelectorAll(".categorias button").forEach(b => b.classList.remove("active"));
   btnElemento.classList.add("active");
@@ -491,19 +248,19 @@ function filtrar(cat, btnElemento){
 
 document.getElementById("buscar").addEventListener("keyup", aplicar);
 
-function aplicar(){
+function aplicar() {
   const texto = document.getElementById("buscar").value.toLowerCase();
   document.querySelectorAll(".card").forEach(card => {
     const index = parseInt(card.dataset.index);
     const p = productos[index];
-    if(!p) return;
+    if (!p) return;
     const enCategoria = categoriaActual === "todos" || p.tags.includes(categoriaActual);
     const enBusqueda = p.nombre.toLowerCase().includes(texto);
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
 }
 
-function agregarAlCarrito(index){
+function agregarAlCarrito(index) {
   const p = productos[index];
   const talla = document.getElementById(`talla-${index}`).value;
   carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagen, talla });
@@ -511,16 +268,15 @@ function agregarAlCarrito(index){
   mostrarToast();
 }
 
-function actualizarCarrito(){
+function actualizarCarrito() {
   const count = carrito.length;
   document.getElementById("cart-count").textContent = count;
-
   const itemsEl = document.getElementById("cart-items");
-  const footerEl = document.getElementById("cart-footer");
+  const formEl = document.getElementById("checkout-form");
 
-  if(count === 0){
+  if (count === 0) {
     itemsEl.innerHTML = `<div class="cart-empty">😕 Tu carrito está vacío</div>`;
-    footerEl.style.display = "none";
+    formEl.style.display = "none";
     return;
   }
 
@@ -538,53 +294,145 @@ function actualizarCarrito(){
 
   const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
   const total = subtotal + 5000;
-
   document.getElementById("cart-subtotal").textContent = `$${subtotal.toLocaleString("es-CL")}`;
   document.getElementById("cart-total").textContent = `$${total.toLocaleString("es-CL")}`;
-  footerEl.style.display = "block";
+  formEl.style.display = "block";
 }
 
-function eliminarItem(i){
+function eliminarItem(i) {
   carrito.splice(i, 1);
   actualizarCarrito();
 }
 
-function abrirCarrito(){
+function abrirCarrito() {
   document.getElementById("cart-panel").classList.add("open");
   document.getElementById("cart-overlay").classList.add("open");
   actualizarCarrito();
 }
 
-function cerrarCarrito(){
+function cerrarCarrito() {
   document.getElementById("cart-panel").classList.remove("open");
   document.getElementById("cart-overlay").classList.remove("open");
 }
 
-function mostrarToast(){
+function mostrarToast() {
   const toast = document.getElementById("toast");
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2000);
 }
 
-function pedirCarrito(){
-  if(carrito.length === 0) return;
+function seleccionarMetodo(metodo) {
+  metodoPago = metodo;
+  document.querySelectorAll(".metodo-pago").forEach(el => el.classList.remove("selected"));
+  document.getElementById(`metodo-${metodo}`).classList.add("selected");
+  const infoTransferencia = document.getElementById("transferencia-info");
+  const btnConfirmar = document.getElementById("btn-confirmar");
+  if (metodo === "transferencia") {
+    infoTransferencia.classList.add("show");
+    btnConfirmar.className = "btn-pago btn-transferencia";
+    btnConfirmar.textContent = "🏦 Confirmar por transferencia";
+  } else if (metodo === "mp") {
+    infoTransferencia.classList.remove("show");
+    btnConfirmar.className = "btn-pago btn-mp";
+    btnConfirmar.textContent = "💳 Pagar con tarjeta";
+  } else {
+    infoTransferencia.classList.remove("show");
+    btnConfirmar.className = "btn-pago btn-wsp";
+    btnConfirmar.textContent = "💬 Confirmar por WhatsApp";
+  }
+}
+
+function obtenerDatosComprador() {
+  return {
+    nombre: document.getElementById("c-nombre").value.trim(),
+    whatsapp: document.getElementById("c-whatsapp").value.trim(),
+    direccion: document.getElementById("c-direccion").value.trim(),
+    region: document.getElementById("c-region").value.trim(),
+    comuna: document.getElementById("c-comuna").value.trim()
+  };
+}
+
+function validarFormulario(c) {
+  if (!c.nombre || !c.whatsapp || !c.direccion || !c.region || !c.comuna) {
+    alert("Por favor completa todos los datos de envío.");
+    return false;
+  }
+  return true;
+}
+
+async function confirmarPedido() {
+  const comprador = obtenerDatosComprador();
+  if (!validarFormulario(comprador)) return;
+
   const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
   const total = subtotal + 5000;
 
-  const lineas = carrito.map((item, i) =>
-    `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
-  ).join("\n");
-
-  const msg =
+  if (metodoPago === "wsp") {
+    const lineas = carrito.map((item, i) =>
+      `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
+    ).join("\n");
+    const msg =
 `Hola, quiero hacer el siguiente pedido:
 
 ${lineas}
 
+📦 Datos de envío:
+👤 Nombre: ${comprador.nombre}
+📱 WhatsApp: ${comprador.whatsapp}
+📍 Dirección: ${comprador.direccion}
+🌎 ${comprador.comuna}, ${comprador.region}
+
 💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
 🚚 Envío: $5.000
 TOTAL: $${total.toLocaleString("es-CL")}`;
+    window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
 
-  window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
+  } else if (metodoPago === "transferencia") {
+    const lineas = carrito.map((item, i) =>
+      `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
+    ).join("\n");
+    const msg =
+`Hola, quiero pagar por transferencia:
+
+${lineas}
+
+📦 Datos de envío:
+👤 Nombre: ${comprador.nombre}
+📱 WhatsApp: ${comprador.whatsapp}
+📍 Dirección: ${comprador.direccion}
+🌎 ${comprador.comuna}, ${comprador.region}
+
+💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
+🚚 Envío: $5.000
+TOTAL: $${total.toLocaleString("es-CL")}
+
+(Adjuntaré el comprobante de transferencia)`;
+    window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
+
+  } else if (metodoPago === "mp") {
+    const btn = document.getElementById("btn-confirmar");
+    btn.textContent = "Procesando...";
+    btn.disabled = true;
+    try {
+      const response = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: carrito, comprador })
+      });
+      const data = await response.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("Error al procesar el pago. Intenta de nuevo.");
+        btn.textContent = "💳 Pagar con tarjeta";
+        btn.disabled = false;
+      }
+    } catch (error) {
+      alert("Error de conexión. Intenta de nuevo.");
+      btn.textContent = "💳 Pagar con tarjeta";
+      btn.disabled = false;
+    }
+  }
 }
 </script>
 
