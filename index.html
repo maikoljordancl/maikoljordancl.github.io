@@ -209,8 +209,6 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 
 <script>
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
-
-// TU LINK OFICIAL DE COBRO DE MERCADO PAGO
 const LINK_MERCADOPAGO_MANUAL = "https://mpago.li/2pZ9jS3"; 
 
 let productos = [];
@@ -259,6 +257,7 @@ async function cargarProductos() {
     });
     generarBotonesCategorias();
     render();
+    cargarDatosGuardados(); // Carga los datos del comprador automáticamente al iniciar la web
   } catch (error) {
     document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
   }
@@ -406,22 +405,47 @@ function seleccionarMetodo(tipo) {
   }
 }
 
+// Función encargada de cargar los datos de la memoria local si existen
+function cargarDatosGuardados() {
+  if (localStorage.getItem("m_nombre")) document.getElementById("c-nombre").value = localStorage.getItem("m_nombre");
+  if (localStorage.getItem("m_whatsapp")) document.getElementById("c-whatsapp").value = localStorage.getItem("m_whatsapp");
+  if (localStorage.getItem("m_direccion")) document.getElementById("c-direccion").value = localStorage.getItem("m_direccion");
+  if (localStorage.getItem("m_region")) document.getElementById("c-region").value = localStorage.getItem("m_region");
+  if (localStorage.getItem("m_comuna")) document.getElementById("c-comuna").value = localStorage.getItem("m_comuna");
+  if (localStorage.getItem("m_cp")) document.getElementById("c-cp").value = localStorage.getItem("m_cp");
+}
+
+// Función encargada de guardar los datos en la memoria local
+function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) {
+  localStorage.setItem("m_nombre", nombre);
+  localStorage.setItem("m_whatsapp", whatsapp);
+  localStorage.setItem("m_direccion", direccion);
+  localStorage.setItem("m_region", region);
+  localStorage.setItem("m_comuna", comuna);
+  localStorage.setItem("m_cp", cp);
+}
+
 function confirmarPedido() {
   const nombre = document.getElementById("c-nombre").value.trim();
   const whatsapp = document.getElementById("c-whatsapp").value.trim();
   const direccion = document.getElementById("c-direccion").value.trim();
   const region = document.getElementById("c-region").value.trim();
   const comuna = document.getElementById("c-comuna").value.trim();
+  const cp = document.getElementById("c-cp").value.trim();
 
   if (!nombre || !whatsapp || !direccion || !region || !comuna) {
     alert("Por favor, completa todos los campos de envío.");
     return;
   }
 
+  // Guarda automáticamente los datos del cliente para la próxima vez
+  guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp);
+
   let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
   mensaje += "👤 *Cliente:* " + nombre + "\n";
   mensaje += "📱 *WhatsApp:* " + whatsapp + "\n";
   mensaje += "📍 *Dirección:* " + direccion + ", " + comuna + " (" + region + ")\n";
+  if(cp) { mensaje += "📮 *Cód. Postal:* " + cp + "\n"; }
   mensaje += "💳 *Método de Pago:* " + metodoPago.toUpperCase() + "\n\n";
   mensaje += "👟 *Productos:* \n";
 
