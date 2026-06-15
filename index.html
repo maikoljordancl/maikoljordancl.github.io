@@ -152,7 +152,14 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 
     <div class="checkout-section">
       <h3>💳 Método de pago</h3>
-      <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
+      <div class="metodo-pago selected" id="metodo-mp" onclick="seleccionarMetodo('mp')">
+        <div class="metodo-pago-header">
+          <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <small style="color: #25D366; font-weight: bold; margin-left: 5px;">(Recomendado - Mejor opción)</small></div>
+          <img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width: auto; height: 30px; display: block;">
+        </div>
+        <div class="metodo-pago-desc">Paga de forma segura usando tu cuenta o tarjetas</div>
+      </div>
+      <div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
           <img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px; width:auto;" class="metodo-img-jpg" alt="WhatsApp">
@@ -165,13 +172,6 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
           <img src="https://img.icons8.com/color/48/bank.png" style="height:20px; width:auto;" class="metodo-img-jpg" alt="Banco">
         </div>
         <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
-      </div>
-      <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
-        <div class="metodo-pago-header">
-          <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
-          <img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width: auto; height: 30px; display: block;">
-        </div>
-        <div class="metodo-pago-desc">Paga de forma segura usando tu cuenta o tarjetas</div>
       </div>
       
       <div class="transferencia-info" id="transferencia-info">
@@ -188,8 +188,8 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
     <div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
     <div class="cart-total-final"><span>TOTAL</span><span id="cart-total"></span></div>
 
-    <button class="btn-pago btn-wsp" id="btn-confirmar" onclick="confirmarPedido()">
-      💬 Confirmar por WhatsApp
+    <button class="btn-pago btn-mp" id="btn-confirmar" onclick="confirmarPedido()">
+      💳 Pagar con Mercado Pago
     </button>
   </div>
 </div>
@@ -217,7 +217,7 @@ const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 let productos = [];
 let categoryActual = "todos";
 let carrito = [];
-let metodoPago = "wsp";
+let metodoPago = "mp"; // Cambiado a 'mp' por defecto
 
 function parsearFilaCSV(linea) {
   if (!linea) return [];
@@ -285,6 +285,7 @@ function generarBotonesCategorias() {
   });
 }
 
+UX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
 function render() {
   const cont = document.getElementById("productos");
   if (productos.length === 0) {
@@ -426,7 +427,7 @@ function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) 
   localStorage.setItem("m_cp", cp);
 }
 
-// NUEVA FUNCIÓN DIRECTA POR FORMSPREE (NO REQUIERE BACKEND NI VARIABLES OCULTAS)
+// FUNCIÓN PARA ENVIAR CORREO MEDIANTE FORMSPREE
 async function respaldarPedidoPorEmail(datos) {
   let listaProductosTexto = "";
   datos.productos.forEach(function(item) {
@@ -473,7 +474,7 @@ function confirmarPedido() {
   carrito.forEach(function(item) { subtotal += item.precio; });
   const totalFinal = subtotal + 5000;
 
-  // Ejecutamos el envío automático de datos a tu correo mediante Formspree
+  // Enviamos los datos automáticamente a tu email de respaldo
   respaldarPedidoPorEmail({
     nombre: nombre,
     whatsapp: whatsapp,
@@ -486,7 +487,7 @@ function confirmarPedido() {
     metodoPago: metodoPago
   });
 
-  // Mensaje final estructurado para abrir en WhatsApp
+  // Estructura alternativa del mensaje por si se usa WhatsApp
   let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
   mensaje += "👤 *Cliente:* " + nombre + "\n";
   mensaje += "📱 *WhatsApp:* " + whatsapp + "\n";
