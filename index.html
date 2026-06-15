@@ -1,579 +1,767 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maikol Jordan</title>
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-body{
-  background:#0b0b0b;
-  color:white;
-}
-header{
-  background:#000;
-  padding:30px;
-  text-align:center;
-  border-bottom:3px solid #e60012;
-}
-.logo{
-  width:130px;
-  height:130px;
-  object-fit:cover;
-  border-radius:50%;
-  border:3px solid #e60012;
-}
-h1{
-  margin-top:10px;
-  font-size:34px;
-}
-.sub{
-  color:#e60012;
-  font-weight:bold;
-}
-.envio{
-  margin-top:8px;
-  opacity:0.8;
-}
-.search{
-  padding:20px;
-}
-.search input{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#1c1c1c;
-  color:white;
-  font-size:16px;
-  outline:none;
-}
-.categorias{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px 20px;
-}
-.categorias::-webkit-scrollbar{
-  display:none;
-}
-.categorias button{
-  background:#1a1a1a;
-  color:white;
-  border:none;
-  padding:10px 16px;
-  border-radius:20px;
-  cursor:pointer;
-  transition:0.3s;
-  white-space:nowrap;
-}
-.categorias button:hover,
-.categorias button.active{
-  background:#e60012;
-}
-.produtos{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:20px;
-  padding:20px;
-}
-.card{
-  background:#151515;
-  border-radius:18px;
-  padding:15px;
-  border:1px solid #2a2a2a;
-  transition:0.3s;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  justify-content:space-between;
-}
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 10px 20px rgba(0,0,0,0.5);
-}
-.img-producto{
-  display:block;
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  border-radius:12px;
-  background:#222;
-}
-.card h3{
-  font-size:18px;
-  margin-top:5px;
-}
-.precio{
-  color:#e60012;
-  font-size:22px;
-  font-weight:bold;
-}
-select{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#222;
-  color:white;
-  font-weight:bold;
-  outline:none;
-  cursor:pointer;
-}
-.btn{
-  background:#e60012;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-.btn:hover{
-  background:#b8000e;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maikol Jordan - Tienda Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #111111;
+            --accent: #e01e37;
+            --accent-hover: #bd1529;
+            --bg-light: #f8f9fa;
+            --text-dark: #111111;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
 
-/* BOTÓN CARRITO FLOTANTE */
-.cart-btn{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  background:#e60012;
-  color:white;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:bold;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.4);
-  cursor:pointer;
-  border:none;
-  font-size:16px;
-}
-.cart-badge{
-  background:white;
-  color:#e60012;
-  border-radius:50%;
-  padding:2px 7px;
-  font-size:13px;
-  margin-left:5px;
-  font-weight:bold;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* OVERLAY */
-.cart-overlay{
-  display:none;
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.6);
-  z-index:1000;
-}
-.cart-overlay.open{
-  display:block;
-}
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
 
-/* PANEL CARRITO */
-.cart-panel{
-  position:fixed;
-  top:0;right:-100%;
-  width:380px;
-  max-width:100%;
-  height:100%;
-  background:#111;
-  z-index:1001;
-  display:flex;
-  flex-direction:column;
-  transition:right 0.3s;
-  padding:20px;
-}
-.cart-panel.open{
-  right:0;
-}
-.cart-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-  border-bottom:2px solid #e60012;
-  padding-bottom:15px;
-}
-.cart-header h2{
-  font-size:22px;
-}
-.cart-close{
-  background:none;
-  border:none;
-  color:white;
-  font-size:26px;
-  cursor:pointer;
-}
-.cart-items{
-  flex:1;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.cart-item{
-  background:#1a1a1a;
-  border-radius:12px;
-  padding:12px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-.cart-item img{
-  width:70px;
-  height:70px;
-  object-fit:cover;
-  border-radius:8px;
-  background:#222;
-  flex-shrink:0;
-}
-.cart-item-info{
-  flex:1;
-}
-.cart-item-name{
-  font-weight:bold;
-  font-size:14px;
-  margin-bottom:3px;
-}
-.cart-item-talla{
-  color:#999;
-  font-size:13px;
-  margin-bottom:4px;
-}
-.cart-item-precio{
-  color:#e60012;
-  font-weight:bold;
-  font-size:15px;
-}
-.cart-item-remove{
-  background:none;
-  border:none;
-  color:#666;
-  font-size:22px;
-  cursor:pointer;
-  padding:0 4px;
-}
-.cart-item-remove:hover{
-  color:#e60012;
-}
-.cart-empty{
-  text-align:center;
-  color:#555;
-  margin-top:60px;
-  font-size:16px;
-}
-.cart-footer{
-  border-top:2px solid #222;
-  padding-top:15px;
-  margin-top:15px;
-}
-.cart-total-row{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:8px;
-  color:#aaa;
-  font-size:15px;
-}
-.cart-total-final{
-  display:flex;
-  justify-content:space-between;
-  font-size:20px;
-  font-weight:bold;
-  color:white;
-  margin-bottom:15px;
-}
-.cart-wsp-btn{
-  width:100%;
-  background:#25D366;
-  color:white;
-  border:none;
-  padding:15px;
-  border-radius:12px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-.cart-wsp-btn:hover{
-  background:#1ebe5d;
-}
+        /* Header & Navigation */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-/* WHATSAPP */
-.whatsapp{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25D366;
-  color:white;
-  padding:14px 18px;
-  border-radius:50px;
-  text-decoration:none;
-  font-weight:bold;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.4);
-}
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-/* TOAST */
-.toast{
-  position:fixed;
-  bottom:90px;
-  left:20px;
-  background:#e60012;
-  color:white;
-  padding:10px 18px;
-  border-radius:10px;
-  font-weight:bold;
-  z-index:9999;
-  opacity:0;
-  transition:opacity 0.3s;
-  pointer-events:none;
-}
-.toast.show{
-  opacity:1;
-}
+        .logo-container img {
+            height: 45px;
+            object-fit: contain;
+        }
 
-footer{
-  text-align:center;
-  padding:30px;
-  margin-top:20px;
-  background:#000;
-  opacity:0.8;
-}
-</style>
+        .logo-container h1 {
+            font-size: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cart-icon-container {
+            position: relative;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 50px;
+            transition: background 0.3s;
+        }
+
+        .cart-icon-container:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135px, #111111 0%, #333333 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            color: #ccc;
+            font-size: 16px;
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Categories Filter */
+        .categories-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: var(--text-dark);
+        }
+
+        .category-btn.active, .category-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Loading & Error States */
+        #loading-catalog {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--accent);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            padding-top: 100%;
+            background-color: #fcfcfc;
+        }
+
+        .product-card img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            min-height: 48px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .size-selector-wrapper {
+            margin-bottom: 15px;
+        }
+
+        .size-label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .size-select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-light);
+            font-weight: 600;
+            outline: none;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #333;
+        }
+
+        /* Sidebar Cart Panel */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            z-index: 200;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 20px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .cart-items-container {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            background-color: var(--bg-light);
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .cart-item-size {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .cart-item-price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            background-color: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1ebd57;
+        }
+
+        /* Overlay background */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 150;
+            display: none;
+        }
+
+        .cart-overlay.show {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+
+        footer p {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Responsive changes */
+        @media (max-width: 576px) {
+            .hero h2 { font-size: 24px; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+            .product-info { padding: 12px; }
+            .product-name { font-size: 14px; min-height: 42px; margin-bottom: 5px; }
+            .product-price { font-size: 16px; margin-bottom: 10px; }
+            .add-to-cart-btn { padding: 10px; font-size: 13px; }
+            .category-btn { padding: 8px 15px; font-size: 13px; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <img src="logo.webp" class="logo" alt="Maikol Jordan Logo">
-  <h1>MAIKOL JORDAN</h1>
-  <div class="sub">Jordan • Nike • Luxury</div>
-  <div class="envio">🚚 Envíos a todo Chile $5.000</div>
-</header>
+    <header>
+        <div class="logo-container">
+            <img src="logo.webp" alt="Maikol Jordan Logo" onerror="this.style.display='none'">
+            <h1>Maikol Jordan</h1>
+        </div>
+        <div class="cart-icon-container" onclick="toggleCart(true)">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            <span class="cart-count" id="cart-badge-count">0</span>
+        </div>
+    </header>
 
-<div class="search">
-  <input type="text" id="buscar" placeholder="Buscar modelo...">
-</div>
+    <section class="hero">
+        <h2>Catálogo Exclusivo</h2>
+        <p>Las mejores marcas y los mejores precios del mercado en un solo lugar.</p>
+    </section>
 
-<div class="categorias">
-  <button onclick="filtrar('todos', this)" class="active">Todos</button>
-  <button onclick="filtrar('Nike', this)">Nike</button>
-  <button onclick="filtrar('Jordan', this)">Jordan</button>
-  <button onclick="filtrar('New Balance', this)">New Balance</button>
-  <button onclick="filtrar('Balenciaga', this)">Balenciaga</button>
-  <button onclick="filtrar('Dior', this)">Dior</button>
-  <button onclick="filtrar('Louis Vuitton', this)">Louis Vuitton</button>
-  <button onclick="filtrar('Dolce & Gabbana', this)">Dolce & Gabbana</button>
-  <button onclick="filtrar('Giuseppe Zanotti', this)">Giuseppe Zanotti</button>
-</div>
+    <main class="container">
+        
+        <nav class="categories-nav" id="categories-container">
+            <button class="category-btn active" onclick="filterCategory('todos', this)">Todos</button>
+        </nav>
 
-<div class="produtos" id="productos"></div>
+        <div id="loading-catalog">
+            <div class="spinner"></div>
+            <p>Cargando catálogo inteligente...</p>
+        </div>
 
-<!-- BOTÓN CARRITO -->
-<button class="cart-btn" onclick="abrirCarrito()">
-  🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
-</button>
+        <section class="products-grid" id="products-container" style="display: none;"></section>
 
-<!-- OVERLAY -->
-<div class="cart-overlay" id="cart-overlay" onclick="cerrarCarrito()"></div>
+    </main>
 
-<!-- PANEL CARRITO -->
-<div class="cart-panel" id="cart-panel">
-  <div class="cart-header">
-    <h2>🛒 Tu carrito</h2>
-    <button class="cart-close" onclick="cerrarCarrito()">✕</button>
-  </div>
-  <div class="cart-items" id="cart-items"></div>
-  <div class="cart-footer" id="cart-footer" style="display:none">
-    <div class="cart-total-row"><span>Subtotal</span><span id="cart-subtotal"></span></div>
-    <div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
-    <div class="cart-total-final"><span>TOTAL</span><span id="cart-total"></span></div>
-    <button class="cart-wsp-btn" onclick="pedirCarrito()">💬 Pedir por WhatsApp</button>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">✅ Agregado al carrito</div>
-
-<a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
-  💬 Consultas
-</a>
-
-<footer>
-  © 2026 MAIKOL JORDAN
-</footer>
-
-<script>
-const tallasNike = [36,37,38,39,40,41,42,43,44,45,46];
-const tallasLujo = [37,38,39,40,41,42,43,44,45];
-const tallasNB   = [36,37,38,39,40,41,42,43,44,45];
-
-const productos = [
-  {tags:["Nike"], nombre:"Nike TN", precio:75000, imagen:"tn.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Nike TN Plus", precio:75000, imagen:"tn_plus.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Nike Shox", precio:70000, imagen:"shox.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Air Force 1", precio:70000, imagen:"af1.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Air Force 1 Mid", precio:75000, imagen:"af1_mid.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Air Force 1 Supreme Nocta", precio:85000, imagen:"af1_supreme.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Air Force 1 CPFM", precio:70000, imagen:"af1_cpfm.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 1", precio:70000, imagen:"jordan1.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 3", precio:75000, imagen:"jordan3.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 4", precio:75000, imagen:"jordan4.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 5", precio:75000, imagen:"jordan5.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 6", precio:75000, imagen:"jordan6.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 8", precio:75000, imagen:"jordan8.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 11", precio:80000, imagen:"jordan11.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 12", precio:75000, imagen:"jordan12.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 13", precio:75000, imagen:"jordan13.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp", tallas:tallasNike},
-  {tags:["Jordan"], nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp", tallas:tallasNike},
-  {tags:["Nike"], nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp", tallas:tallasNike},
-  {tags:["New Balance"], nombre:"New Balance 9060", precio:80000, imagen:"nb9060.webp", tallas:tallasNB},
-  {tags:["Balenciaga"], nombre:"Balenciaga Runners", precio:140000, imagen:"balenciaga_runner.webp", tallas:tallasLujo},
-  {tags:["Balenciaga"], nombre:"Balenciaga Track LED", precio:140000, imagen:"balenciaga_track.webp", tallas:tallasLujo},
-  {tags:["Dolce & Gabbana"], nombre:"Portofino", precio:100000, imagen:"portofino.webp", tallas:tallasLujo},
-  {tags:["Giuseppe Zanotti"], nombre:"Giuseppe Zanotti", precio:140000, imagen:"giuseppe.webp", tallas:tallasLujo},
-  {tags:["Dior"], nombre:"Dior B22", precio:80000, imagen:"diorb22.webp", tallas:tallasLujo},
-  {tags:["Dior"], nombre:"Dior B30", precio:80000, imagen:"diorb30.webp", tallas:tallasLujo},
-  {tags:["Louis Vuitton"], nombre:"Louis Vuitton Trainer", precio:115000, imagen:"lv_trainer.webp", tallas:tallasLujo},
-  {tags:["Louis Vuitton"], nombre:"Louis Vuitton Skate", precio:120000, imagen:"lv_skate.webp", tallas:tallasLujo}
-];
-
-let categoriaActual = "todos";
-let carrito = [];
-
-function render(){
-  const cont = document.getElementById("productos");
-  cont.innerHTML = productos.map((p, index) => `
-    <div class="card" data-index="${index}">
-      <img src="${p.imagen}" class="img-producto" alt="${p.nombre}">
-      <h3>${p.nombre}</h3>
-      <div class="precio">$${p.precio.toLocaleString("es-CL")}</div>
-      <select id="talla-${index}">
-        ${p.tallas.map(t => `<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
-      </select>
-      <button class="btn" onclick="agregarAlCarrito(${index})">
-        🛒 Agregar al carrito
-      </button>
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart(false)"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <button class="close-cart" onclick="toggleCart(false)">&times;</button>
+        </div>
+        <div class="cart-items-container" id="cart-items-wrapper">
+            </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total:</span>
+                <span id="cart-total-amount">$0</span>
+            </div>
+            <button class="checkout-btn btn-whatsapp" onclick="sendWhatsAppOrder()">
+                <i class="fab fa-whatsapp"></i> Realizar Pedido por WhatsApp
+            </button>
+        </div>
     </div>
-  `).join("");
-}
 
-render();
+    <footer>
+        <p>&copy; 2026 Maikol Jordan. Todos los derechos reservados.</p>
+        <p>Catálogo dinámico sincronizado con Google Sheets.</p>
+    </footer>
 
-function filtrar(cat, btnElemento){
-  categoriaActual = cat;
-  document.querySelectorAll(".categorias button").forEach(b => b.classList.remove("active"));
-  btnElemento.classList.add("active");
-  aplicar();
-}
+    <script>
+        // Enlace público CSV de tu Google Sheets estructurado
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv';
 
-document.getElementById("buscar").addEventListener("keyup", aplicar);
+        let productsArray = [];
+        let currentCart = [];
+        let selectedCategory = 'todos';
 
-function aplicar(){
-  const texto = document.getElementById("buscar").value.toLowerCase();
-  document.querySelectorAll(".card").forEach(card => {
-    const index = parseInt(card.dataset.index);
-    const p = productos[index];
-    const enCategoria = categoriaActual === "todos" || p.tags.includes(categoriaActual);
-    const enBusqueda = p.nombre.toLowerCase().includes(texto);
-    card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
-  });
-}
+        // Inicializador al cargar el navegador
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCatalogFromSheets();
+        });
 
-function agregarAlCarrito(index){
-  const p = productos[index];
-  const talla = document.getElementById(`talla-${index}`).value;
-  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagen, talla });
-  actualizarCarrito();
-  mostrarToast();
-}
+        // 1. Obtener y parsear los datos desde Google Sheets
+        async function fetchCatalogFromSheets() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const dataText = await response.text();
+                
+                // Procesar filas del CSV de forma segura
+                const rows = dataText.split('\n').map(row => row.trim()).filter(row => row.length > 0);
+                
+                // Obtener nombres de columnas desde la cabecera
+                const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
+                
+                // Mapear cada fila a un objeto de producto
+                productsArray = rows.slice(1).map(row => {
+                    const columns = row.split(',').map(c => c.trim());
+                    let prodObj = {};
+                    headers.forEach((header, index) => {
+                        prodObj[header] = columns[index] || '';
+                    });
+                    return prodObj;
+                });
 
-function actualizarCarrito(){
-  const count = carrito.length;
-  document.getElementById("cart-count").textContent = count;
+                buildCategoryFilters();
+                renderProducts();
+                
+                document.getElementById('loading-catalog').style.display = 'none';
+                document.getElementById('products-container').style.display = 'grid';
 
-  const itemsEl = document.getElementById("cart-items");
-  const footerEl = document.getElementById("cart-footer");
+            } catch (error) {
+                console.error("Error al cargar Google Sheets:", error);
+                document.getElementById('loading-catalog').innerHTML = '<p style="color:#dc3545;"><i class="fas fa-exclamation-circle"></i> Error al conectar con el catálogo. Verifica la publicación de tu hoja.</p>';
+            }
+        }
 
-  if(count === 0){
-    itemsEl.innerHTML = `<div class="cart-empty">😕 Tu carrito está vacío</div>`;
-    footerEl.style.display = "none";
-    return;
-  }
+        // 2. Construir dinámicamente los botones de marcas/categorías
+        function buildCategoryFilters() {
+            const container = document.getElementById('categories-container');
+            const categories = ['todos', ...new Set(productsArray.map(p => p.categoria).filter(c => c !== ''))];
+            
+            container.innerHTML = '';
+            categories.forEach(cat => {
+                const button = document.createElement('button');
+                button.className = `category-btn ${cat === 'todos' ? 'active' : ''}`;
+                button.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                button.onclick = (e) => filterCategory(cat, e.target);
+                container.appendChild(button);
+            });
+        }
 
-  itemsEl.innerHTML = carrito.map((item, i) => `
-    <div class="cart-item">
-      <img src="${item.imagen}" alt="${item.nombre}">
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.nombre}</div>
-        <div class="cart-item-talla">Talla: ${item.talla}</div>
-        <div class="cart-item-precio">$${item.precio.toLocaleString("es-CL")}</div>
-      </div>
-      <button class="cart-item-remove" onclick="eliminarItem(${i})">✕</button>
-    </div>
-  `).join("");
+        // 3. Filtrar productos al presionar marcas
+        function filterCategory(category, element) {
+            selectedCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            renderProducts();
+        }
 
-  const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
-  const total = subtotal + 5000;
+        // 4. Dibujar los productos en pantalla
+        function renderProducts() {
+            const grid = document.getElementById('products-container');
+            grid.innerHTML = '';
 
-  document.getElementById("cart-subtotal").textContent = `$${subtotal.toLocaleString("es-CL")}`;
-  document.getElementById("cart-total").textContent = `$${total.toLocaleString("es-CL")}`;
-  footerEl.style.display = "block";
-}
+            const filtered = selectedCategory === 'todos' 
+                ? productsArray 
+                : productsArray.filter(p => p.categoria.toLowerCase() === selectedCategory.toLowerCase());
 
-function eliminarItem(i){
-  carrito.splice(i, 1);
-  actualizarCarrito();
-}
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p class="empty-cart-message">No se encontraron modelos en esta categoría.</p>';
+                return;
+            }
 
-function abrirCarrito(){
-  document.getElementById("cart-panel").classList.add("open");
-  document.getElementById("cart-overlay").classList.add("open");
-  actualizarCarrito();
-}
+            filtered.forEach((product, index) => {
+                // Parsear las tallas usando el delimitador ';'
+                const sizeList = product.tallas ? product.tallas.split(';') : [];
+                let sizeOptionsHtml = '';
+                
+                sizeList.forEach(size => {
+                    sizeOptionsHtml += `<option value="${size}">${size}</option>`;
+                });
 
-function cerrarCarrito(){
-  document.getElementById("cart-panel").classList.remove("open");
-  document.getElementById("cart-overlay").classList.remove("open");
-}
+                // Formatear precio para presentación visual
+                const formattedPrice = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(product.precio);
 
-function mostrarToast(){
-  const toast = document.getElementById("toast");
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2000);
-}
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image-wrapper">
+                        <img src="${product.imagen}" alt="${product.nombre}" onerror="this.src='logo.webp'">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${product.categoria}</span>
+                        <h3 class="product-name">${product.nombre}</h3>
+                        <span class="product-price">${formattedPrice}</span>
+                        
+                        <div class="size-selector-wrapper">
+                            <label class="size-label">Selecciona Talla:</label>
+                            <select class="size-select" id="size-select-${index}">
+                                ${sizeOptionsHtml}
+                            </select>
+                        </div>
 
-function pedirCarrito(){
-  if(carrito.length === 0) return;
-  const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
-  const total = subtotal + 5000;
+                        <button class="add-to-cart-btn" onclick="addToCart(${index})">
+                            <i class="fas fa-cart-plus"></i> Añadir al carro
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-  const lineas = carrito.map((item, i) =>
-    `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
-  ).join("\n");
+        // 5. Lógica del Carrito de Compras
+        function addToCart(globalIndex) {
+            const product = productsArray[globalIndex];
+            const sizeSelector = document.getElementById(`size-select-${globalIndex}`);
+            const selectedSize = sizeSelector ? sizeSelector.value : 'S/T';
 
-  const msg =
-`Hola, quiero hacer el siguiente pedido:
+            // Comprobar si ya existe el mismo artículo con la misma talla
+            const existingItem = currentCart.find(item => item.nombre === product.nombre && item.talla === selectedSize);
 
-${lineas}
+            if (existingItem) {
+                existingItem.cantidad += 1;
+            } else {
+                currentCart.push({
+                    nombre: product.nombre,
+                    precio: parseFloat(product.precio),
+                    imagen: product.imagen,
+                    talla: selectedSize,
+                    cantidad: 1
+                });
+            }
 
-💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
-🚚 Envío: $5.000
-TOTAL: $${total.toLocaleString("es-CL")}`;
+            updateCartUi();
+            toggleCart(true);
+        }
 
-  window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
-}
-</script>
+        // Quitar elementos del carro
+        function removeFromCart(index) {
+            currentCart.splice(index, 1);
+            updateCartUi();
+        }
 
+        // Actualizar interfaz visual de los montos totales del carro
+        function updateCartUi() {
+            const wrapper = document.getElementById('cart-items-wrapper');
+            const badgeCount = document.getElementById('cart-badge-count');
+            const totalText = document.getElementById('cart-total-amount');
+            
+            wrapper.innerHTML = '';
+            let total = 0;
+            let itemsCount = 0;
+
+            if (currentCart.length === 0) {
+                wrapper.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
+            } else {
+                currentCart.forEach((item, index) => {
+                    total += item.precio * item.cantidad;
+                    itemsCount += item.cantidad;
+
+                    const itemPriceFormatted = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(item.precio * item.cantidad);
+
+                    const div = document.createElement('div');
+                    div.className = 'cart-item';
+                    div.innerHTML = `
+                        <img src="${item.imagen}" onerror="this.src='logo.webp'">
+                        <div class="cart-item-details">
+                            <h4 class="cart-item-name">${item.nombre}</h4>
+                            <p class="cart-item-size">Talla: ${item.talla} (x${item.cantidad})</p>
+                            <span class="cart-item-price">${itemPriceFormatted}</span>
+                        </div>
+                        <button class="remove-item-btn" onclick="removeFromCart(${index})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    `;
+                    wrapper.appendChild(div);
+                });
+            }
+
+            badgeCount.textContent = itemsCount;
+            totalText.textContent = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(total);
+        }
+
+        function toggleCart(show) {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (show) {
+                sidebar.classList.add('open');
+                overlay.classList.add('show');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            }
+        }
+
+        // 6. Checkout: Construir orden limpia y despachar a tu WhatsApp de ventas
+        function sendWhatsAppOrder() {
+            if (currentCart.length === 0) {
+                alert("Tu carrito está vacío. Añade zapatillas antes de enviar tu pedido.");
+                return;
+            }
+
+            // REEMPLAZA LAS X CON TU NÚMERO DE TELÉFONO REAL CON CÓDIGO DE PAÍS (Ej para Chile: 56912345678)
+            const PHONE_NUMBER = "56931402987"; 
+
+            let message = "Hola *Maikol Jordan*, me gustaría realizar el siguiente pedido:\n\n";
+            let grandTotal = 0;
+
+            currentCart.forEach((item, idx) => {
+                const subtotal = item.precio * item.cantidad;
+                grandTotal += subtotal;
+                const priceFormatted = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(subtotal);
+                
+                message += `${idx + 1}. *${item.nombre}*\n`;
+                message += `   » Talla: ${item.talla}\n`;
+                message += `   » Cantidad: ${item.cantidad}\n`;
+                message += `   » Subtotal: ${priceFormatted}\n\n`;
+            });
+
+            const totalFormatted = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(grandTotal);
+            message += `*Total del Pedido:* ${totalFormatted}\n\n`;
+            message += "Quedo atento para coordinar el pago y el método de envío.";
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
 </body>
 </html>
