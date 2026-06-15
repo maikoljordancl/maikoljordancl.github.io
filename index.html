@@ -69,6 +69,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .metodo-pago-titulo{display:flex;align-items:center;gap:10px;}
 .metodo-img-jpg{display:block;}
 .metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
+.badge-mejor{background:#009EE3;color:white;font-size:10px;font-weight:bold;padding:2px 8px;border-radius:20px;margin-left:8px;text-transform:uppercase;letter-spacing:0.5px;}
 .cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
 .cart-total-final{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;}
 .btn-pago{width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;transition:0.3s;margin-bottom:8px;}
@@ -83,6 +84,9 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .transferencia-info p{margin-bottom:6px;font-size:14px;color:#ccc;}
 .transferencia-info strong{color:white;}
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
+.volver-arriba{position:fixed;bottom:80px;right:20px;background:#222;color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;transform:translateY(10px);}
+.volver-arriba.visible{opacity:1;pointer-events:all;transform:translateY(0);}
+.volver-arriba:hover{background:#e60012;}
 .toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .toast.show{opacity:1;}
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
@@ -155,12 +159,12 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 
     <div class="checkout-section">
       <h3>💳 Método de pago</h3>
-      <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
+      <div class="metodo-pago selected" id="metodo-mp" onclick="seleccionarMetodo('mp')">
         <div class="metodo-pago-header">
-          <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
-          <img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="WhatsApp">
+          <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <span class="badge-mejor">⭐ Mejor opción</span></div>
+          <img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width:auto;height:30px;display:block;">
         </div>
-        <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
+        <div class="metodo-pago-desc">Paga de forma segura con tarjeta o débito — rápido y sin complicaciones</div>
       </div>
       <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
         <div class="metodo-pago-header">
@@ -169,12 +173,12 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
         </div>
         <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
       </div>
-      <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
+      <div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
         <div class="metodo-pago-header">
-          <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
-          <img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width:auto;height:30px;display:block;">
+          <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
+          <img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="WhatsApp">
         </div>
-        <div class="metodo-pago-desc">Paga de forma segura usando tu cuenta o tarjetas</div>
+        <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
       </div>
 
       <div class="transferencia-info" id="transferencia-info">
@@ -191,8 +195,8 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
     <div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
     <div class="cart-total-final"><span>TOTAL</span><span id="cart-total"></span></div>
 
-    <button class="btn-pago btn-wsp" id="btn-confirmar" onclick="confirmarPedido()">
-      💬 Confirmar por WhatsApp
+    <button class="btn-pago btn-mp" id="btn-confirmar" onclick="confirmarPedido()">
+      💳 Pagar con Mercado Pago
     </button>
   </div>
 </div>
@@ -202,6 +206,8 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
   💬 Consultas
 </a>
+
+<button class="volver-arriba" id="volver-arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">↑</button>
 
 <footer>
   <!-- REDES SOCIALES -->
@@ -245,7 +251,7 @@ const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 let productos = [];
 let categoriaActual = "todos";
 let carrito = [];
-let metodoPago = "wsp";
+let metodoPago = "mp";
 
 function parsearFilaCSV(linea) {
   if (!linea) return [];
@@ -560,6 +566,15 @@ function mostrarToast() {
 }
 
 window.onload = cargarProductos;
+
+window.addEventListener("scroll", function() {
+  const btn = document.getElementById("volver-arriba");
+  if (window.scrollY > 300) {
+    btn.classList.add("visible");
+  } else {
+    btn.classList.remove("visible");
+  }
+});
 </script>
 
 </body>
