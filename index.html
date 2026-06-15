@@ -17,7 +17,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 
-/* HEADER */
 header{background:linear-gradient(180deg,#0a0a0a,#000);padding:40px 30px;text-align:center;border-bottom:3px solid #e60012;position:relative;overflow:hidden;}
 header::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(230,0,18,0.15),transparent 70%);pointer-events:none;}
 .logo{width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid #e60012;box-shadow:0 0 30px rgba(230,0,18,0.4);transition:transform 0.3s;}
@@ -26,7 +25,6 @@ h1{margin-top:12px;font-size:36px;letter-spacing:3px;text-shadow:0 0 20px rgba(2
 .sub{color:#e60012;font-weight:bold;letter-spacing:1px;margin-top:4px;}
 .envio{margin-top:8px;opacity:0.7;font-size:14px;}
 
-/* BANNER */
 .banner{background:linear-gradient(135deg,#0d0d0d,#1a0000,#0d0d0d);padding:30px 20px;text-align:center;border-bottom:1px solid #1a1a1a;position:relative;overflow:hidden;}
 .banner::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,rgba(230,0,18,0.08),transparent 70%);pointer-events:none;}
 .banner h2{font-size:24px;font-weight:bold;letter-spacing:2px;margin-bottom:8px;}
@@ -36,45 +34,38 @@ h1{margin-top:12px;font-size:36px;letter-spacing:3px;text-shadow:0 0 20px rgba(2
 .banner-icon{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:#666;}
 .banner-icon span:first-child{font-size:24px;}
 
-/* SEARCH */
 .search{padding:20px;}
 .search input{width:100%;padding:14px 18px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;border:1px solid #2a2a2a;transition:0.3s;}
 .search input:focus{border-color:#e60012;box-shadow:0 0 0 3px rgba(230,0,18,0.1);}
 
-/* CATEGORIAS */
 .categorias{display:flex;gap:10px;overflow-x:auto;padding:10px 20px;}
 .categorias::-webkit-scrollbar{display:none;}
 .categorias button{background:#1a1a1a;color:white;border:1px solid #2a2a2a;padding:10px 16px;border-radius:20px;cursor:pointer;transition:0.3s;white-space:nowrap;font-size:13px;}
 .categorias button:hover,.categorias button.active{background:#e60012;border-color:#e60012;box-shadow:0 4px 12px rgba(230,0,18,0.3);}
 
-/* GRID */
 .produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:20px;}
 
-/* CARD */
-.card{background:linear-gradient(160deg,#1a1a1a,#111);border-radius:18px;padding:15px;border:1px solid #2a2a2a;transition:all 0.3s;display:flex;flex-direction:column;gap:10px;justify-content:space-between;opacity:0;transform:translateY(20px);}
+.card{background:linear-gradient(160deg,#1a1a1a,#111);border-radius:18px;padding:15px;border:1px solid #2a2a2a;transition:all 0.4s;display:flex;flex-direction:column;gap:10px;justify-content:space-between;opacity:0;transform:translateY(20px);}
 .card.visible{opacity:1;transform:translateY(0);}
 .card:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(230,0,18,0.2);border-color:#e60012;}
-.img-producto{display:block;width:100%;height:200px;object-fit:cover;border-radius:12px;background:#222;transition:transform 0.3s;}
-.card:hover .img-producto{transform:scale(1.03);}
 .img-wrapper{overflow:hidden;border-radius:12px;}
+.img-producto{display:block;width:100%;height:200px;object-fit:cover;border-radius:12px;background:#222;transition:transform 0.3s;}
+.card:hover .img-producto{transform:scale(1.05);}
 .card h3{font-size:18px;margin-top:5px;}
 .precio{color:#e60012;font-size:22px;font-weight:bold;text-shadow:0 0 10px rgba(230,0,18,0.3);}
-select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;color:white;font-weight:bold;outline:none;cursor:pointer;border:1px solid #333;transition:0.3s;}
+select{width:100%;padding:10px;border:1px solid #333;border-radius:8px;background:#222;color:white;font-weight:bold;outline:none;cursor:pointer;transition:0.3s;}
 select:focus{border-color:#e60012;}
 .btn{background:linear-gradient(135deg,#e60012,#b8000e);border:none;padding:12px;border-radius:10px;color:white;font-weight:bold;cursor:pointer;transition:0.3s;letter-spacing:0.5px;}
 .btn:hover{background:linear-gradient(135deg,#ff0015,#e60012);box-shadow:0 6px 20px rgba(230,0,18,0.4);transform:translateY(-1px);}
 .btn:active{transform:translateY(0);}
 
-/* CARRITO FLOTANTE */
 .cart-btn{position:fixed;bottom:20px;left:20px;background:linear-gradient(135deg,#e60012,#b8000e);color:white;padding:14px 18px;border-radius:50px;font-weight:bold;z-index:999;box-shadow:0 6px 20px rgba(230,0,18,0.4);cursor:pointer;border:none;font-size:16px;transition:0.3s;}
 .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 25px rgba(230,0,18,0.5);}
 .cart-badge{background:white;color:#e60012;border-radius:50%;padding:2px 7px;font-size:13px;margin-left:5px;font-weight:bold;}
 
-/* OVERLAY */
 .cart-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;backdrop-filter:blur(4px);}
 .cart-overlay.open{display:block;}
 
-/* PANEL CARRITO */
 .cart-panel{position:fixed;top:0;right:-100%;width:420px;max-width:100%;height:100%;background:#0f0f0f;z-index:1001;display:flex;flex-direction:column;transition:right 0.3s;padding:20px;overflow-y:auto;border-left:1px solid #2a2a2a;}
 .cart-panel.open{right:0;}
 .cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #e60012;padding-bottom:15px;}
@@ -92,7 +83,6 @@ select:focus{border-color:#e60012;}
 .cart-item-remove:hover{color:#e60012;}
 .cart-empty{text-align:center;color:#555;margin-top:60px;font-size:16px;}
 
-/* CHECKOUT */
 .checkout-section{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid #2a2a2a;}
 .checkout-section h3{font-size:16px;margin-bottom:14px;color:#e60012;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
@@ -100,6 +90,7 @@ select:focus{border-color:#e60012;}
 .form-input{width:100%;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;transition:0.3s;}
 .form-input:focus{border-color:#e60012;box-shadow:0 0 0 2px rgba(230,0,18,0.1);}
 .form-input::placeholder{color:#555;}
+
 .metodo-pago{background:#222;border:2px solid #333;border-radius:10px;padding:14px;cursor:pointer;transition:0.3s;margin-bottom:8px;}
 .metodo-pago:hover{border-color:#e60012;background:#1e1e1e;}
 .metodo-pago.selected{border-color:#e60012;background:#1e0a0a;box-shadow:0 0 15px rgba(230,0,18,0.15);}
@@ -108,6 +99,7 @@ select:focus{border-color:#e60012;}
 .metodo-img-jpg{display:block;}
 .metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
 .badge-mejor{background:#009EE3;color:white;font-size:10px;font-weight:bold;padding:2px 8px;border-radius:20px;margin-left:8px;text-transform:uppercase;letter-spacing:0.5px;}
+
 .cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
 .cart-total-final{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;}
 .btn-pago{width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;transition:0.3s;margin-bottom:8px;letter-spacing:0.5px;}
@@ -117,25 +109,23 @@ select:focus{border-color:#e60012;}
 .btn-mp:hover{box-shadow:0 6px 20px rgba(0,158,227,0.4);transform:translateY(-1px);}
 .btn-transferencia{background:linear-gradient(135deg,#f5a623,#d4881a);color:white;}
 .btn-transferencia:hover{box-shadow:0 6px 20px rgba(245,166,35,0.4);transform:translateY(-1px);}
+
 .transferencia-info{background:#1a1a1a;border-radius:10px;padding:14px;margin-top:10px;display:none;border:1px solid #2a2a2a;}
 .transferencia-info.show{display:block;}
 .transferencia-info p{margin-bottom:6px;font-size:14px;color:#ccc;}
 .transferencia-info strong{color:white;}
 
-/* BOTONES FLOTANTES */
 .whatsapp{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#25D366,#1aaa50);color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 6px 20px rgba(37,211,102,0.4);transition:0.3s;}
 .whatsapp:hover{transform:scale(1.05);}
 .volver-arriba{position:fixed;bottom:80px;right:20px;background:#1a1a1a;color:white;border:1px solid #333;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:all 0.3s;transform:translateY(10px);}
 .volver-arriba.visible{opacity:1;pointer-events:all;transform:translateY(0);}
 .volver-arriba:hover{background:#e60012;border-color:#e60012;}
 
-/* TOAST */
 .toast{position:fixed;bottom:90px;left:20px;background:linear-gradient(135deg,#e60012,#b8000e);color:white;padding:12px 20px;border-radius:12px;font-weight:bold;z-index:9999;opacity:0;transition:all 0.3s;pointer-events:none;box-shadow:0 6px 20px rgba(230,0,18,0.4);}
 .toast.show{opacity:1;}
 
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
 
-/* FOOTER */
 footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3px solid #e60012;}
 .footer-top{background:linear-gradient(180deg,#111,#0a0a0a);padding:40px 20px 30px;}
 .footer-brand{font-size:22px;font-weight:bold;letter-spacing:3px;margin-bottom:6px;}
@@ -161,7 +151,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
   <div class="envio">🚚 Envíos a todo Chile $5.000</div>
 </header>
 
-<!-- BANNER -->
 <div class="banner">
   <h2>ZAPATILLAS <span>PREMIUM</span> EN CHILE</h2>
   <p>Las mejores marcas al mejor precio. Entrega rápida a todo el país.</p>
@@ -355,4 +344,305 @@ async function cargarProductos() {
     const respuesta = await fetch(SHEETS_CSV_URL);
     const textoCSV = await respuesta.text();
     if (!textoCSV) throw new Error("Vacío");
-    const lineas = textoCSV.split("\n").ma
+    const lineas = textoCSV.split("\n").map(function(l){ return l ? l.trim() : ""; }).filter(function(l){ return l.length > 0; });
+    productos = lineas.slice(1).map(function(linea) {
+      const columnas = parsearFilaCSV(linea);
+      return {
+        nombre: columnas[0] ? columnas[0].replace(/"/g, "") : "Modelo sin nombre",
+        precio: columnas[1] ? parseInt(columnas[1].replace(/[^0-9]/g, "")) || 0 : 0,
+        imagen: columnas[2] ? columnas[2] : "logo.webp",
+        tags: [columnas[3] ? columnas[3] : "Otros"],
+        tallas: columnas[4] ? columnas[4].split(";").map(function(t){ return parseInt(t.trim()); }).filter(function(t){ return !isNaN(t); }) : [37,38,39,40,41,42,43,44,45]
+      };
+    });
+    generarBotonesCategorias();
+    render();
+    cargarDatosGuardados();
+  } catch (error) {
+    document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
+  }
+}
+
+function generarBotonesCategorias() {
+  const container = document.getElementById("categorias-container");
+  const categoriasUnicas = ["todos"];
+  productos.forEach(function(p) {
+    if (p.tags[0] && categoriasUnicas.indexOf(p.tags[0]) === -1) {
+      categoriasUnicas.push(p.tags[0]);
+    }
+  });
+  container.innerHTML = "";
+  categoriasUnicas.forEach(function(cat) {
+    const btn = document.createElement("button");
+    btn.className = cat === "todos" ? "active" : "";
+    btn.textContent = cat === "todos" ? "Todos" : cat;
+    btn.onclick = function(e) { filtrar(cat, e.target); };
+    container.appendChild(btn);
+  });
+}
+
+function render() {
+  const cont = document.getElementById("productos");
+  if (productos.length === 0) {
+    cont.innerHTML = '<div class="loading">No hay productos disponibles.</div>';
+    return;
+  }
+  let html = "";
+  productos.forEach(function(p, index) {
+    let opcionesTalla = "";
+    p.tallas.forEach(function(t) {
+      opcionesTalla += '<option value="' + t + '" ' + (t === 41 ? 'selected' : '') + '>Talla: ' + t + '</option>';
+    });
+    html += '<div class="card" data-index="' + index + '">' +
+              '<div class="img-wrapper"><img src="' + p.imagen + '" class="img-producto" alt="' + p.nombre + '" onerror="this.src=\'logo.webp\'"></div>' +
+              '<h3>' + p.nombre + '</h3>' +
+              '<div class="precio">$' + p.precio.toLocaleString("es-CL") + '</div>' +
+              '<select id="talla-' + index + '">' + opcionesTalla + '</select>' +
+              '<button class="btn" onclick="agregarAlCarrito(' + index + ')">🛒 Agregar al carrito</button>' +
+            '</div>';
+  });
+  cont.innerHTML = html;
+  aplicar();
+  animarCards();
+}
+
+function animarCards() {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach(function(card, i) {
+    setTimeout(function() {
+      card.classList.add("visible");
+    }, i * 50);
+  });
+}
+
+function filtrar(cat, btnElemento) {
+  categoriaActual = cat;
+  document.querySelectorAll(".categorias button").forEach(function(b) { b.classList.remove("active"); });
+  btnElemento.classList.add("active");
+  aplicar();
+}
+
+document.getElementById("buscar").addEventListener("keyup", aplicar);
+
+function aplicar() {
+  const texto = document.getElementById("buscar").value.toLowerCase();
+  document.querySelectorAll(".card").forEach(function(card) {
+    const index = parseInt(card.dataset.index);
+    const p = productos[index];
+    if (!p) return;
+    const enCategoria = categoriaActual === "todos" || p.tags.indexOf(categoriaActual) !== -1;
+    const enBusqueda = p.nombre.toLowerCase().indexOf(texto) !== -1;
+    card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
+  });
+}
+
+function agregarAlCarrito(index) {
+  const p = productos[index];
+  const talla = document.getElementById("talla-" + index).value;
+  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagen, talla: talla });
+  actualizarCarrito();
+  mostrarToast();
+}
+
+function actualizarCarrito() {
+  const count = carrito.length;
+  document.getElementById("cart-count").textContent = count;
+  const itemsEl = document.getElementById("cart-items");
+  const formEl = document.getElementById("checkout-form");
+
+  if (count === 0) {
+    itemsEl.innerHTML = '<div class="cart-empty">😕 Tu carrito está vacío</div>';
+    formEl.style.display = "none";
+    return;
+  }
+
+  let htmlItems = "";
+  let subtotal = 0;
+  carrito.forEach(function(item, i) {
+    subtotal += item.precio;
+    htmlItems += '<div class="cart-item">' +
+                   '<img src="' + item.imagen + '" onerror="this.src=\'logo.webp\'">' +
+                   '<div class="cart-item-info">' +
+                     '<div class="cart-item-name">' + item.nombre + '</div>' +
+                     '<div class="cart-item-talla">Talla: ' + item.talla + '</div>' +
+                     '<div class="cart-item-precio">$' + item.precio.toLocaleString("es-CL") + '</div>' +
+                   '</div>' +
+                   '<button class="cart-item-remove" onclick="removerDelCarrito(' + i + ')">✕</button>' +
+                 '</div>';
+  });
+  itemsEl.innerHTML = htmlItems;
+  formEl.style.display = "block";
+  const total = subtotal + 5000;
+  document.getElementById("cart-subtotal").textContent = "$" + subtotal.toLocaleString("es-CL");
+  document.getElementById("cart-total").textContent = "$" + total.toLocaleString("es-CL");
+}
+
+function removerDelCarrito(i) {
+  carrito.splice(i, 1);
+  actualizarCarrito();
+}
+
+function seleccionarMetodo(tipo) {
+  metodoPago = tipo;
+  document.querySelectorAll(".metodo-pago").forEach(function(el) { el.classList.remove("selected"); });
+  document.getElementById("metodo-" + tipo).classList.add("selected");
+  const transInfo = document.getElementById("transferencia-info");
+  const btnConfirmar = document.getElementById("btn-confirmar");
+  if (tipo === "transferencia") {
+    transInfo.classList.add("show");
+  } else {
+    transInfo.classList.remove("show");
+  }
+  if (tipo === "mp") {
+    btnConfirmar.className = "btn-pago btn-mp";
+    btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
+  } else if (tipo === "transferencia") {
+    btnConfirmar.className = "btn-pago btn-transferencia";
+    btnConfirmar.textContent = "🏦 Notificar Transferencia por WhatsApp";
+  } else {
+    btnConfirmar.className = "btn-pago btn-wsp";
+    btnConfirmar.textContent = "💬 Confirmar por WhatsApp";
+  }
+}
+
+function cargarDatosGuardados() {
+  if (localStorage.getItem("m_nombre")) document.getElementById("c-nombre").value = localStorage.getItem("m_nombre");
+  if (localStorage.getItem("m_whatsapp")) document.getElementById("c-whatsapp").value = localStorage.getItem("m_whatsapp");
+  if (localStorage.getItem("m_direccion")) document.getElementById("c-direccion").value = localStorage.getItem("m_direccion");
+  if (localStorage.getItem("m_region")) document.getElementById("c-region").value = localStorage.getItem("m_region");
+  if (localStorage.getItem("m_comuna")) document.getElementById("c-comuna").value = localStorage.getItem("m_comuna");
+  if (localStorage.getItem("m_cp")) document.getElementById("c-cp").value = localStorage.getItem("m_cp");
+}
+
+function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) {
+  localStorage.setItem("m_nombre", nombre);
+  localStorage.setItem("m_whatsapp", whatsapp);
+  localStorage.setItem("m_direccion", direccion);
+  localStorage.setItem("m_region", region);
+  localStorage.setItem("m_comuna", comuna);
+  localStorage.setItem("m_cp", cp);
+}
+
+async function enviarAFormspree(nombre, whatsapp, direccion, region, comuna, cp, metodoPagoTexto, subtotal, total) {
+  let productosTexto = "";
+  carrito.forEach(function(item, i) {
+    productosTexto += (i + 1) + ". " + item.nombre + " — Talla: " + item.talla + " — $" + item.precio.toLocaleString("es-CL") + "\n";
+  });
+  try {
+    await fetch(FORMSPREE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        _subject: "🛒 Nuevo pedido de " + nombre,
+        "👤 Cliente": nombre,
+        "📱 WhatsApp": whatsapp,
+        "📍 Dirección": direccion,
+        "🌎 Región": region,
+        "🏙 Comuna": comuna,
+        "📮 Código postal": cp || "—",
+        "💳 Método de pago": metodoPagoTexto,
+        "👟 Productos": productosTexto,
+        "💰 Subtotal": "$" + subtotal.toLocaleString("es-CL"),
+        "🚚 Envío": "$5.000",
+        "💵 TOTAL": "$" + total.toLocaleString("es-CL")
+      })
+    });
+  } catch (e) {}
+}
+
+async function confirmarPedido() {
+  const nombre = document.getElementById("c-nombre").value.trim();
+  const whatsapp = document.getElementById("c-whatsapp").value.trim();
+  const direccion = document.getElementById("c-direccion").value.trim();
+  const region = document.getElementById("c-region").value.trim();
+  const comuna = document.getElementById("c-comuna").value.trim();
+  const cp = document.getElementById("c-cp").value.trim();
+
+  if (!nombre || !whatsapp || !direccion || !region || !comuna) {
+    alert("Por favor, completa todos los campos de envío.");
+    return;
+  }
+
+  guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp);
+
+  let subtotal = 0;
+  carrito.forEach(function(item) { subtotal += item.precio; });
+  const total = subtotal + 5000;
+  const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
+
+  enviarAFormspree(nombre, whatsapp, direccion, region, comuna, cp, metodoPagoTexto, subtotal, total);
+
+  let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
+  mensaje += "👤 *Cliente:* " + nombre + "\n";
+  mensaje += "📱 *WhatsApp:* " + whatsapp + "\n";
+  mensaje += "📍 *Dirección:* " + direccion + ", " + comuna + " (" + region + ")\n";
+  if (cp) { mensaje += "📮 *Cód. Postal:* " + cp + "\n"; }
+  mensaje += "💳 *Método de Pago:* " + metodoPagoTexto + "\n\n";
+  mensaje += "👟 *Productos:*\n";
+  carrito.forEach(function(item) {
+    mensaje += "- " + item.nombre + " (Talla: " + item.talla + ") - $" + item.precio.toLocaleString("es-CL") + "\n";
+  });
+  mensaje += "\n💰 *Subtotal:* $" + subtotal.toLocaleString("es-CL");
+  mensaje += "\n🚚 *Envío:* $5.000";
+  mensaje += "\n💵 *TOTAL A PAGAR:* $" + total.toLocaleString("es-CL");
+
+  const urlWsp = "https://wa.me/56931402987?text=" + encodeURIComponent(mensaje);
+
+  if (metodoPago === "mp") {
+    const btn = document.getElementById("btn-confirmar");
+    btn.textContent = "Procesando...";
+    btn.disabled = true;
+    try {
+      const response = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: carrito, comprador: { nombre, whatsapp, direccion, region, comuna, cp } })
+      });
+      const data = await response.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("Error al procesar el pago. Intenta de nuevo.");
+        btn.textContent = "💳 Pagar con Mercado Pago";
+        btn.disabled = false;
+      }
+    } catch (error) {
+      alert("Error de conexión. Intenta de nuevo.");
+      btn.textContent = "💳 Pagar con Mercado Pago";
+      btn.disabled = false;
+    }
+  } else {
+    window.open(urlWsp, "_blank");
+  }
+}
+
+function abrirCarrito() {
+  document.getElementById("cart-panel").classList.add("open");
+  document.getElementById("cart-overlay").classList.add("open");
+}
+
+function cerrarCarrito() {
+  document.getElementById("cart-panel").classList.remove("open");
+  document.getElementById("cart-overlay").classList.remove("open");
+}
+
+function mostrarToast() {
+  const t = document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 2000);
+}
+
+window.onload = cargarProductos;
+
+window.addEventListener("scroll", function() {
+  const btn = document.getElementById("volver-arriba");
+  if (window.scrollY > 300) {
+    btn.classList.add("visible");
+  } else {
+    btn.classList.remove("visible");
+  }
+});
+</script>
+
+</body>
+</html>
