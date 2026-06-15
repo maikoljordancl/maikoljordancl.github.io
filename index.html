@@ -91,8 +91,9 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 
 footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
 .footer-text{opacity:0.8;font-size:14px;margin-bottom:15px;}
-.footer-logos{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;}
-.footer-logo-img{height:25px;width:25px;object-fit:contain;display:block;}
+.footer-logos{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;}
+.footer-logo-title{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:1px;}
+.footer-logo-img{width:160px;height:auto;max-height:45px;object-fit:contain;display:block;}
 </style>
 </head>
 <body>
@@ -170,7 +171,7 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
       <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
-          <img src="mercadopago.png" class="metodo-img-jpg" alt="Mercado Pago" style="height: 25px; width: 25px;">
+          <img src="mercadopago.png" class="metodo-img-jpg" alt="Mercado Pago" style="width: 55px; height: auto; max-height: 24px; object-fit: contain;">
         </div>
         <div class="metodo-pago-desc">Paga de forma segura usando tu cuenta o tarjetas</div>
       </div>
@@ -204,7 +205,8 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <footer>
   <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
   <div class="footer-logos">
-    <img src="mercadopago.png" class="footer-logo-img" alt="Mercado Pago">
+    <span class="footer-logo-title">Medios de pago aceptados</span>
+    <img src="mercadopago.png" class="footer-logo-img" alt="Mercado Pago Seguro">
   </div>
 </footer>
 
