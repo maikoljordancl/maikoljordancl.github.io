@@ -190,6 +190,7 @@ async function cargarProductos() {
     const respuesta = await fetch(SHEETS_CSV_URL);
     const textoCSV = await respuesta.text();
     const lineas = textoCSV.split("\n").map(function(l){ return l.trim(); }).filter(function(l){ return l.length > 0; });
+    
     productos = lineas.slice(1).map(function(linea) {
       const columnas = linea.split(",");
       return {
@@ -305,7 +306,7 @@ function actualizarCarrito() {
                      '<div class="cart-item-talla">Talla: ' + item.talla + '</div>' +
                      '<div class="cart-item-precio">$' + item.precio.toLocaleString("es-CL") + '</div>' +
                    '</div>' +
-                   '<button class="cart-item-remove" onclick="eliminarItem(' + i + ')">✕</button> +
+                   '<button class="cart-item-remove" onclick="eliminarItem(' + i + ')">✕</button>' +
                  '</div>';
   });
   itemsEl.innerHTML = htmlItems;
