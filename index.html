@@ -68,7 +68,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .metodo-pago.selected{border-color:#e60012;background:#2a1a1a;}
 .metodo-pago-header{display:flex;align-items:center;justify-content:space-between;font-weight:bold;}
 .metodo-pago-titulo{display:flex;align-items:center;gap:10px;}
-.metodo-logo{height:20px;object-fit:contain;}
+.metodo-logo-svg{height:20px;width:auto;display:block;}
 .metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
 
 .cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
@@ -91,8 +91,8 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 
 footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
 .footer-text{opacity:0.8;font-size:14px;margin-bottom:15px;}
-.footer-logos{display:flex;justify-content:center;align-items:center;gap:15px;flex-wrap:wrap;opacity:0.9;}
-.footer-logos img{height:26px;object-fit:contain;transition:0.3s;}
+.footer-logos{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;}
+.footer-logo-svg{height:24px;width:auto;display:block;}
 </style>
 </head>
 <body>
@@ -156,21 +156,21 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
       <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="metodo-logo" alt="WhatsApp">
+          <svg class="metodo-logo-svg" viewBox="0 0 448 512"><path fill="#25D366" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L3 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
         </div>
         <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
       </div>
       <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
-          <img src="https://img.icons8.com/color/48/bank.png" class="metodo-logo" alt="Banco">
+          <img src="https://img.icons8.com/color/48/bank.png" class="metodo-logo-svg" alt="Banco">
         </div>
         <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
       </div>
       <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
-          <img src="https://cdn.worldvectorlogo.com/logos/mercado-pago.svg" class="metodo-logo" alt="Mercado Pago" style="border-radius:2px;">
+          <svg class="metodo-logo-svg" viewBox="0 0 491.5 125.1" style="height:22px;"><path fill="#009EE3" d="M47.7 85.5V36.9c0-4.6-3.8-8.3-8.3-8.3h-7.6c-4.6 0-8.3 3.8-8.3 8.3v48.6c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5V36.9c0-4.6-3.8-8.3-8.3-8.3h-7.6c-4.6 0-8.3 3.8-8.3 8.3v48.6c0 14.8 12.1 26.9 26.9 26.9s26.9-12.1 26.9-26.9M83.6 28.6H59.9c-4.6 0-8.3 3.8-8.3 8.3v67.1c0 4.6 3.8 8.3 8.3 8.3h7.6c4.6 0 8.3-3.8 8.3-8.3V78.6h7.7c15.1 0 27.3-11.5 27.3-25s-12.2-25-27.2-25m-.1 33.7h-7.6V44.9h7.6c6.1 0 11.1 4.2 11.1 8.7s-5 8.7-11.1 8.7M138 65.4c-9.1-3.6-14-6.3-14-11.3 0-4 3.7-6.9 9-6.9 5 0 9.8 2.1 13.9 5.8 3.3 3 8.6 2.6 11.6-.7s2.6-8.6-.7-11.6c-6.8-6.1-15.6-9.5-24.8-9.5-17.8 0-30.4 11.3-30.4 25.1 0 15.1 13.7 21.1 25.3 25.7 9.8 3.9 14.4 6.7 14.4 11.9 0 4.5-4.4 7.5-10 7.5-6.8 0-13.5-3.1-18.7-8.6-3.3-3.4-8.7-3.5-12-.2s-3.5 8.7-.2 12c7.8 8.1 18.5 12.7 29.7 12.7 18.9 0 31.4-11 31.4-25.9-.1-14.7-11.3-20.2-24.5-24.1M228.4 28.6h-7.6c-3.6 0-6.8 2.3-7.9 5.8l-18.1 53.6-18.1-53.6c-1.1-3.4-4.3-5.8-7.9-5.8h-7.6c-5.8 0-10 5.6-8.2 11.2l26.2 73c1.7 4.7 6.2 7.9 11.2 7.9h8.8c5 0 9.5-3.1 11.2-7.9l26.2-73c1.9-5.6-2.4-11.2-8.3-11.2M316.6 28.6h-34.9c-4.6 0-8.3 3.8-8.3 8.3v67.1c0 4.6 3.8 8.3 8.3 8.3h7.6c4.6 0 8.3-3.8 8.3-8.3V78.6h18.9c18.5 0 33.1-13.8 33.1-25s-14.5-25-33-25m-1 33.7h-17.9V44.9h17.9c9.3 0 16.5 4.3 16.5 8.7s-7.2 8.7-16.5 8.7M380.2 28.6h-32.9c-5 0-9.5 3.1-11.2 7.9l-26.2 73c-1.8 5.1 2 10.5 7.4 10.5h8c3.6 0 6.8-2.3 7.9-5.6l6.1-18h36.7l6.1 18c1.1 3.3 4.3 5.6 7.9 5.6h8c5.4 0 9.2-5.4 7.4-10.5l-26.2-73c-1.7-4.8-6.2-7.9-11.2-7.9m-14.4 51.5l12.2-36 12.2 36zM464.3 28.6h-34.9c-4.6 0-8.3 3.8-8.3 8.3v67.1c0 4.6 3.8 8.3 8.3 8.3h22.6c17.8 0 33.1-12.8 33.1-25.9V62.8c.1-19-14-34.2-30.8-34.2m14.2 46.9c0 6.4-6.3 11.4-12.6 11.4h-17.9V44.9h14.7c6.8 0 15.8 4 15.8 11.5v19.1z"/></svg>
         </div>
         <div class="metodo-pago-desc">Paga de forma segura con Saldo o Tarjetas</div>
       </div>
@@ -198,14 +198,14 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <div class="toast" id="toast">✅ Agregado al carrito</div>
 
 <a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
-  💬 Consultas
+  <svg style="width:24px;height:24px;display:inline-block;vertical-align:middle;margin-right:5px;" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L3 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> Consultas
 </a>
 
 <footer>
   <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
   <div class="footer-logos">
-    <img src="https://cdn.worldvectorlogo.com/logos/mercado-pago.svg" alt="Mercado Pago">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    <svg class="footer-logo-svg" viewBox="0 0 491.5 125.1"><path fill="#FFF" d="M47.7 85.5V36.9c0-4.6-3.8-8.3-8.3-8.3h-7.6c-4.6 0-8.3 3.8-8.3 8.3v48.6c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5V36.9c0-4.6-3.8-8.3-8.3-8.3h-7.6c-4.6 0-8.3 3.8-8.3 8.3v48.6c0 14.8 12.1 26.9 26.9 26.9s26.9-12.1 26.9-26.9M83.6 28.6H59.9c-4.6 0-8.3 3.8-8.3 8.3v67.1c0 4.6 3.8 8.3 8.3 8.3h7.6c4.6 0 8.3-3.8 8.3-8.3V78.6h7.7c15.1 0 27.3-11.5 27.3-25s-12.2-25-27.2-25m-.1 33.7h-7.6V44.9h7.6c6.1 0 11.1 4.2 11.1 8.7s-5 8.7-11.1 8.7M138 65.4c-9.1-3.6-14-6.3-14-11.3 0-4 3.7-6.9 9-6.9 5 0 9.8 2.1 13.9 5.8 3.3 3 8.6 2.6 11.6-.7s2.6-8.6-.7-11.6c-6.8-6.1-15.6-9.5-24.8-9.5-17.8 0-30.4 11.3-30.4 25.1 0 15.1 13.7 21.1 25.3 25.7 9.8 3.9 14.4 6.7 14.4 11.9 0 4.5-4.4 7.5-10 7.5-6.8 0-13.5-3.1-18.7-8.6-3.3-3.4-8.7-3.5-12-.2s-3.5 8.7-.2 12c7.8 8.1 18.5 12.7 29.7 12.7 18.9 0 31.4-11 31.4-25.9-.1-14.7-11.3-20.2-24.5-24.1M228.4 28.6h-7.6c-3.6 0-6.8 2.3-7.9 5.8l-18.1 53.6-18.1-53.6c-1.1-3.4-4.3-5.8-7.9-5.8h-7.6c-5.8 0-10 5.6-8.2 11.2l26.2 73c1.7 4.7 6.2 7.9 11.2 7.9h8.8c5 0 9.5-3.1 11.2-7.9l26.2-73c1.9-5.6-2.4-11.2-8.3-11.2M316.6 28.6h-34.9c-4.6 0-8.3 3.8-8.3 8.3v67.1c0 4.6 3.8 8.3 8.3 8.3h7.6c4.6 0 8.3-3.8 8.3-8.3V78.6h18.9c18.5 0 33.1-13.8 33.1-25s-14.5-25-33-25m-1 33.7h-17.9V44.9h17.9c9.3 0 16.5 4.3 16.5 8.7s-7.2 8.7-16.5 8.7M380.2 28.6h-32.9c-5 0-9.5 3.1-11.2 7.9l-26.2 73c-1.8 5.1 2 10.5 7.4 10.5h8c3.6 0 6.8-2.3 7.9-5.6l6.1-18h36.7l6.1 18c1.1 3.3 4.3 5.6 7.9 5.6h8c5.4 0 9.2-5.4 7.4-10.5l-26.2-73c-1.7-4.8-6.2-7.9-11.2-7.9m-14.4 51.5l12.2-36 12.2 36zM464.3 28.6h-34.9c-4.6 0-8.3 3.8-8.3 8.3v67.1c0 4.6 3.8 8.3 8.3 8.3h22.6c17.8 0 33.1-12.8 33.1-25.9V62.8c.1-19-14-34.2-30.8-34.2m14.2 46.9c0 6.4-6.3 11.4-12.6 11.4h-17.9V44.9h14.7c6.8 0 15.8 4 15.8 11.5v19.1z"/></svg>
+    <svg class="footer-logo-svg" viewBox="0 0 448 512" style="height:20px;"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L3 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
   </div>
 </footer>
 
@@ -382,6 +382,7 @@ function abrirCarrito() {
 }
 
 function cerrarCarrito() {
+  document.getElementById("cart-panel").classList.remove("remove");
   document.getElementById("cart-panel").classList.remove("open");
   document.getElementById("cart-overlay").classList.remove("open");
 }
