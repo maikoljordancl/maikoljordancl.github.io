@@ -138,6 +138,176 @@ select{
 .btn:hover{
   background:#b8000e;
 }
+
+/* BOTÓN CARRITO FLOTANTE */
+.cart-btn{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  background:#e60012;
+  color:white;
+  padding:14px 18px;
+  border-radius:50px;
+  font-weight:bold;
+  z-index:999;
+  box-shadow:0 4px 10px rgba(0,0,0,0.4);
+  cursor:pointer;
+  border:none;
+  font-size:16px;
+}
+.cart-badge{
+  background:white;
+  color:#e60012;
+  border-radius:50%;
+  padding:2px 7px;
+  font-size:13px;
+  margin-left:5px;
+  font-weight:bold;
+}
+
+/* OVERLAY */
+.cart-overlay{
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  z-index:1000;
+}
+.cart-overlay.open{
+  display:block;
+}
+
+/* PANEL CARRITO */
+.cart-panel{
+  position:fixed;
+  top:0;right:-100%;
+  width:380px;
+  max-width:100%;
+  height:100%;
+  background:#111;
+  z-index:1001;
+  display:flex;
+  flex-direction:column;
+  transition:right 0.3s;
+  padding:20px;
+}
+.cart-panel.open{
+  right:0;
+}
+.cart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  border-bottom:2px solid #e60012;
+  padding-bottom:15px;
+}
+.cart-header h2{
+  font-size:22px;
+}
+.cart-close{
+  background:none;
+  border:none;
+  color:white;
+  font-size:26px;
+  cursor:pointer;
+}
+.cart-items{
+  flex:1;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.cart-item{
+  background:#1a1a1a;
+  border-radius:12px;
+  padding:12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.cart-item img{
+  width:70px;
+  height:70px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#222;
+  flex-shrink:0;
+}
+.cart-item-info{
+  flex:1;
+}
+.cart-item-name{
+  font-weight:bold;
+  font-size:14px;
+  margin-bottom:3px;
+}
+.cart-item-talla{
+  color:#999;
+  font-size:13px;
+  margin-bottom:4px;
+}
+.cart-item-precio{
+  color:#e60012;
+  font-weight:bold;
+  font-size:15px;
+}
+.cart-item-remove{
+  background:none;
+  border:none;
+  color:#666;
+  font-size:22px;
+  cursor:pointer;
+  padding:0 4px;
+}
+.cart-item-remove:hover{
+  color:#e60012;
+}
+.cart-empty{
+  text-align:center;
+  color:#555;
+  margin-top:60px;
+  font-size:16px;
+}
+.cart-footer{
+  border-top:2px solid #222;
+  padding-top:15px;
+  margin-top:15px;
+}
+.cart-total-row{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:8px;
+  color:#aaa;
+  font-size:15px;
+}
+.cart-total-final{
+  display:flex;
+  justify-content:space-between;
+  font-size:20px;
+  font-weight:bold;
+  color:white;
+  margin-bottom:15px;
+}
+.cart-wsp-btn{
+  width:100%;
+  background:#25D366;
+  color:white;
+  border:none;
+  padding:15px;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+.cart-wsp-btn:hover{
+  background:#1ebe5d;
+}
+
+/* WHATSAPP */
 .whatsapp{
   position:fixed;
   bottom:20px;
@@ -151,6 +321,26 @@ select{
   z-index:999;
   box-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:90px;
+  left:20px;
+  background:#e60012;
+  color:white;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:bold;
+  z-index:9999;
+  opacity:0;
+  transition:opacity 0.3s;
+  pointer-events:none;
+}
+.toast.show{
+  opacity:1;
+}
+
 footer{
   text-align:center;
   padding:30px;
@@ -187,6 +377,32 @@ footer{
 
 <div class="produtos" id="productos"></div>
 
+<!-- BOTÓN CARRITO -->
+<button class="cart-btn" onclick="abrirCarrito()">
+  🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
+</button>
+
+<!-- OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="cerrarCarrito()"></div>
+
+<!-- PANEL CARRITO -->
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h2>🛒 Tu carrito</h2>
+    <button class="cart-close" onclick="cerrarCarrito()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total-row"><span>Subtotal</span><span id="cart-subtotal"></span></div>
+    <div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
+    <div class="cart-total-final"><span>TOTAL</span><span id="cart-total"></span></div>
+    <button class="cart-wsp-btn" onclick="pedirCarrito()">💬 Pedir por WhatsApp</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Agregado al carrito</div>
+
 <a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
   💬 Consultas
 </a>
@@ -201,7 +417,6 @@ const tallasLujo = [37,38,39,40,41,42,43,44,45];
 const tallasNB   = [36,37,38,39,40,41,42,43,44,45];
 
 const productos = [
-  // NIKE
   {tags:["Nike"], nombre:"Nike TN", precio:75000, imagen:"tn.webp", tallas:tallasNike},
   {tags:["Nike"], nombre:"Nike TN Plus", precio:75000, imagen:"tn_plus.webp", tallas:tallasNike},
   {tags:["Nike"], nombre:"Nike Shox", precio:70000, imagen:"shox.webp", tallas:tallasNike},
@@ -209,8 +424,6 @@ const productos = [
   {tags:["Nike"], nombre:"Air Force 1 Mid", precio:75000, imagen:"af1_mid.webp", tallas:tallasNike},
   {tags:["Nike"], nombre:"Air Force 1 Supreme Nocta", precio:85000, imagen:"af1_supreme.webp", tallas:tallasNike},
   {tags:["Nike"], nombre:"Air Force 1 CPFM", precio:70000, imagen:"af1_cpfm.webp", tallas:tallasNike},
-
-  // JORDAN
   {tags:["Jordan"], nombre:"Jordan Retro 1", precio:70000, imagen:"jordan1.webp", tallas:tallasNike},
   {tags:["Jordan"], nombre:"Jordan Retro 3", precio:75000, imagen:"jordan3.webp", tallas:tallasNike},
   {tags:["Jordan"], nombre:"Jordan Retro 4", precio:75000, imagen:"jordan4.webp", tallas:tallasNike},
@@ -222,15 +435,9 @@ const productos = [
   {tags:["Jordan"], nombre:"Jordan Retro 13", precio:75000, imagen:"jordan13.webp", tallas:tallasNike},
   {tags:["Jordan"], nombre:"Jordan Retro 14", precio:80000, imagen:"jordan14.webp", tallas:tallasNike},
   {tags:["Jordan"], nombre:"Jordan Retro 312", precio:90000, imagen:"jordan312.webp", tallas:tallasNike},
-
-  // AIR MAX (Configuradas directamente en Nike)
   {tags:["Nike"], nombre:"Air Max 95", precio:80000, imagen:"airmax95.webp", tallas:tallasNike},
   {tags:["Nike"], nombre:"Air Max 97", precio:80000, imagen:"airmax97.webp", tallas:tallasNike},
-
-  // NEW BALANCE
   {tags:["New Balance"], nombre:"New Balance 9060", precio:80000, imagen:"nb9060.webp", tallas:tallasNB},
-
-  // LUJO
   {tags:["Balenciaga"], nombre:"Balenciaga Runners", precio:140000, imagen:"balenciaga_runner.webp", tallas:tallasLujo},
   {tags:["Balenciaga"], nombre:"Balenciaga Track LED", precio:140000, imagen:"balenciaga_track.webp", tallas:tallasLujo},
   {tags:["Dolce & Gabbana"], nombre:"Portofino", precio:100000, imagen:"portofino.webp", tallas:tallasLujo},
@@ -242,6 +449,7 @@ const productos = [
 ];
 
 let categoriaActual = "todos";
+let carrito = [];
 
 function render(){
   const cont = document.getElementById("productos");
@@ -253,8 +461,8 @@ function render(){
       <select id="talla-${index}">
         ${p.tallas.map(t => `<option value="${t}" ${t === 41 ? 'selected' : ''}>Talla: ${t}</option>`).join("")}
       </select>
-      <button class="btn" onclick="pedir(${index})">
-        Comprar por WhatsApp
+      <button class="btn" onclick="agregarAlCarrito(${index})">
+        🛒 Agregar al carrito
       </button>
     </div>
   `).join("");
@@ -276,28 +484,92 @@ function aplicar(){
   document.querySelectorAll(".card").forEach(card => {
     const index = parseInt(card.dataset.index);
     const p = productos[index];
-    const nombre = p.nombre.toLowerCase();
     const enCategoria = categoriaActual === "todos" || p.tags.includes(categoriaActual);
-    const enBusqueda = nombre.includes(texto);
+    const enBusqueda = p.nombre.toLowerCase().includes(texto);
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
 }
 
-function pedir(index){
+function agregarAlCarrito(index){
   const p = productos[index];
   const talla = document.getElementById(`talla-${index}`).value;
-  const total = p.precio + 5000;
+  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagen, talla });
+  actualizarCarrito();
+  mostrarToast();
+}
 
-  // REPARADO: Envía correctamente el nombre del producto al chat
+function actualizarCarrito(){
+  const count = carrito.length;
+  document.getElementById("cart-count").textContent = count;
+
+  const itemsEl = document.getElementById("cart-items");
+  const footerEl = document.getElementById("cart-footer");
+
+  if(count === 0){
+    itemsEl.innerHTML = `<div class="cart-empty">😕 Tu carrito está vacío</div>`;
+    footerEl.style.display = "none";
+    return;
+  }
+
+  itemsEl.innerHTML = carrito.map((item, i) => `
+    <div class="cart-item">
+      <img src="${item.imagen}" alt="${item.nombre}">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.nombre}</div>
+        <div class="cart-item-talla">Talla: ${item.talla}</div>
+        <div class="cart-item-precio">$${item.precio.toLocaleString("es-CL")}</div>
+      </div>
+      <button class="cart-item-remove" onclick="eliminarItem(${i})">✕</button>
+    </div>
+  `).join("");
+
+  const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+  const total = subtotal + 5000;
+
+  document.getElementById("cart-subtotal").textContent = `$${subtotal.toLocaleString("es-CL")}`;
+  document.getElementById("cart-total").textContent = `$${total.toLocaleString("es-CL")}`;
+  footerEl.style.display = "block";
+}
+
+function eliminarItem(i){
+  carrito.splice(i, 1);
+  actualizarCarrito();
+}
+
+function abrirCarrito(){
+  document.getElementById("cart-panel").classList.add("open");
+  document.getElementById("cart-overlay").classList.add("open");
+  actualizarCarrito();
+}
+
+function cerrarCarrito(){
+  document.getElementById("cart-panel").classList.remove("open");
+  document.getElementById("cart-overlay").classList.remove("open");
+}
+
+function mostrarToast(){
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+function pedirCarrito(){
+  if(carrito.length === 0) return;
+  const subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+  const total = subtotal + 5000;
+
+  const lineas = carrito.map((item, i) =>
+    `${i+1}. ${item.nombre} | Talla: ${item.talla} | $${item.precio.toLocaleString("es-CL")}`
+  ).join("\n");
+
   const msg =
-`Hola, quiero comprar:
+`Hola, quiero hacer el siguiente pedido:
 
-👟 Modelo: ${p.nombre}
-📏 Talla: ${talla}
+${lineas}
 
-💰 Precio: $${p.precio.toLocaleString('es-CL')}
+💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
 🚚 Envío: $5.000
-TOTAL: $${total.toLocaleString('es-CL')}`;
+TOTAL: $${total.toLocaleString("es-CL")}`;
 
   window.open("https://wa.me/56931402987?text=" + encodeURIComponent(msg), "_blank");
 }
