@@ -130,6 +130,9 @@ footer{text-align:center;padding:30px;margin-top:20px;background:#000;opacity:0.
         <input class="form-input" id="c-region" placeholder="Región" type="text">
         <input class="form-input" id="c-comuna" placeholder="Comuna" type="text">
       </div>
+      <div class="form-row single">
+        <input class="form-input" id="c-cp" placeholder="Código postal" type="text">
+      </div>
     </div>
 
     <div class="checkout-section">
@@ -348,7 +351,8 @@ function obtenerDatosComprador() {
     whatsapp: document.getElementById("c-whatsapp").value.trim(),
     direccion: document.getElementById("c-direccion").value.trim(),
     region: document.getElementById("c-region").value.trim(),
-    comuna: document.getElementById("c-comuna").value.trim()
+    comuna: document.getElementById("c-comuna").value.trim(),
+    cp: document.getElementById("c-cp").value.trim()
   };
 }
 
@@ -381,6 +385,7 @@ ${lineas}
 📱 WhatsApp: ${comprador.whatsapp}
 📍 Dirección: ${comprador.direccion}
 🌎 ${comprador.comuna}, ${comprador.region}
+🏷️ Código postal: ${comprador.cp}
 
 💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
 🚚 Envío: $5.000
@@ -401,6 +406,7 @@ ${lineas}
 📱 WhatsApp: ${comprador.whatsapp}
 📍 Dirección: ${comprador.direccion}
 🌎 ${comprador.comuna}, ${comprador.region}
+🏷️ Código postal: ${comprador.cp}
 
 💰 Subtotal: $${subtotal.toLocaleString("es-CL")}
 🚚 Envío: $5.000
