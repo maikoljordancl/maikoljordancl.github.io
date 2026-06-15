@@ -92,13 +92,20 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
 
 /* FOOTER */
-footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
-.footer-redes{display:flex;justify-content:center;gap:20px;margin-bottom:20px;}
-.footer-redes a{display:flex;align-items:center;gap:8px;color:#aaa;text-decoration:none;font-size:14px;font-weight:bold;padding:10px 16px;border-radius:10px;background:#111;border:1px solid #222;transition:0.3s;}
-.footer-redes a:hover{border-color:#e60012;color:white;}
+footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3px solid #e60012;}
+.footer-top{background:#111;padding:40px 20px 30px;}
+.footer-brand{font-size:22px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;}
+.footer-brand span{color:#e60012;}
+.footer-tagline{color:#555;font-size:13px;margin-bottom:28px;}
+.footer-divider{width:60px;height:3px;background:#e60012;margin:0 auto 28px;}
+.footer-redes{display:flex;justify-content:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.footer-redes a{display:flex;align-items:center;gap:8px;color:#aaa;text-decoration:none;font-size:13px;font-weight:bold;padding:10px 16px;border-radius:10px;background:#1a1a1a;border:1px solid #2a2a2a;transition:0.3s;}
+.footer-redes a:hover{border-color:#e60012;color:white;background:#1e1e1e;}
 .footer-redes a svg{flex-shrink:0;}
-.footer-text{opacity:0.6;font-size:13px;margin-bottom:15px;}
+.footer-bottom{background:#000;border-top:1px solid #1a1a1a;padding:20px;}
+.footer-text{opacity:0.4;font-size:12px;margin-bottom:14px;letter-spacing:0.5px;}
 .footer-logos{display:flex;justify-content:center;align-items:center;}
+.footer-stripe{display:block;height:4px;background:linear-gradient(90deg,#000,#e60012,#000);margin-bottom:0;}
 </style>
 </head>
 <body>
@@ -171,7 +178,7 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
           <div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
           <img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="Banco">
         </div>
-        <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
+        <div class="metodo-pago-desc">Acepta cualquier banco — BCI, Santander, Banco Estado, Falabella y más</div>
       </div>
       <div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
         <div class="metodo-pago-header">
@@ -210,37 +217,54 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <button class="volver-arriba" id="volver-arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">↑</button>
 
 <footer>
-  <!-- REDES SOCIALES -->
-  <div class="footer-redes">
-    <a href="https://www.instagram.com/maikoljordan.cl" target="_blank">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#f09433"/>
-            <stop offset="25%" style="stop-color:#e6683c"/>
-            <stop offset="50%" style="stop-color:#dc2743"/>
-            <stop offset="75%" style="stop-color:#cc2366"/>
-            <stop offset="100%" style="stop-color:#bc1888"/>
-          </linearGradient>
-        </defs>
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="url(#ig-grad)"/>
-        <circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/>
-        <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
-      </svg>
-      @maikoljordan.cl
-    </a>
-    <a href="https://www.facebook.com/maikoljordan.cl" target="_blank">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
-        <rect width="24" height="24" rx="5" fill="#1877F2"/>
-        <path d="M16 8h-2a1 1 0 0 0-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 0 1 4-4h2v3z" fill="white"/>
-      </svg>
-      @maikoljordan.cl
-    </a>
+  <div class="footer-stripe"></div>
+
+  <div class="footer-top">
+    <div class="footer-brand">MAIKOL <span>JORDAN</span></div>
+    <div class="footer-tagline">Jordan • Nike • Luxury — Envíos a todo Chile</div>
+    <div class="footer-divider"></div>
+
+    <div class="footer-redes">
+      <a href="https://www.instagram.com/maikoljordan.cl" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#f09433"/>
+              <stop offset="25%" style="stop-color:#e6683c"/>
+              <stop offset="50%" style="stop-color:#dc2743"/>
+              <stop offset="75%" style="stop-color:#cc2366"/>
+              <stop offset="100%" style="stop-color:#bc1888"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="url(#ig-grad)"/>
+          <circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+        </svg>
+        @maikoljordan.cl
+      </a>
+      <a href="https://www.facebook.com/maikoljordan.cl" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="5" fill="#1877F2"/>
+          <path d="M16 8h-2a1 1 0 0 0-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 0 1 4-4h2v3z" fill="white"/>
+        </svg>
+        @maikoljordan.cl
+      </a>
+      <a href="mailto:maikoljordancl@gmail.com">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="5" fill="#e60012"/>
+          <path d="M4 8l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          <rect x="4" y="7" width="16" height="11" rx="2" stroke="white" stroke-width="1.6" fill="none"/>
+        </svg>
+        maikoljordancl@gmail.com
+      </a>
+    </div>
   </div>
 
-  <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
-  <div class="footer-logos">
-    <img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:180px;height:auto;display:block;margin:10px auto 0 auto;">
+  <div class="footer-bottom">
+    <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
+    <div class="footer-logos">
+      <img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:160px;height:auto;display:block;margin:0 auto;">
+    </div>
   </div>
 </footer>
 
