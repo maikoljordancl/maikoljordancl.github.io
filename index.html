@@ -68,7 +68,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .metodo-pago.selected{border-color:#e60012;background:#2a1a1a;}
 .metodo-pago-header{display:flex;align-items:center;justify-content:space-between;font-weight:bold;}
 .metodo-pago-titulo{display:flex;align-items:center;gap:10px;}
-.metodo-img-jpg{height:20px;width:auto;display:block;}
+.metodo-img-jpg{display:block;object-fit:contain;}
 .metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
 
 .cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
@@ -92,7 +92,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;border-top:1px solid #1c1c1c;}
 .footer-text{opacity:0.8;font-size:14px;margin-bottom:15px;}
 .footer-logos{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;}
-.footer-logo-img{height:24px;width:auto;display:block;}
+.footer-logo-img{height:25px;width:25px;object-fit:contain;display:block;}
 </style>
 </head>
 <body>
@@ -156,21 +156,21 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
       <div class="metodo-pago selected" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
-          <img src="https://img.icons8.com/color/48/whatsapp.png" class="metodo-img-jpg" alt="WhatsApp">
+          <img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px; width:auto;" class="metodo-img-jpg" alt="WhatsApp">
         </div>
         <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
       </div>
       <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
-          <img src="https://img.icons8.com/color/48/bank.png" class="metodo-img-jpg" alt="Banco">
+          <img src="https://img.icons8.com/color/48/bank.png" style="height:20px; width:auto;" class="metodo-img-jpg" alt="Banco">
         </div>
         <div class="metodo-pago-desc">Transfiere de forma directa (CuentaRUT/Vista)</div>
       </div>
       <div class="metodo-pago" id="metodo-mp" onclick="seleccionarMetodo('mp')">
         <div class="metodo-pago-header">
           <div class="metodo-pago-titulo"><span>💳</span> Mercado Pago</div>
-          <img src="https://logotipous.com/wp-content/uploads/2021/11/Mercado-Pago-Logo.png" class="metodo-img-jpg" alt="Mercado Pago" style="height: 24px;">
+          <img src="mercadopago.png" class="metodo-img-jpg" alt="Mercado Pago" style="height: 25px; width: 25px;">
         </div>
         <div class="metodo-pago-desc">Paga de forma segura usando tu cuenta o tarjetas</div>
       </div>
@@ -204,7 +204,7 @@ footer{text-align:center;padding:40px 20px;margin-top:20px;background:#000;borde
 <footer>
   <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
   <div class="footer-logos">
-    <img src="https://logotipous.com/wp-content/uploads/2021/11/Mercado-Pago-Logo.png" class="footer-logo-img" alt="Mercado Pago" style="filter: brightness(0) invert(1);">
+    <img src="mercadopago.png" class="footer-logo-img" alt="Mercado Pago">
   </div>
 </footer>
 
