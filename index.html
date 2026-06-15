@@ -530,8 +530,8 @@ function confirmarPedido() {
   const urlWsp = "https://wa.me/56931402987?text=" + encodeURIComponent(mensaje);
 
   if (metodoPago === "mp") {
-    alert("Serás redirigido a Mercado Pago para realizar tu pago de forma segura.");
-    window.open(LINK_MERCADOPAGO_MANUAL, "_blank");
+    // Redirección en la misma pestaña para burlar bloqueadores de ventanas emergentes
+    window.location.href = LINK_MERCADOPAGO_MANUAL;
   } else {
     window.open(urlWsp, "_blank");
   }
