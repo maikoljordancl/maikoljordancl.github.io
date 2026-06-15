@@ -10,8 +10,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
-  gtag('config', 'G-REEMPLAZA_AQUI'); // <-- Reemplaza aquí tu ID de medición G-XXXXXX
+  gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
@@ -218,6 +217,26 @@ let categoriaActual = "todos";
 let carrito = [];
 let metodoPago = "wsp";
 
+function parsearFilaCSV(linea) {
+  let resultado = [];
+  let dentroDeComillas = false;
+  let valorActual = "";
+  
+  for (let i = 0; i < linea.length; i++) {
+    let char = linea[i];
+    if (char === '"') {
+      dentroDeComillas = !dentroDeComillas;
+    } else if (char === ',' && !dentroDeComillas) {
+      resultado.push(valorActual.trim());
+      valorActual = "";
+    } else {
+      valorActual += char;
+    }
+  }
+  resultado.push(valorActual.trim());
+  return resultado;
+}
+
 async function cargarProductos() {
   try {
     const respuesta = await fetch(SHEETS_CSV_URL);
@@ -225,12 +244,12 @@ async function cargarProductos() {
     const lineas = textoCSV.split("\n").map(function(l){ return l.trim(); }).filter(function(l){ return l.length > 0; });
     
     productos = lineas.slice(1).map(function(linea) {
-      const columnas = linea.split(",");
+      const columnas = parsearFilaCSV(linea);
       return {
         nombre: columnas[0] ? columnas[0].replace(/"/g, "") : "Modelo sin nombre",
         precio: parseInt(columnas[1]) || 0,
-        imagen: columnas[2] ? columnas[2].trim() : "logo.webp",
-        tags: [columnas[3] ? columnas[3].trim() : "Otros"],
+        imagen: columnas[2] ? columnas[2] : "logo.webp",
+        tags: [columnas[3] ? columnas[3] : "Otros"],
         tallas: columnas[4] ? columnas[4].split(";").map(function(t){ return parseInt(t.trim()); }).filter(function(t){ return !isNaN(t); }) : [37,38,39,40,41,42,43,44,45]
       };
     });
@@ -275,7 +294,7 @@ function render() {
     });
 
     html += '<div class="card" data-index="' + index + '">' +
-              '<img src="' + p.imagen + '" class="img-producto" alt="' + p.nombre + '">' +
+              '<img src="' + p.imagen + '" class="img-producto" alt="' + p.nombre + '" onerror="this.src=\'logo.webp\'">' +
               '<h3>' + p.nombre + '</h3>' +
               '<div class="precio">$' + p.precio.toLocaleString("es-CL") + '</div>' +
               '<select id="talla-' + index + '">' + opcionesTalla + '</select>' +
@@ -286,8 +305,6 @@ function render() {
   cont.innerHTML = html;
   aplicar();
 }
-
-cargarProductos();
 
 function filtrar(cat, btnElemento) {
   categoriaActual = cat;
@@ -333,7 +350,7 @@ function actualizarCarrito() {
   let htmlItems = "";
   carrito.forEach(function(item, i) {
     htmlItems += '<div class="cart-item">' +
-                   '<img src="' + item.imagen + '" alt="' + item.nombre + '">' +
+                   '<img src="' + item.imagen + '" alt="' + item.nombre + '" onerror="this.src=\'logo.webp\'">' +
                    '<div class="cart-item-info">' +
                      '<div class="cart-item-name">' + item.nombre + '</div>' +
                      '<div class="cart-item-talla">Talla: ' + item.talla + '</div>' +
@@ -488,6 +505,8 @@ async function confirmarPedido() {
     }
   }
 }
+
+document.addEventListener("DOMContentLoaded", cargarProductos);
 </script>
 </body>
 </html>
