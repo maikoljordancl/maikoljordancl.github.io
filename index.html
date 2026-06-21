@@ -30,8 +30,9 @@ h1{margin-top:10px;font-size:34px;}
 .search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;}
 
 .filtro-row{display:flex;align-items:center;gap:10px;padding:14px 20px;flex-wrap:wrap;}
-.filtro-btn{background:#1a1a1a;color:white;border:1px solid #2a2a2a;padding:10px 16px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:14px;display:flex;align-items:center;gap:6px;}
-.filtro-btn:hover{border-color:#e60012;}
+.menu-categorias-btn{position:fixed;top:16px;right:16px;z-index:999;background:#1a1a1a;border:1px solid #2a2a2a;width:46px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.4);transition:0.3s;}
+.menu-categorias-btn:hover{border-color:#e60012;}
+.menu-categorias-btn span{display:block;width:22px;height:2px;background:white;border-radius:2px;}
 .filtro-activo{display:none;align-items:center;gap:8px;background:#2a1010;border:1px solid #e60012;color:#ff8888;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:bold;}
 .filtro-activo button{background:none;border:none;color:#ff8888;font-size:16px;cursor:pointer;padding:0;}
 
@@ -164,6 +165,12 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="sub">Jordan • Nike • Luxury</div>
 </header>
 
+<button class="menu-categorias-btn" onclick="abrirCategorias()" aria-label="Categorías">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
 <div class="trust-row">
 <div class="trust-item"><span>🔒</span> Pago 100% seguro</div>
 <div class="trust-item"><span>🚚</span> Envío a todo Chile</div>
@@ -175,7 +182,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 
 <div class="filtro-row">
-<button class="filtro-btn" onclick="abrirCategorias()">📂 Categorías</button>
 <div class="filtro-activo" id="filtro-activo">
 <span id="filtro-activo-texto"></span>
 <button onclick="quitarFiltro()">✕</button>
@@ -185,7 +191,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="categorias-overlay" id="categorias-overlay" onclick="cerrarCategorias()"></div>
 <div class="categorias-panel" id="categorias-panel">
 <div class="categorias-header">
-<h2>📂 Categorías</h2>
+<h2>☰ Categorías</h2>
 <button class="categorias-close" onclick="cerrarCategorias()">✕</button>
 </div>
 <div class="categorias-lista" id="categorias-lista"></div>
