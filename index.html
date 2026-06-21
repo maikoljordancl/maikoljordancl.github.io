@@ -26,12 +26,33 @@ h1{margin-top:10px;font-size:34px;}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#aaa;}
 .trust-item span:first-child{font-size:16px;}
 
-.search{padding:20px;}
+.search{padding:20px 20px 0;}
 .search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;}
-.categorias{display:flex;gap:10px;overflow-x:auto;padding:10px 20px;}
-.categorias::-webkit-scrollbar{display:none;}
-.categorias button{background:#1a1a1a;color:white;border:none;padding:10px 16px;border-radius:20px;cursor:pointer;transition:0.3s;white-space:nowrap;}
-.categorias button:hover,.categorias button.active{background:#e60012;}
+
+.filtro-row{display:flex;align-items:center;gap:10px;padding:14px 20px;flex-wrap:wrap;}
+.filtro-btn{background:#1a1a1a;color:white;border:1px solid #2a2a2a;padding:10px 16px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:14px;display:flex;align-items:center;gap:6px;}
+.filtro-btn:hover{border-color:#e60012;}
+.filtro-activo{display:none;align-items:center;gap:8px;background:#2a1010;border:1px solid #e60012;color:#ff8888;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:bold;}
+.filtro-activo button{background:none;border:none;color:#ff8888;font-size:16px;cursor:pointer;padding:0;}
+
+.categorias-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
+.categorias-overlay.open{display:block;}
+.categorias-panel{position:fixed;top:0;left:-100%;width:320px;max-width:85%;height:100%;background:#111;z-index:1001;display:flex;flex-direction:column;transition:left 0.3s;overflow-y:auto;}
+.categorias-panel.open{left:0;}
+.categorias-header{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:2px solid #e60012;}
+.categorias-header h2{font-size:18px;}
+.categorias-close{background:none;border:none;color:white;font-size:24px;cursor:pointer;}
+.categorias-lista{padding:6px 0;}
+.cat-item{padding:16px 20px;border-bottom:1px solid #1f1f1f;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:14px;letter-spacing:0.5px;color:#eee;text-transform:uppercase;}
+.cat-item:hover{background:#1a1a1a;}
+.cat-item.activo{color:#e60012;}
+.cat-item .chevron{transition:transform 0.2s;font-size:12px;color:#888;}
+.cat-item.expandido .chevron{transform:rotate(180deg);}
+.cat-children{max-height:0;overflow:hidden;transition:max-height 0.3s;background:#0c0c0c;}
+.cat-children.abierto{max-height:600px;}
+.cat-child{padding:13px 20px 13px 36px;cursor:pointer;font-size:14px;color:#bbb;border-bottom:1px solid #1a1a1a;}
+.cat-child:hover{background:#181818;color:white;}
+.cat-child.activo{color:#e60012;font-weight:bold;}
 .produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:20px;}
 .card{background:#151515;border-radius:18px;padding:15px;border:1px solid #2a2a2a;transition:0.3s;display:flex;flex-direction:column;gap:10px;justify-content:space-between;}
 .card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
@@ -141,7 +162,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <img src="logo.webp" class="logo" alt="Maikol Jordan Logo">
 <h1>MAIKOL JORDAN</h1>
 <div class="sub">Jordan • Nike • Luxury</div>
-<div class="envio">🚚 Envío a todo el país a domicilio</div>
 </header>
 
 <div class="trust-row">
@@ -154,8 +174,21 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <input type="text" id="buscar" placeholder="Buscar modelo...">
 </div>
 
-<div class="categorias" id="categorias-container">
-<button onclick="filtrar('todos', this)" class="active">Todos</button>
+<div class="filtro-row">
+<button class="filtro-btn" onclick="abrirCategorias()">📂 Categorías</button>
+<div class="filtro-activo" id="filtro-activo">
+<span id="filtro-activo-texto"></span>
+<button onclick="quitarFiltro()">✕</button>
+</div>
+</div>
+
+<div class="categorias-overlay" id="categorias-overlay" onclick="cerrarCategorias()"></div>
+<div class="categorias-panel" id="categorias-panel">
+<div class="categorias-header">
+<h2>📂 Categorías</h2>
+<button class="categorias-close" onclick="cerrarCategorias()">✕</button>
+</div>
+<div class="categorias-lista" id="categorias-lista"></div>
 </div>
 
 <div class="produtos" id="productos">
@@ -327,6 +360,19 @@ const CUPONES = {
 
 let cuponAplicado = null;
 
+// ===== ESTRUCTURA DE CATEGORÍAS =====
+// Cada "padre" agrupa categorías específicas (hijos) que vienen de la columna
+// de categoría en tu Google Sheet. Para que un producto aparezca como subcategoría,
+// escribe el nombre EXACTO del hijo en esa columna (mayúsculas/minúsculas no importan).
+const CATEGORIA_PADRES = {
+  "Nike": ["Air Force 1"],
+  "Jordan": ["Jordan Retro 3", "Jordan Retro 4", "Jordan Retro 5", "Jordan Retro 6"]
+};
+
+function normalizar(s) {
+  return (s || "").toString().trim().toLowerCase();
+}
+
 let productos = [];
 let categoriaActual = "todos";
 let carrito = [];
@@ -368,7 +414,7 @@ async function cargarProductos() {
         tallas: columnas[4] ? columnas[4].split(";").map(function(t){ return parseInt(t.trim()); }).filter(function(t){ return !isNaN(t); }) : [37,38,39,40,41,42,43,44,45]
       };
     });
-    generarBotonesCategorias();
+    generarMenuCategorias();
     render();
     cargarDatosGuardados();
   } catch (error) {
@@ -376,22 +422,94 @@ async function cargarProductos() {
   }
 }
 
-function generarBotonesCategorias() {
-  const container = document.getElementById("categorias-container");
-  const categoriasUnicas = ["todos"];
+function generarMenuCategorias() {
+  const lista = document.getElementById("categorias-lista");
+
+  const tagsUnicos = [];
+  const vistos = {};
   productos.forEach(function(p) {
-    if (p.tags[0] && categoriasUnicas.indexOf(p.tags[0]) === -1) {
-      categoriasUnicas.push(p.tags[0]);
+    const original = p.tags[0];
+    if (!original) return;
+    const norm = normalizar(original);
+    if (!vistos[norm]) {
+      vistos[norm] = true;
+      tagsUnicos.push(original);
     }
   });
-  container.innerHTML = "";
-  categoriasUnicas.forEach(function(cat) {
-    const btn = document.createElement("button");
-    btn.className = cat === "todos" ? "active" : "";
-    btn.textContent = cat === "todos" ? "Todos" : cat;
-    btn.onclick = function(e) { filtrar(cat, e.target); };
-    container.appendChild(btn);
+
+  const todosLosHijosNorm = [];
+  Object.keys(CATEGORIA_PADRES).forEach(function(padre) {
+    CATEGORIA_PADRES[padre].forEach(function(hijo) { todosLosHijosNorm.push(normalizar(hijo)); });
   });
+
+  let html = '<div class="cat-item' + (categoriaActual === "todos" ? " activo" : "") + '" onclick="filtrar(\'todos\')">Todos</div>';
+
+  Object.keys(CATEGORIA_PADRES).forEach(function(padreLabel) {
+    const padreNorm = normalizar(padreLabel);
+    const hijos = CATEGORIA_PADRES[padreLabel];
+
+    const hijosExistentes = hijos.filter(function(h) {
+      return tagsUnicos.some(function(t) { return normalizar(t) === normalizar(h); });
+    });
+    const padreExisteDirecto = tagsUnicos.some(function(t) { return normalizar(t) === padreNorm; });
+
+    if (hijosExistentes.length === 0 && !padreExisteDirecto) return;
+
+    const estaExpandido = normalizar(categoriaActual) === padreNorm ||
+      hijosExistentes.some(function(h) { return normalizar(h) === normalizar(categoriaActual); });
+
+    html += '<div class="cat-item' + (estaExpandido ? ' expandido' : '') + '" onclick="toggleCategoria(this)"><span>' + padreLabel + '</span><span class="chevron">▾</span></div>';
+    html += '<div class="cat-children' + (estaExpandido ? ' abierto' : '') + '">';
+    if (padreExisteDirecto) {
+      html += '<div class="cat-child' + (normalizar(categoriaActual) === padreNorm ? ' activo' : '') + '" onclick="filtrar(\'' + padreLabel + '\')">Todos los ' + padreLabel + '</div>';
+    }
+    hijosExistentes.forEach(function(hijoLabel) {
+      const activo = normalizar(categoriaActual) === normalizar(hijoLabel);
+      html += '<div class="cat-child' + (activo ? ' activo' : '') + '" onclick="filtrar(\'' + hijoLabel + '\')">' + hijoLabel + '</div>';
+    });
+    html += '</div>';
+  });
+
+  tagsUnicos.forEach(function(tag) {
+    const norm = normalizar(tag);
+    const esPadre = Object.keys(CATEGORIA_PADRES).some(function(p) { return normalizar(p) === norm; });
+    const esHijo = todosLosHijosNorm.indexOf(norm) !== -1;
+    if (esPadre || esHijo) return;
+    const activo = normalizar(categoriaActual) === norm;
+    html += '<div class="cat-item' + (activo ? ' activo' : '') + '" onclick="filtrar(\'' + tag + '\')">' + tag + '</div>';
+  });
+
+  lista.innerHTML = html;
+}
+
+function toggleCategoria(el) {
+  el.classList.toggle("expandido");
+  el.nextElementSibling.classList.toggle("abierto");
+}
+
+function actualizarFiltroActivo() {
+  const chip = document.getElementById("filtro-activo");
+  const texto = document.getElementById("filtro-activo-texto");
+  if (categoriaActual === "todos") {
+    chip.style.display = "none";
+  } else {
+    chip.style.display = "flex";
+    texto.textContent = categoriaActual;
+  }
+}
+
+function quitarFiltro() {
+  filtrar("todos");
+}
+
+function abrirCategorias() {
+  document.getElementById("categorias-panel").classList.add("open");
+  document.getElementById("categorias-overlay").classList.add("open");
+}
+
+function cerrarCategorias() {
+  document.getElementById("categorias-panel").classList.remove("open");
+  document.getElementById("categorias-overlay").classList.remove("open");
 }
 
 function render() {
@@ -418,11 +536,12 @@ function render() {
   aplicar();
 }
 
-function filtrar(cat, btnElemento) {
-  categoriaActual = cat;
-  document.querySelectorAll(".categorias button").forEach(function(b) { b.classList.remove("active"); });
-  btnElemento.classList.add("active");
+function filtrar(tag) {
+  categoriaActual = tag;
+  generarMenuCategorias();
+  actualizarFiltroActivo();
   aplicar();
+  cerrarCategorias();
 }
 
 document.getElementById("buscar").addEventListener("keyup", aplicar);
@@ -433,7 +552,7 @@ function aplicar() {
     const index = parseInt(card.dataset.index);
     const p = productos[index];
     if (!p) return;
-    const enCategoria = categoriaActual === "todos" || p.tags.indexOf(categoriaActual) !== -1;
+    const enCategoria = categoriaActual === "todos" || p.tags.some(function(t) { return normalizar(t) === normalizar(categoriaActual); });
     const enBusqueda = p.nombre.toLowerCase().indexOf(texto) !== -1;
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
