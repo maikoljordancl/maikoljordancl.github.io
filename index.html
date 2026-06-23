@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maikol Jordan</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2EN8SLMRST"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-2EN8SLMRST');
+</script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b0b0b;color:white;}
+header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
+.logo{width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid #e60012;}
+h1{margin-top:10px;font-size:34px;}
+.sub{color:#e60012;font-weight:bold;}
+.envio{margin-top:8px;opacity:0.8;}
+
+.trust-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:14px 20px;background:#111;border-bottom:1px solid #1f1f1f;}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#aaa;}
+.trust-item span:first-child{font-size:16px;}
+
+.search{padding:20px 20px 0;}
+.search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;}
+
+.filtro-row{display:flex;align-items:center;gap:10px;padding:14px 20px;flex-wrap:wrap;}
+.menu-categorias-btn{position:fixed;top:16px;left:16px;z-index:999;background:#1a1a1a;border:1px solid #2a2a2a;width:46px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.4);transition:0.3s;}
+.menu-categorias-btn:hover{border-color:#e60012;}
+.menu-categorias-btn span{display:block;width:22px;height:2px;background:white;border-radius:2px;}
+.filtro-activo{display:none;align-items:center;gap:8px;background:#2a1010;border:1px solid #e60012;color:#ff8888;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:bold;}
+.filtro-activo button{background:none;border:none;color:#ff8888;font-size:16px;cursor:pointer;padding:0;}
+
+.categorias-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
+.categorias-overlay.open{display:block;}
+.categorias-panel{position:fixed;top:0;left:-100%;width:320px;max-width:85%;height:100%;background:#111;z-index:1001;display:flex;flex-direction:column;transition:left 0.3s;overflow-y:auto;}
+.categorias-panel.open{left:0;}
+.categorias-header{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:2px solid #e60012;}
+.categorias-header h2{font-size:18px;}
+.categorias-close{background:none;border:none;color:white;font-size:24px;cursor:pointer;}
+.categorias-lista{padding:6px 0;}
+.cat-item{padding:16px 20px;border-bottom:1px solid #1f1f1f;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:14px;letter-spacing:0.5px;color:#eee;text-transform:uppercase;}
+.cat-item:hover{background:#1a1a1a;}
+.cat-item.activo{color:#e60012;}
+.cat-item .chevron{transition:transform 0.2s;font-size:12px;color:#888;}
+.cat-item.expandido .chevron{transform:rotate(180deg);}
+.cat-children{max-height:0;overflow:hidden;transition:max-height 0.3s;background:#0c0c0c;}
+.cat-children.abierto{max-height:600px;}
+.cat-child{padding:13px 20px 13px 36px;cursor:pointer;font-size:14px;color:#bbb;border-bottom:1px solid #1a1a1a;}
+.cat-child:hover{background:#181818;color:white;}
+.cat-child.activo{color:#e60012;font-weight:bold;}
+.produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:20px;}
+.card{background:#151515;border-radius:18px;padding:15px;border:1px solid #2a2a2a;transition:0.3s;display:flex;flex-direction:column;gap:10px;justify-content:space-between;}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
+.img-producto{display:block;width:100%;height:200px;object-fit:contain;border-radius:12px;background:#1a1a1a;padding:6px;}
+.card h3{font-size:18px;margin-top:5px;}
+.precio{color:#e60012;font-size:22px;font-weight:bold;}
+select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;color:white;font-weight:bold;outline:none;cursor:pointer;}
+.btn{background:#e60012;border:none;padding:12px;border-radius:10px;color:white;font-weight:bold;cursor:pointer;transition:0.3s;}
+.btn:hover{background:#b8000e;}
+.cart-btn{position:fixed;bottom:20px;left:20px;background:#e60012;color:white;padding:14px 18px;border-radius:50px;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);cursor:pointer;border:none;font-size:16px;}
+.cart-badge{background:white;color:#e60012;border-radius:50%;padding:2px 7px;font-size:13px;margin-left:5px;font-weight:bold;}
+.cart-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
+.cart-overlay.open{display:block;}
+.cart-panel{position:fixed;top:0;right:-100%;width:420px;max-width:100%;height:100%;background:#111;z-index:1001;display:flex;flex-direction:column;transition:right 0.3s;padding:20px;overflow-y:auto;}
+.cart-panel.open{right:0;}
+.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #e60012;padding-bottom:15px;}
+.cart-header h2{font-size:22px;}
+.cart-close{background:none;border:none;color:white;font-size:26px;cursor:pointer;}
+.cart-items{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.cart-item{background:#1a1a1a;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;}
+.cart-item img{width:70px;height:70px;object-fit:cover;border-radius:8px;background:#222;flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-weight:bold;font-size:14px;margin-bottom:3px;}
+.cart-item-talla{color:#999;font-size:13px;margin-bottom:4px;}
+.cart-item-precio{color:#e60012;font-weight:bold;font-size:15px;}
+.cart-item-remove{background:none;border:none;color:#666;font-size:22px;cursor:pointer;padding:0 4px;}
+.cart-item-remove:hover{color:#e60012;}
+.cart-empty{text-align:center;color:#555;margin-top:60px;font-size:16px;}
+.checkout-section{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:16px;}
+.checkout-section h3{font-size:16px;margin-bottom:14px;color:#e60012;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.form-row.single{grid-template-columns:1fr;}
+.form-input{width:100%;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;}
+.form-input:focus{border-color:#e60012;}
+.form-input::placeholder{color:#555;}
+.metodo-pago{background:#222;border:2px solid #333;border-radius:10px;padding:14px;cursor:pointer;transition:0.3s;margin-bottom:8px;}
+.metodo-pago:hover{border-color:#e60012;}
+.metodo-pago.selected{border-color:#e60012;background:#2a1a1a;}
+.metodo-pago-header{display:flex;align-items:center;justify-content:space-between;font-weight:bold;}
+.metodo-pago-titulo{display:flex;align-items:center;gap:10px;}
+.metodo-img-jpg{display:block;}
+.metodo-pago-desc{font-size:12px;color:#888;margin-top:4px;margin-left:32px;}
+.badge-mejor{background:#009EE3;color:white;font-size:10px;font-weight:bold;padding:2px 8px;border-radius:20px;margin-left:8px;text-transform:uppercase;letter-spacing:0.5px;}
+
+.cupon-box{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:16px;}
+.cupon-box h3{font-size:16px;margin-bottom:10px;color:#e60012;}
+.cupon-row{display:flex;gap:8px;}
+.cupon-row input{flex:1;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;text-transform:uppercase;}
+.cupon-row input:focus{border-color:#e60012;}
+.cupon-row button{background:#e60012;border:none;padding:10px 16px;border-radius:8px;color:white;font-weight:bold;cursor:pointer;white-space:nowrap;transition:0.3s;}
+.cupon-row button:hover{background:#b8000e;}
+.cupon-msg{margin-top:8px;font-size:13px;}
+.cupon-msg.error{color:#ff6b6b;}
+.cupon-aplicado{display:flex;justify-content:space-between;align-items:center;background:#16261c;border:1px solid #3ddc84;border-radius:8px;padding:10px 12px;margin-top:8px;}
+.cupon-aplicado span{font-size:13px;color:#3ddc84;font-weight:bold;}
+.cupon-aplicado button{background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:0 4px;}
+.cupon-aplicado button:hover{color:#ff6b6b;}
+
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;}
+.cart-total-row.descuento{color:#3ddc84;}
+.cart-total-final{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;}
+.pago-seguro-msg{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#777;margin-bottom:10px;}
+.btn-pago{width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;transition:0.3s;margin-bottom:8px;}
+.btn-wsp{background:#25D366;color:white;}
+.btn-wsp:hover{background:#1ebe5d;}
+.btn-mp{background:#009EE3;color:white;}
+.btn-mp:hover{background:#0081bb;}
+.btn-transferencia{background:#f5a623;color:white;}
+.btn-transferencia:hover{background:#d4881a;}
+.transferencia-info{background:#222;border-radius:10px;padding:14px;margin-top:10px;display:none;}
+.transferencia-info.show{display:block;}
+.transferencia-info p{margin-bottom:6px;font-size:14px;color:#ccc;}
+.transferencia-info strong{color:white;}
+.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
+.volver-arriba{position:fixed;bottom:80px;right:20px;background:#222;color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;transform:translateY(10px);}
+.volver-arriba.visible{opacity:1;pointer-events:all;transform:translateY(0);}
+.volver-arriba:hover{background:#e60012;}
+.toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.toast.show{opacity:1;}
+.loading{text-align:center;grid-column:1/-1;padding:40px;font-size:18px;color:#aaa;}
+
+.aviso-consulta{background:#161616;border:1px solid #2a2a2a;border-left:4px solid #e60012;border-radius:14px;padding:20px 24px;margin:30px 20px 10px;text-align:center;}
+.aviso-consulta p{color:#ccc;font-size:15px;line-height:1.5;}
+.aviso-consulta a{color:#e60012;font-weight:bold;text-decoration:none;border-bottom:1px dashed #e60012;}
+.aviso-consulta a:hover{color:#ff3344;}
+
+/* FOOTER */
+footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3px solid #e60012;}
+.footer-top{background:#111;padding:40px 20px 30px;}
+.footer-brand{font-size:22px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;}
+.footer-brand span{color:#e60012;}
+.footer-tagline{color:#555;font-size:13px;margin-bottom:28px;}
+.footer-divider{width:60px;height:3px;background:#e60012;margin:0 auto 28px;}
+.footer-redes{display:flex;justify-content:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.footer-redes a{display:flex;align-items:center;gap:8px;color:#aaa;text-decoration:none;font-size:13px;font-weight:bold;padding:10px 16px;border-radius:10px;background:#1a1a1a;border:1px solid #2a2a2a;transition:0.3s;}
+.footer-redes a:hover{border-color:#e60012;color:white;background:#1e1e1e;}
+.footer-redes a svg{flex-shrink:0;}
+.footer-bottom{background:#000;border-top:1px solid #1a1a1a;padding:20px;}
+.footer-text{opacity:0.4;font-size:12px;margin-bottom:14px;letter-spacing:0.5px;}
+.footer-logos{display:flex;justify-content:center;align-items:center;}
+.footer-stripe{display:block;height:4px;background:linear-gradient(90deg,#000,#e60012,#000);margin-bottom:0;}
+</style>
+</head>
+<body>
+
+<header>
+<img src="logo.webp" class="logo" alt="Maikol Jordan Logo">
+<h1>MAIKOL JORDAN</h1>
+<div class="sub">Jordan • Nike • Luxury</div>
+</header>
+
+<button class="menu-categorias-btn" onclick="abrirCategorias()" aria-label="Categorías">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+<div class="trust-row">
+<div class="trust-item"><span>🔒</span> Pago 100% seguro</div>
+<div class="trust-item"><span>🚚</span> Envío a todo Chile</div>
+<div class="trust-item"><span>💬</span> Atención por WhatsApp</div>
+</div>
+
+<div class="search">
+<input type="text" id="buscar" placeholder="Buscar modelo...">
+</div>
+
+<div class="filtro-row">
+<div class="filtro-activo" id="filtro-activo">
+<span id="filtro-activo-texto"></span>
+<button onclick="quitarFiltro()">✕</button>
+</div>
+</div>
+
+<div class="categorias-overlay" id="categorias-overlay" onclick="cerrarCategorias()"></div>
+<div class="categorias-panel" id="categorias-panel">
+<div class="categorias-header">
+<h2>☰ Categorías</h2>
+<button class="categorias-close" onclick="cerrarCategorias()">✕</button>
+</div>
+<div class="categorias-lista" id="categorias-lista"></div>
+</div>
+
+<div class="produtos" id="productos">
+<div class="loading">Cargando catálogo...</div>
+</div>
+
+<button class="cart-btn" onclick="abrirCarrito()">
+🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
+</button>
+
+<div class="cart-overlay" id="cart-overlay" onclick="cerrarCarrito()"></div>
+
+<div class="cart-panel" id="cart-panel">
+<div class="cart-header">
+<h2>🛒 Tu carrito</h2>
+<button class="cart-close" onclick="cerrarCarrito()">✕</button>
+</div>
+
+<div class="cart-items" id="cart-items">
+<div class="cart-empty">😕 Tu carrito está vacío</div>
+</div>
+
+<div id="checkout-form" style="display:none">
+
+<div class="cupon-box">
+<h3>🏷️ Cupón de descuento</h3>
+<div class="cupon-row" id="cupon-row">
+<input type="text" id="c-cupon" placeholder="Ingresa tu código">
+<button onclick="aplicarCupon()">Aplicar</button>
+</div>
+<div class="cupon-msg" id="cupon-msg"></div>
+</div>
+
+<div class="checkout-section">
+<h3>📦 Datos de envío</h3>
+<div class="form-row">
+<input class="form-input" id="c-nombre" placeholder="Nombre completo" type="text">
+<input class="form-input" id="c-whatsapp" placeholder="WhatsApp (+569...)" type="text">
+</div>
+<div class="form-row single">
+<input class="form-input" id="c-direccion" placeholder="Dirección completa (Calle + N°)" type="text">
+</div>
+<div class="form-row">
+<input class="form-input" id="c-region" placeholder="Región" type="text">
+<input class="form-input" id="c-comuna" placeholder="Comuna" type="text">
+</div>
+<div class="form-row single">
+<input class="form-input" id="c-cp" placeholder="Código postal" type="text">
+</div>
+</div>
+
+<div class="checkout-section">
+<h3>💳 Método de pago</h3>
+<div class="metodo-pago selected" id="metodo-mp" onclick="seleccionarMetodo('mp')">
+<div class="metodo-pago-header">
+<div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <span class="badge-mejor">⭐ Mejor opción</span></div>
+<img src="mp-chico.png" class="metodo-img-jpg" alt="Mercado Pago" style="width:auto;height:30px;display:block;">
+</div>
+<div class="metodo-pago-desc">Paga de forma segura con tarjeta o débito — rápido y sin complicaciones</div>
+</div>
+<div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodo('transferencia')">
+<div class="metodo-pago-header">
+<div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
+<img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="Banco">
+</div>
+<div class="metodo-pago-desc">Acepta cualquier banco — BCI, Santander, Banco Estado, Falabella y más</div>
+</div>
+<div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodo('wsp')">
+<div class="metodo-pago-header">
+<div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
+<img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" class="metodo-img-jpg" alt="WhatsApp">
+</div>
+<div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
+</div>
+
+<div class="transferencia-info" id="transferencia-info">
+<p>Transfiere y envía el comprobante por WhatsApp:</p>
+<p>👤 <strong>Michael Gajardo</strong></p>
+<p>🪪 <strong>RUT: 74654258</strong></p>
+<p>🏦 <strong>Mercado Pago — Cuenta Vista</strong></p>
+<p>🔢 <strong>N° cuenta: 1043755162</strong></p>
+<p>📧 <strong>maikoljordancl@gmail.com</strong></p>
+</div>
+</div>
+
+<div class="cart-total-row"><span>Subtotal</span><span id="cart-subtotal"></span></div>
+<div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
+<div class="cart-total-row descuento" id="cart-descuento-row" style="display:none"><span id="cart-descuento-label">Descuento</span><span id="cart-descuento-valor"></span></div>
+<div class="cart-total-final"><span>TOTAL</span><span id="cart-total"></span></div>
+
+<div class="pago-seguro-msg">🔒 Pago procesado de forma segura</div>
+<button class="btn-pago btn-mp" id="btn-confirmar" onclick="confirmarPedido()">
+💳 Pagar con Mercado Pago
+</button>
+</div>
+</div>
+
+<div class="toast" id="toast">✅ Agregado al carrito</div>
+
+<a class="whatsapp" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank">
+💬 Consultas
+</a>
+
+<button class="volver-arriba" id="volver-arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">↑</button>
+
+<div class="aviso-consulta">
+<p>👀 ¿No encuentras el modelo o color que buscas? <a href="https://wa.me/56931402987?text=Hola%2C%20estoy%20buscando%20un%20modelo%20o%20color%20que%20no%20veo%20en%20el%20cat%C3%A1logo%2C%20%C2%BFme%20pueden%20ayudar%3F" target="_blank">Consúltanos por WhatsApp</a>, puede que tengamos más stock disponible.</p>
+</div>
+
+<footer>
+<div class="footer-stripe"></div>
+<div class="footer-top">
+<div class="footer-brand">MAIKOL <span>JORDAN</span></div>
+<div class="footer-tagline">Jordan • Nike • Luxury — Envío a todo el país a domicilio</div>
+<div class="footer-divider"></div>
+<div class="footer-redes">
+<a href="https://www.instagram.com/maikoljordan.cl" target="_blank">
+<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+<stop offset="0%" style="stop-color:#f09433"/>
+<stop offset="25%" style="stop-color:#e6683c"/>
+<stop offset="50%" style="stop-color:#dc2743"/>
+<stop offset="75%" style="stop-color:#cc2366"/>
+<stop offset="100%" style="stop-color:#bc1888"/>
+</linearGradient>
+</defs>
+<rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="url(#ig-grad)"/>
+<circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/>
+<circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+</svg>
+@maikoljordan.cl
+</a>
+<a href="https://www.facebook.com/maikoljordan.cl" target="_blank">
+<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<rect width="24" height="24" rx="5" fill="#1877F2"/>
+<path d="M16 8h-2a1 1 0 0 0-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 0 1 4-4h2v3z" fill="white"/>
+</svg>
+@maikoljordan.cl
+</a>
+<a href="mailto:maikoljordancl@gmail.com">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="24" height="24" rx="5" fill="#e60012"/>
+<path d="M4 8l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+<rect x="4" y="7" width="16" height="11" rx="2" stroke="white" stroke-width="1.6" fill="none"/>
+</svg>
+maikoljordancl@gmail.com
+</a>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
+<div class="footer-logos">
+<img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:160px;height:auto;display:block;margin:0 auto;">
+</div>
+</div>
+</footer>
+
+<script>
+const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZr9QkH84F5sgayYzorXHXFesug2rCZ6AAPS6GVRXdLxmYHN7XYUX6JfArFsMUHREqPqL3jJ8r7ks/pub?output=csv";
+const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
+
+// ===== SISTEMA DE CUPONES =====
+// Para agregar más cupones, solo agrega otra línea aquí con el mismo formato.
+// tipo "fijo" = descuento en pesos. tipo "porcentaje" = descuento en %.
+const CUPONES = {
+  "SIKMAS26": { tipo: "fijo", valor: 5000, descripcion: "$5.000 de descuento" }
+};
+
+let cuponAplicado = null;
+
+// ===== ESTRUCTURA DE CATEGORÍAS =====
+// Cada "padre" agrupa categorías específicas (hijos) que vienen de la columna
+// de categoría en tu Google Sheet. Para que un producto aparezca como subcategoría,
+// escribe el nombre EXACTO del hijo en esa columna (mayúsculas/minúsculas no importan).
+const CATEGORIA_PADRES = {
+  "Nike": ["Air Force 1", "TN Plus", "Air Max 97", "Shox TL", "Air Max 95"],
+  "Jordan": ["Jordan Retro 1", "Jordan Retro 3", "Jordan Retro 4", "Jordan Retro 5", "Jordan Retro 6", "Jordan Retro 8", "Jordan Retro 9", "Jordan Retro 11", "Jordan Retro 12", "Jordan Retro 13", "Jordan Retro 14", "Jordan Retro 312"],
+  "Louis Vuitton": ["LV Trainer", "LV Skate"]
+};
+
+function normalizar(s) {
+  return (s || "").toString().trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+let productos = [];
+let categoriaActual = "todos";
+let carrito = [];
+let metodoPago = "mp";
+
+function parsearFilaCSV(linea) {
+  if (!linea) return [];
+  let resultado = [];
+  let dentroDeComillas = false;
+  let valorActual = "";
+  for (let i = 0; i < linea.length; i++) {
+    let char = linea[i];
+    if (char === '"') {
+      dentroDeComillas = !dentroDeComillas;
+    } else if (char === ',' && !dentroDeComillas) {
+      resultado.push(valorActual.trim());
+      valorActual = "";
+    } else {
+      valorActual += char;
+    }
+  }
+  resultado.push(valorActual.trim());
+  return resultado;
+}
+
+async function cargarProductos() {
+  try {
+    const respuesta = await fetch(SHEETS_CSV_URL);
+    const textoCSV = await respuesta.text();
+    if (!textoCSV) throw new Error("Vacío");
+    const lineas = textoCSV.split("\n").map(function(l){ return l ? l.trim() : ""; }).filter(function(l){ return l.length > 0; });
+    productos = lineas.slice(1).map(function(linea) {
+      const columnas = parsearFilaCSV(linea);
+      return {
+        nombre: columnas[0] ? columnas[0].replace(/"/g, "") : "Modelo sin nombre",
+        precio: columnas[1] ? parseInt(columnas[1].replace(/[^0-9]/g, "")) || 0 : 0,
+        imagen: columnas[2] ? columnas[2] : "logo.webp",
+        tags: [columnas[3] ? columnas[3] : "Otros"],
+        tallas: columnas[4] ? columnas[4].split(";").map(function(t){ return parseInt(t.trim()); }).filter(function(t){ return !isNaN(t); }) : [37,38,39,40,41,42,43,44,45]
+      };
+    });
+    generarMenuCategorias();
+    render();
+    cargarDatosGuardados();
+  } catch (error) {
+    document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
+  }
+}
+
+function generarMenuCategorias() {
+  const lista = document.getElementById("categorias-lista");
+
+  const tagsUnicos = [];
+  const vistos = {};
+  productos.forEach(function(p) {
+    const original = p.tags[0];
+    if (!original) return;
+    const norm = normalizar(original);
+    if (!vistos[norm]) {
+      vistos[norm] = true;
+      tagsUnicos.push(original);
+    }
+  });
+
+  const todosLosHijosNorm = [];
+  Object.keys(CATEGORIA_PADRES).forEach(function(padre) {
+    CATEGORIA_PADRES[padre].forEach(function(hijo) { todosLosHijosNorm.push(normalizar(hijo)); });
+  });
+
+  let html = '<div class="cat-item' + (categoriaActual === "todos" ? " activo" : "") + '" onclick="filtrar(\'todos\')">Todos</div>';
+
+  Object.keys(CATEGORIA_PADRES).forEach(function(padreLabel) {
+    const padreNorm = normalizar(padreLabel);
+    const hijos = CATEGORIA_PADRES[padreLabel];
+
+    const hijosExistentes = hijos.filter(function(h) {
+      return tagsUnicos.some(function(t) { return normalizar(t) === normalizar(h); });
+    });
+    const padreExisteDirecto = tagsUnicos.some(function(t) { return normalizar(t) === padreNorm; });
+
+    if (hijosExistentes.length === 0 && !padreExisteDirecto) return;
+
+    const estaExpandido = normalizar(categoriaActual) === padreNorm ||
+      hijosExistentes.some(function(h) { return normalizar(h) === normalizar(categoriaActual); });
+
+    html += '<div class="cat-item' + (estaExpandido ? ' expandido' : '') + '" onclick="toggleCategoria(this)"><span>' + padreLabel + '</span><span class="chevron">▾</span></div>';
+    html += '<div class="cat-children' + (estaExpandido ? ' abierto' : '') + '">';
+    if (padreExisteDirecto) {
+      html += '<div class="cat-child' + (normalizar(categoriaActual) === padreNorm ? ' activo' : '') + '" onclick="filtrar(\'' + padreLabel + '\')">Todos los ' + padreLabel + '</div>';
+    }
+    hijosExistentes.forEach(function(hijoLabel) {
+      const activo = normalizar(categoriaActual) === normalizar(hijoLabel);
+      html += '<div class="cat-child' + (activo ? ' activo' : '') + '" onclick="filtrar(\'' + hijoLabel + '\')">' + hijoLabel + '</div>';
+    });
+    html += '</div>';
+  });
+
+  tagsUnicos.forEach(function(tag) {
+    const norm = normalizar(tag);
+    const esPadre = Object.keys(CATEGORIA_PADRES).some(function(p) { return normalizar(p) === norm; });
+    const esHijo = todosLosHijosNorm.indexOf(norm) !== -1;
+    if (esPadre || esHijo) return;
+    const activo = normalizar(categoriaActual) === norm;
+    html += '<div class="cat-item' + (activo ? ' activo' : '') + '" onclick="filtrar(\'' + tag + '\')">' + tag + '</div>';
+  });
+
+  lista.innerHTML = html;
+}
+
+function toggleCategoria(el) {
+  el.classList.toggle("expandido");
+  el.nextElementSibling.classList.toggle("abierto");
+}
+
+function actualizarFiltroActivo() {
+  const chip = document.getElementById("filtro-activo");
+  const texto = document.getElementById("filtro-activo-texto");
+  if (categoriaActual === "todos") {
+    chip.style.display = "none";
+  } else {
+    chip.style.display = "flex";
+    texto.textContent = categoriaActual;
+  }
+}
+
+function quitarFiltro() {
+  filtrar("todos");
+}
+
+function abrirCategorias() {
+  document.getElementById("categorias-panel").classList.add("open");
+  document.getElementById("categorias-overlay").classList.add("open");
+}
+
+function cerrarCategorias() {
+  document.getElementById("categorias-panel").classList.remove("open");
+  document.getElementById("categorias-overlay").classList.remove("open");
+}
+
+function render() {
+  const cont = document.getElementById("productos");
+  if (productos.length === 0) {
+    cont.innerHTML = '<div class="loading">No hay productos disponibles.</div>';
+    return;
+  }
+  let html = "";
+  productos.forEach(function(p, index) {
+    let opcionesTalla = "";
+    p.tallas.forEach(function(t) {
+      opcionesTalla += '<option value="' + t + '" ' + (t === 41 ? 'selected' : '') + '>Talla: ' + t + '</option>';
+    });
+    html += '<div class="card" data-index="' + index + '">' +
+      '<img src="' + p.imagen + '" class="img-producto" alt="' + p.nombre + '" onerror="this.src=\'logo.webp\'">' +
+      '<h3>' + p.nombre + '</h3>' +
+      '<div class="precio">$' + p.precio.toLocaleString("es-CL") + '</div>' +
+      '<select id="talla-' + index + '">' + opcionesTalla + '</select>' +
+      '<button class="btn" onclick="agregarAlCarrito(' + index + ')">🛒 Agregar al carrito</button>' +
+      '</div>';
+  });
+  cont.innerHTML = html;
+  aplicar();
+}
+
+function filtrar(tag) {
+  categoriaActual = tag;
+  generarMenuCategorias();
+  actualizarFiltroActivo();
+  aplicar();
+  cerrarCategorias();
+}
+
+document.getElementById("buscar").addEventListener("keyup", aplicar);
+
+// Si la categoría elegida es un "padre" (ej: Jordan), esto devuelve el padre
+// + todas sus subcategorías, para que "Todos los Jordan" muestre TODO lo de Jordan.
+function tagsParaFiltro(cat) {
+  const norm = normalizar(cat);
+  const padreKey = Object.keys(CATEGORIA_PADRES).find(function(p) { return normalizar(p) === norm; });
+  if (padreKey) {
+    const lista = [norm];
+    CATEGORIA_PADRES[padreKey].forEach(function(h) { lista.push(normalizar(h)); });
+    return lista;
+  }
+  return [norm];
+}
+
+function aplicar() {
+  const texto = document.getElementById("buscar").value.toLowerCase();
+  const tagsValidos = tagsParaFiltro(categoriaActual);
+  document.querySelectorAll(".card").forEach(function(card) {
+    const index = parseInt(card.dataset.index);
+    const p = productos[index];
+    if (!p) return;
+    const enCategoria = categoriaActual === "todos" || p.tags.some(function(t) { return tagsValidos.indexOf(normalizar(t)) !== -1; });
+    const enBusqueda = p.nombre.toLowerCase().indexOf(texto) !== -1;
+    card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
+  });
+}
+
+function agregarAlCarrito(index) {
+  const p = productos[index];
+  const talla = document.getElementById("talla-" + index).value;
+  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagen, talla: talla });
+  actualizarCarrito();
+  mostrarToast();
+}
+
+// ===== LÓGICA DE CUPONES =====
+
+function calcularDescuento(subtotal, envio) {
+  if (!cuponAplicado) return 0;
+  const totalSinDescuento = subtotal + envio;
+  let descuento = 0;
+  if (cuponAplicado.tipo === "fijo") {
+    descuento = cuponAplicado.valor;
+  } else if (cuponAplicado.tipo === "porcentaje") {
+    descuento = Math.round(totalSinDescuento * (cuponAplicado.valor / 100));
+  }
+  if (descuento > totalSinDescuento) descuento = totalSinDescuento;
+  return descuento;
+}
+
+function aplicarCupon() {
+  const inputEl = document.getElementById("c-cupon");
+  const msgEl = document.getElementById("cupon-msg");
+  const codigo = inputEl.value.trim().toUpperCase();
+
+  if (!codigo) {
+    msgEl.textContent = "Ingresa un código de cupón.";
+    msgEl.className = "cupon-msg error";
+    return;
+  }
+
+  const cupon = CUPONES[codigo];
+
+  if (!cupon) {
+    msgEl.textContent = "❌ Cupón inválido o expirado.";
+    msgEl.className = "cupon-msg error";
+    cuponAplicado = null;
+    actualizarCarrito();
+    return;
+  }
+
+  cuponAplicado = { codigo: codigo, tipo: cupon.tipo, valor: cupon.valor, descripcion: cupon.descripcion };
+  msgEl.textContent = "";
+  msgEl.className = "cupon-msg";
+
+  const cuponRow = document.getElementById("cupon-row");
+  cuponRow.style.display = "none";
+
+  const aplicadoHtml = '<div class="cupon-aplicado" id="cupon-aplicado-box">' +
+    '<span>✅ ' + codigo + ' aplicado — ' + cupon.descripcion + '</span>' +
+    '<button onclick="quitarCupon()" title="Quitar cupón">✕</button>' +
+    '</div>';
+  cuponRow.insertAdjacentHTML('afterend', aplicadoHtml);
+
+  actualizarCarrito();
+}
+
+function quitarCupon() {
+  cuponAplicado = null;
+  const box = document.getElementById("cupon-aplicado-box");
+  if (box) box.remove();
+  document.getElementById("cupon-row").style.display = "flex";
+  document.getElementById("c-cupon").value = "";
+  document.getElementById("cupon-msg").textContent = "";
+  document.getElementById("cupon-msg").className = "cupon-msg";
+  actualizarCarrito();
+}
+
+function actualizarCarrito() {
+  const count = carrito.length;
+  document.getElementById("cart-count").textContent = count;
+  const itemsEl = document.getElementById("cart-items");
+  const formEl = document.getElementById("checkout-form");
+
+  if (count === 0) {
+    itemsEl.innerHTML = '<div class="cart-empty">😕 Tu carrito está vacío</div>';
+    formEl.style.display = "none";
+    return;
+  }
+
+  let htmlItems = "";
+  let subtotal = 0;
+  carrito.forEach(function(item, i) {
+    subtotal += item.precio;
+    htmlItems += '<div class="cart-item">' +
+      '<img src="' + item.imagen + '" onerror="this.src=\'logo.webp\'">' +
+      '<div class="cart-item-info">' +
+      '<div class="cart-item-name">' + item.nombre + '</div>' +
+      '<div class="cart-item-talla">Talla: ' + item.talla + '</div>' +
+      '<div class="cart-item-precio">$' + item.precio.toLocaleString("es-CL") + '</div>' +
+      '</div>' +
+      '<button class="cart-item-remove" onclick="removerDelCarrito(' + i + ')">✕</button>' +
+      '</div>';
+  });
+  itemsEl.innerHTML = htmlItems;
+  formEl.style.display = "block";
+
+  const envio = 5000;
+  const descuento = calcularDescuento(subtotal, envio);
+  const total = subtotal + envio - descuento;
+
+  document.getElementById("cart-subtotal").textContent = "$" + subtotal.toLocaleString("es-CL");
+
+  const descuentoRow = document.getElementById("cart-descuento-row");
+  if (descuento > 0) {
+    descuentoRow.style.display = "flex";
+    document.getElementById("cart-descuento-label").textContent = "Descuento (" + cuponAplicado.codigo + ")";
+    document.getElementById("cart-descuento-valor").textContent = "-$" + descuento.toLocaleString("es-CL");
+  } else {
+    descuentoRow.style.display = "none";
+  }
+
+  document.getElementById("cart-total").textContent = "$" + total.toLocaleString("es-CL");
+}
+
+function removerDelCarrito(i) {
+  carrito.splice(i, 1);
+  actualizarCarrito();
+}
+
+function seleccionarMetodo(tipo) {
+  metodoPago = tipo;
+  document.querySelectorAll(".metodo-pago").forEach(function(el) { el.classList.remove("selected"); });
+  document.getElementById("metodo-" + tipo).classList.add("selected");
+  const transInfo = document.getElementById("transferencia-info");
+  const btnConfirmar = document.getElementById("btn-confirmar");
+  if (tipo === "transferencia") {
+    transInfo.classList.add("show");
+  } else {
+    transInfo.classList.remove("show");
+  }
+  if (tipo === "mp") {
+    btnConfirmar.className = "btn-pago btn-mp";
+    btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
+  } else if (tipo === "transferencia") {
+    btnConfirmar.className = "btn-pago btn-transferencia";
+    btnConfirmar.textContent = "🏦 Notificar Transferencia por WhatsApp";
+  } else {
+    btnConfirmar.className = "btn-pago btn-wsp";
+    btnConfirmar.textContent = "💬 Confirmar por WhatsApp";
+  }
+}
+
+function cargarDatosGuardados() {
+  if (localStorage.getItem("m_nombre")) document.getElementById("c-nombre").value = localStorage.getItem("m_nombre");
+  if (localStorage.getItem("m_whatsapp")) document.getElementById("c-whatsapp").value = localStorage.getItem("m_whatsapp");
+  if (localStorage.getItem("m_direccion")) document.getElementById("c-direccion").value = localStorage.getItem("m_direccion");
+  if (localStorage.getItem("m_region")) document.getElementById("c-region").value = localStorage.getItem("m_region");
+  if (localStorage.getItem("m_comuna")) document.getElementById("c-comuna").value = localStorage.getItem("m_comuna");
+  if (localStorage.getItem("m_cp")) document.getElementById("c-cp").value = localStorage.getItem("m_cp");
+}
+
+function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) {
+  localStorage.setItem("m_nombre", nombre);
+  localStorage.setItem("m_whatsapp", whatsapp);
+  localStorage.setItem("m_direccion", direccion);
+  localStorage.setItem("m_region", region);
+  localStorage.setItem("m_comuna", comuna);
+  localStorage.setItem("m_cp", cp);
+}
+
+async function enviarAFormspree(nombre, whatsapp, direccion, region, comuna, cp, metodoPagoTexto, subtotal, descuento, total) {
+  let productosTexto = "";
+  carrito.forEach(function(item, i) {
+    productosTexto += (i + 1) + ". " + item.nombre + " — Talla: " + item.talla + " — $" + item.precio.toLocaleString("es-CL") + "\n";
+  });
+
+  const datos = {
+    _subject: "🛒 Nuevo pedido de " + nombre,
+    "👤 Cliente": nombre,
+    "📱 WhatsApp": whatsapp,
+    "📍 Dirección": direccion,
+    "🌎 Región": region,
+    "🏙 Comuna": comuna,
+    "📮 Código postal": cp || "—",
+    "💳 Método de pago": metodoPagoTexto,
+    "👟 Productos": productosTexto,
+    "💰 Subtotal": "$" + subtotal.toLocaleString("es-CL"),
+    "🚚 Envío": "$5.000",
+    "💵 TOTAL": "$" + total.toLocaleString("es-CL")
+  };
+
+  if (descuento > 0 && cuponAplicado) {
+    datos["🏷️ Cupón usado"] = cuponAplicado.codigo + " (-$" + descuento.toLocaleString("es-CL") + ")";
+  }
+
+  try {
+    await fetch(FORMSPREE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(datos)
+    });
+  } catch (e) {
+    // Silencioso — el pedido igual se procesa por WhatsApp o MP
+  }
+}
+
+async function confirmarPedido() {
+  const nombre = document.getElementById("c-nombre").value.trim();
+  const whatsapp = document.getElementById("c-whatsapp").value.trim();
+  const direccion = document.getElementById("c-direccion").value.trim();
+  const region = document.getElementById("c-region").value.trim();
+  const comuna = document.getElementById("c-comuna").value.trim();
+  const cp = document.getElementById("c-cp").value.trim();
+
+  if (!nombre || !whatsapp || !direccion || !region || !comuna) {
+    alert("Por favor, completa todos los campos de envío.");
+    return;
+  }
+
+  guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp);
+
+  let subtotal = 0;
+  carrito.forEach(function(item) { subtotal += item.precio; });
+  const envio = 5000;
+  const descuento = calcularDescuento(subtotal, envio);
+  const total = subtotal + envio - descuento;
+
+  const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
+
+  enviarAFormspree(nombre, whatsapp, direccion, region, comuna, cp, metodoPagoTexto, subtotal, descuento, total);
+
+  let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
+  mensaje += "👤 *Cliente:* " + nombre + "\n";
+  mensaje += "📱 *WhatsApp:* " + whatsapp + "\n";
+  mensaje += "📍 *Dirección:* " + direccion + ", " + comuna + " (" + region + ")\n";
+  if (cp) { mensaje += "📮 *Cód. Postal:* " + cp + "\n"; }
+  mensaje += "💳 *Método de Pago:* " + metodoPagoTexto + "\n\n";
+  mensaje += "👟 *Productos:*\n";
+  carrito.forEach(function(item) {
+    mensaje += "- " + item.nombre + " (Talla: " + item.talla + ") - $" + item.precio.toLocaleString("es-CL") + "\n";
+  });
+
+  mensaje += "\n💰 *Subtotal:* $" + subtotal.toLocaleString("es-CL");
+  mensaje += "\n🚚 *Envío:* $5.000";
+  if (descuento > 0 && cuponAplicado) {
+    mensaje += "\n🏷️ *Cupón (" + cuponAplicado.codigo + "):* -$" + descuento.toLocaleString("es-CL");
+  }
+  mensaje += "\n💵 *TOTAL A PAGAR:* $" + total.toLocaleString("es-CL");
+
+  const urlWsp = "https://wa.me/56931402987?text=" + encodeURIComponent(mensaje);
+
+  if (metodoPago === "mp") {
+    const btn = document.getElementById("btn-confirmar");
+    btn.textContent = "Procesando...";
+    btn.disabled = true;
+    try {
+      const response = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: carrito,
+          comprador: { nombre, whatsapp, direccion, region, comuna, cp },
+          cupon: cuponAplicado ? cuponAplicado.codigo : null,
+          descuento: descuento,
+          total: total
+        })
+      });
+      const data = await response.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("Error al procesar el pago. Intenta de nuevo.");
+        btn.textContent = "💳 Pagar con Mercado Pago";
+        btn.disabled = false;
+      }
+    } catch (error) {
+      alert("Error de conexión. Intenta de nuevo.");
+      btn.textContent = "💳 Pagar con Mercado Pago";
+      btn.disabled = false;
+    }
+  } else {
+    window.open(urlWsp, "_blank");
+  }
+}
+
+function abrirCarrito() {
+  document.getElementById("cart-panel").classList.add("open");
+  document.getElementById("cart-overlay").classList.add("open");
+}
+
+function cerrarCarrito() {
+  document.getElementById("cart-panel").classList.remove("open");
+  document.getElementById("cart-overlay").classList.remove("open");
+}
+
+function mostrarToast() {
+  const t = document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 2000);
+}
+
+window.onload = cargarProductos;
+
+window.addEventListener("scroll", function() {
+  const btn = document.getElementById("volver-arriba");
+  if (window.scrollY > 300) {
+    btn.classList.add("visible");
+  } else {
+    btn.classList.remove("visible");
+  }
+});
+</script>
+</body>
+</html>
