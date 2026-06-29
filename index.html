@@ -72,10 +72,18 @@ h1{margin-top:10px;font-size:34px;}
 .galeria-nav:hover{border-color:#e60012;background:#1e0a0a;}
 .galeria-prev{left:14px;}
 .galeria-next{right:14px;}
-.galeria-info{position:absolute;bottom:0;left:0;width:100%;padding:50px 24px 30px;background:linear-gradient(to top, rgba(0,0,0,0.92) 20%, transparent);text-align:center;}
-.galeria-info-nombre{color:white;font-size:19px;font-weight:bold;letter-spacing:0.3px;margin-bottom:6px;text-shadow:0 2px 6px rgba(0,0,0,0.6);}
-.galeria-info-precio{color:#e60012;font-size:28px;font-weight:bold;text-shadow:0 0 16px rgba(230,0,18,0.45);}
-.galeria-contador{display:inline-block;margin-top:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:5px 16px;border-radius:20px;color:#bbb;font-size:12px;font-weight:bold;letter-spacing:0.5px;}
+.galeria-info{position:absolute;bottom:0;left:0;width:100%;max-height:48vh;padding:50px 20px 24px;background:linear-gradient(to top, rgba(0,0,0,0.96) 10%, rgba(0,0,0,0.75) 40%, transparent);text-align:center;overflow-y:auto;}
+.galeria-info-nombre{color:white;font-size:18px;font-weight:bold;letter-spacing:0.3px;margin-bottom:4px;text-shadow:0 2px 6px rgba(0,0,0,0.6);}
+.galeria-info-precio{color:#e60012;font-size:26px;font-weight:bold;text-shadow:0 0 16px rgba(230,0,18,0.45);margin-bottom:8px;}
+.galeria-info-descripcion{color:#bbb;font-size:12px;line-height:1.4;margin-bottom:12px;max-width:100%;}
+.galeria-info-talla{}
+.galeria-botones{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.btn-agregar-carrito,.btn-comprar-ahora{padding:12px;border-radius:10px;border:none;font-weight:bold;font-size:14px;cursor:pointer;transition:0.2s;}
+.btn-agregar-carrito{background:#e60012;color:white;}
+.btn-agregar-carrito:hover{background:#b8000e;}
+.btn-comprar-ahora{background:#25D366;color:white;}
+.btn-comprar-ahora:hover{background:#1ebe5d;}
+.galeria-contador{display:inline-block;margin-top:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:5px 16px;border-radius:20px;color:#bbb;font-size:12px;font-weight:bold;letter-spacing:0.5px;}
 .card h3{font-size:18px;margin-top:5px;}
 .precio{color:#e60012;font-size:22px;font-weight:bold;}
 select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;color:white;font-weight:bold;outline:none;cursor:pointer;}
@@ -326,6 +334,15 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="galeria-info">
 <div class="galeria-info-nombre" id="galeria-nombre"></div>
 <div class="galeria-info-precio" id="galeria-precio"></div>
+<div class="galeria-info-descripcion" id="galeria-descripcion"></div>
+<div class="galeria-info-talla">
+<select id="galeria-talla" style="width:100%;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-weight:bold;outline:none;margin:12px 0;">
+</select>
+</div>
+<div class="galeria-botones">
+<button class="btn-agregar-carrito" onclick="agregarDesdeGaleria()">🛒 Agregar al carrito</button>
+<button class="btn-comprar-ahora" onclick="comprarAhora()">💬 Comprar por WhatsApp</button>
+</div>
 <div class="galeria-contador" id="galeria-contador"></div>
 </div>
 </div>
@@ -663,6 +680,40 @@ function agregarAlCarrito(index) {
 }
 
 // ===== GALERÍA DE FOTOS =====
+// ===== DESCRIPCIONES AUTOMÁTICAS DE MODELOS =====
+function generarDescripcion(nombre) {
+  const n = normalizar(nombre);
+  
+  // Detectar palabras clave y generar descripción
+  if (n.indexOf("air force 1") !== -1) {
+    return "Icónica zapatilla de baloncesto, versátil y cómoda para cualquier ocasión.";
+  } else if (n.indexOf("air max 97") !== -1) {
+    return "Diseño futurista con gel visible. Máxima comodidad y estilo premium.";
+  } else if (n.indexOf("air max 95") !== -1) {
+    return "Clásico absoluto con cámara de aire visible. Perfecta para todos los días.";
+  } else if (n.indexOf("tn plus") !== -1 || n.indexOf("tuned") !== -1) {
+    return "Silueta deportiva con excelente amortiguación. Ideal para urban style.";
+  } else if (n.indexOf("shox tl") !== -1) {
+    return "Tecnología Shox para máxima amortiguación. Estilo atrevido y moderno.";
+  } else if (n.indexOf("jordan retro") !== -1) {
+    return "Zapatilla de leyenda del baloncesto. Diseño icónico con máxima comodidad.";
+  } else if (n.indexOf("dior b") !== -1) {
+    return "Lujo en tus pies. Diseño premium de Dior con líneas sofisticadas.";
+  } else if (n.indexOf("lv trainer") !== -1) {
+    return "Elegancia francesa. Zapatilla de Louis Vuitton con detalles exclusivos.";
+  } else if (n.indexOf("lv skate") !== -1) {
+    return "Street style de Louis Vuitton. Perfecto para looks urbanos.";
+  } else if (n.indexOf("dc court graffik") !== -1) {
+    return "Estilo skate auténtico. Cómoda y durable para el día a día.";
+  } else if (n.indexOf("balenciaga") !== -1) {
+    return "Diseño contemporáneo de Balenciaga. Lujo con toque futurista.";
+  } else if (n.indexOf("dolce") !== -1 || n.indexOf("gabbana") !== -1) {
+    return "Moda italiana de alta gama. Elegancia y sofisticación en cada detalle.";
+  } else {
+    return "Zapatilla de calidad premium. Combina estilo y comodidad.";
+  }
+}
+
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
 
@@ -686,11 +737,40 @@ function mostrarFotoGaleria() {
   document.getElementById("galeria-img").src = fotos[galeriaFotoIndex];
   document.getElementById("galeria-nombre").textContent = p.nombre;
   document.getElementById("galeria-precio").textContent = "$" + p.precio.toLocaleString("es-CL");
+  document.getElementById("galeria-descripcion").textContent = generarDescripcion(p.nombre);
   document.getElementById("galeria-contador").textContent = (galeriaFotoIndex + 1) + " / " + fotos.length;
+  
+  // Llenar selector de talla
+  const selectTalla = document.getElementById("galeria-talla");
+  selectTalla.innerHTML = "";
+  p.tallas.forEach(function(t) {
+    const option = document.createElement("option");
+    option.value = t;
+    option.textContent = "Talla: " + t;
+    if (t === 41) option.selected = true;
+    selectTalla.appendChild(option);
+  });
+  
   const mostrarNav = fotos.length > 1;
   document.querySelector(".galeria-prev").style.display = mostrarNav ? "flex" : "none";
   document.querySelector(".galeria-next").style.display = mostrarNav ? "flex" : "none";
   document.getElementById("galeria-contador").style.display = mostrarNav ? "block" : "none";
+}
+
+function agregarDesdeGaleria() {
+  const p = productos[galeriaProductoIndex];
+  const talla = parseInt(document.getElementById("galeria-talla").value);
+  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: talla });
+  actualizarCarrito();
+  mostrarToast();
+  cerrarGaleria();
+}
+
+function comprarAhora() {
+  const p = productos[galeriaProductoIndex];
+  const talla = document.getElementById("galeria-talla").value;
+  const mensaje = "Hola, me interesa el producto: " + p.nombre + " (Talla: " + talla + ") — $" + p.precio.toLocaleString("es-CL");
+  window.open("https://wa.me/56931402987?text=" + encodeURIComponent(mensaje), "_blank");
 }
 
 function cerrarGaleria() {
