@@ -15,7 +15,7 @@ gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
-/* ===== TU CSS ORIGINAL (sin cambios) ===== */
+/* ===== TU CSS ORIGINAL (sin cambios estructurales) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
@@ -115,14 +115,24 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .cart-header h2{font-size:22px;}
 .cart-close{background:none;border:none;color:white;font-size:26px;cursor:pointer;}
 .cart-items{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
-.cart-item{background:#1a1a1a;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;}
+.cart-item{background:#1a1a1a;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 .cart-item img{width:70px;height:70px;object-fit:cover;border-radius:8px;background:#222;flex-shrink:0;}
-.cart-item-info{flex:1;}
+.cart-item-info{flex:1;min-width:120px;}
 .cart-item-name{font-weight:bold;font-size:14px;margin-bottom:3px;}
 .cart-item-talla{color:#999;font-size:13px;margin-bottom:4px;}
 .cart-item-precio{color:#e60012;font-weight:bold;font-size:15px;}
 .cart-item-remove{background:none;border:none;color:#666;font-size:22px;cursor:pointer;padding:0 4px;}
 .cart-item-remove:hover{color:#e60012;}
+.cart-item .cambiar-talla { 
+  background: #222; 
+  border: 1px solid #333; 
+  color: white; 
+  padding: 4px 8px; 
+  border-radius: 6px; 
+  font-size: 12px; 
+  cursor: pointer;
+}
+.cart-item .cambiar-talla:focus { border-color: #e60012; }
 .cart-empty{text-align:center;color:#555;margin-top:60px;font-size:16px;}
 .checkout-section{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:16px;}
 .checkout-section h3{font-size:16px;margin-bottom:14px;color:#e60012;}
@@ -201,31 +211,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 .footer-logos{display:flex;justify-content:center;align-items:center;}
 .footer-stripe{display:block;height:4px;background:linear-gradient(90deg,#000,#e60012,#000);margin-bottom:0;}
 
-/* ===== NUEVOS ESTILOS PARA MEJORAS ===== */
-/* Autocompletado de direcciones */
-.direccion-sugerencias {
-  position: absolute;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  max-height: 200px;
-  overflow-y: auto;
-  width: 100%;
-  z-index: 100;
-  display: none;
-}
-.direccion-sugerencias .sugerencia {
-  padding: 10px 12px;
-  cursor: pointer;
-  color: #ccc;
-  font-size: 13px;
-  border-bottom: 1px solid #222;
-}
-.direccion-sugerencias .sugerencia:hover {
-  background: #2a2a2a;
-  color: white;
-}
-/* Ordenamiento */
+/* ===== NUEVOS ESTILOS ===== */
 .orden-row {
   display: flex;
   align-items: center;
@@ -233,10 +219,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
   padding: 8px 20px 12px;
   flex-wrap: wrap;
 }
-.orden-row label {
-  color: #888;
-  font-size: 13px;
-}
+.orden-row label { color: #888; font-size: 13px; }
 .orden-row select {
   background: #1c1c1c;
   border: 1px solid #2a2a2a;
@@ -247,10 +230,8 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
   cursor: pointer;
   width: auto;
 }
-.orden-row select:focus {
-  border-color: #e60012;
-}
-/* Botón vaciar carrito */
+.orden-row select:focus { border-color: #e60012; }
+
 .btn-vaciar-carrito {
   background: #1a1a1a;
   border: 1px solid #444;
@@ -262,21 +243,24 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
   transition: 0.3s;
   margin-bottom: 12px;
 }
-.btn-vaciar-carrito:hover {
-  border-color: #e60012;
-  color: #ff6b6b;
-}
-/* Campo calle con posición relativa para sugerencias */
-.calle-wrapper {
-  position: relative;
-}
-/* Resumen del carrito más visual */
+.btn-vaciar-carrito:hover { border-color: #e60012; color: #ff6b6b; }
+
 .cart-total-resumen {
   background: #0f0f0f;
   border-radius: 12px;
   padding: 14px;
   margin-bottom: 16px;
   border: 1px solid #1f1f1f;
+}
+
+/* Placeholder para imágenes rotas */
+.img-producto[src=""] {
+  display: none;
+}
+.img-producto.error {
+  object-fit: contain;
+  padding: 20px;
+  background: #1a1a1a;
 }
 </style>
 </head>
@@ -304,7 +288,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <input type="text" id="buscar" placeholder="Buscar modelo...">
 </div>
 
-<!-- ===== NUEVO: ORDENAMIENTO ===== -->
+<!-- ORDENAMIENTO -->
 <div class="orden-row">
 <label for="orden-select">Ordenar por:</label>
 <select id="orden-select" onchange="ordenarProductos()">
@@ -354,7 +338,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="cart-empty">😕 Tu carrito está vacío</div>
 </div>
 
-<!-- ===== NUEVO: BOTÓN VACIAR CARRITO ===== -->
 <div id="vaciar-carrito-btn" style="display:none; text-align:right; margin-bottom:10px;">
 <button class="btn-vaciar-carrito" onclick="vaciarCarrito()">🗑️ Vaciar carrito</button>
 </div>
@@ -379,11 +362,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <input class="form-input" id="c-whatsapp" placeholder="WhatsApp (+569...)" type="text">
 </div>
 <div class="form-row" style="grid-template-columns:2fr 1fr;">
-<!-- ===== CAMPO CALLE CON AUTOCOMPLETADO ===== -->
-<div class="calle-wrapper">
 <input class="form-input" id="dir-calle" placeholder="Calle (ej: Av. Providencia)" type="text" autocomplete="off">
-<div class="direccion-sugerencias" id="sugerencias"></div>
-</div>
 <input class="form-input" id="dir-numero" placeholder="N°" type="text" autocomplete="off">
 </div>
 <div class="form-row">
@@ -429,7 +408,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
-<!-- ===== RESUMEN DEL CARRITO MEJORADO ===== -->
 <div class="cart-total-resumen">
 <div class="cart-total-row"><span>Subtotal</span><span id="cart-subtotal"></span></div>
 <div class="cart-total-row"><span>Envío</span><span>$5.000</span></div>
@@ -460,7 +438,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="galeria-info-nombre" id="galeria-nombre"></div>
 <div class="galeria-info-precio" id="galeria-precio"></div>
 <div class="galeria-info-descripcion" id="galeria-descripcion"></div>
-<!-- Botón compartir se añade con JS -->
 
 <div class="galeria-seccion-titulo">Seleccioná tu talla</div>
 <div class="galeria-tallas-grid" id="galeria-tallas-grid"></div>
@@ -563,7 +540,7 @@ let carrito = [];
 let metodoPago = "mp";
 let cuponAplicado = null;
 let ordenActual = "default";
-let sugerenciasAbiertas = false;
+let ordenOriginal = []; // guarda el orden de índices original (destacados primero)
 
 // ============================================================
 //  FUNCIONES AUXILIARES
@@ -638,9 +615,6 @@ function cargarDatosGuardados() {
     const val = localStorage.getItem(campos[id]);
     if (val) document.getElementById(id).value = val;
   });
-  // También restauramos el número por separado
-  const num = localStorage.getItem("m_numero");
-  if (num) document.getElementById("dir-numero").value = num;
 }
 
 // ============================================================
@@ -728,83 +702,7 @@ function initValidacion() {
 }
 
 // ============================================================
-//  AUTOCOMPLETADO DE DIRECCIÓN (OpenStreetMap Nominatim)
-// ============================================================
-let timeoutSugerencias = null;
-
-function buscarDirecciones(query) {
-  const cont = document.getElementById("sugerencias");
-  if (query.length < 3) {
-    cont.style.display = "none";
-    return;
-  }
-  // Limitar búsqueda a Chile
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=cl&limit=5&addressdetails=1`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.length === 0) {
-        cont.style.display = "none";
-        return;
-      }
-      let html = "";
-      data.forEach(function(item) {
-        const display = item.display_name;
-        const address = item.address || {};
-        const calle = address.road || address.pedestrian || "";
-        const numero = address.house_number || "";
-        const comuna = address.city || address.town || address.municipality || address.suburb || address.village || "";
-        const region = address.state || address.region || "";
-        const cp = address.postcode || "";
-        html += `<div class="sugerencia" data-calle="${calle}" data-numero="${numero}" data-comuna="${comuna}" data-region="${region}" data-cp="${cp}">${display}</div>`;
-      });
-      cont.innerHTML = html;
-      cont.style.display = "block";
-      // Añadir eventos a las sugerencias
-      cont.querySelectorAll(".sugerencia").forEach(function(el) {
-        el.addEventListener("click", function() {
-          document.getElementById("dir-calle").value = this.dataset.calle;
-          document.getElementById("dir-numero").value = this.dataset.numero;
-          document.getElementById("dir-comuna").value = this.dataset.comuna;
-          document.getElementById("dir-region").value = this.dataset.region;
-          document.getElementById("dir-cp").value = this.dataset.cp;
-          cont.style.display = "none";
-          // Disparar validación
-          const ev = new Event('input');
-          document.getElementById("dir-calle").dispatchEvent(ev);
-          document.getElementById("dir-comuna").dispatchEvent(ev);
-          document.getElementById("dir-region").dispatchEvent(ev);
-        });
-      });
-    })
-    .catch(() => { cont.style.display = "none"; });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  const inputCalle = document.getElementById("dir-calle");
-  const contSugerencias = document.getElementById("sugerencias");
-
-  inputCalle.addEventListener("input", function() {
-    clearTimeout(timeoutSugerencias);
-    const q = this.value.trim();
-    if (q.length < 3) {
-      contSugerencias.style.display = "none";
-      return;
-    }
-    timeoutSugerencias = setTimeout(function() {
-      buscarDirecciones(q);
-    }, 300);
-  });
-
-  // Cerrar sugerencias al hacer clic fuera
-  document.addEventListener("click", function(e) {
-    if (!e.target.closest(".calle-wrapper")) {
-      contSugerencias.style.display = "none";
-    }
-  });
-});
-
-// ============================================================
-//  GEOLOCALIZACIÓN MEJORADA
+//  GEOLOCALIZACIÓN (sin autocompletado)
 // ============================================================
 function usarMiUbicacion() {
   const btn = document.getElementById("btn-ubicacion");
@@ -845,7 +743,7 @@ function usarMiUbicacion() {
         msg.className = "ubicacion-msg ok";
         btn.disabled = false;
         btn.textContent = "📍 Usar mi ubicación actual";
-        // Validar campos
+        // Disparar validación
         ["dir-calle","dir-comuna","dir-region"].forEach(id => {
           const ev = new Event('input');
           document.getElementById(id).dispatchEvent(ev);
@@ -870,59 +768,49 @@ function usarMiUbicacion() {
 }
 
 // ============================================================
-//  ORDENAMIENTO DE PRODUCTOS
+//  ORDENAMIENTO DE PRODUCTOS (CORREGIDO)
 // ============================================================
 function ordenarProductos() {
   const select = document.getElementById("orden-select");
   ordenActual = select.value;
-  // Re-renderizar las tarjetas sin recargar todo
-  const cards = document.querySelectorAll(".card");
-  const indices = Array.from(cards).map(card => parseInt(card.dataset.index));
-  const productosMostrados = indices.map(i => productos[i]);
+  const cont = document.getElementById("productos");
+  const cards = Array.from(cont.querySelectorAll(".card"));
+  if (cards.length === 0) return;
 
-  // Ordenar según criterio
-  let sorted = [];
-  switch(ordenActual) {
+  // Obtener índices visibles (los que están mostrados)
+  const indicesVisibles = cards
+    .filter(card => card.style.display !== "none")
+    .map(card => parseInt(card.dataset.index));
+
+  if (indicesVisibles.length === 0) return;
+
+  let indicesOrdenados = [];
+
+  switch (ordenActual) {
+    case "default":
+      // Restaurar el orden original (guardado en ordenOriginal)
+      indicesOrdenados = ordenOriginal.filter(i => indicesVisibles.includes(i));
+      break;
     case "precio-asc":
-      sorted = productosMostrados.slice().sort((a,b) => a.precio - b.precio);
+      indicesOrdenados = indicesVisibles.slice().sort((a, b) => productos[a].precio - productos[b].precio);
       break;
     case "precio-desc":
-      sorted = productosMostrados.slice().sort((a,b) => b.precio - a.precio);
+      indicesOrdenados = indicesVisibles.slice().sort((a, b) => productos[b].precio - productos[a].precio);
       break;
     case "nombre":
-      sorted = productosMostrados.slice().sort((a,b) => a.nombre.localeCompare(b.nombre));
+      indicesOrdenados = indicesVisibles.slice().sort((a, b) => productos[a].nombre.localeCompare(productos[b].nombre));
       break;
     default:
-      sorted = productosMostrados;
+      indicesOrdenados = indicesVisibles;
   }
 
-  // Reinsertar las cards en el nuevo orden
-  const cont = document.getElementById("productos");
+  // Reordenar los nodos en el contenedor
   const fragment = document.createDocumentFragment();
-  sorted.forEach(function(p) {
-    const index = productos.indexOf(p);
-    const card = document.querySelector(`.card[data-index="${index}"]`);
-    if (card) fragment.appendChild(card.cloneNode(true));
+  indicesOrdenados.forEach(idx => {
+    const card = cont.querySelector(`.card[data-index="${idx}"]`);
+    if (card) fragment.appendChild(card);
   });
-  cont.innerHTML = "";
   cont.appendChild(fragment);
-  // Reasignar eventos a las nuevas cards
-  document.querySelectorAll(".card").forEach(function(card) {
-    const idx = parseInt(card.dataset.index);
-    card.onclick = function() { abrirGaleria(idx); };
-    card.querySelector(".btn-card-carrito").onclick = function(e) {
-      e.stopPropagation();
-      agregarAlCarrito(idx);
-    };
-    card.querySelector(".btn-card-comprar").onclick = function(e) {
-      e.stopPropagation();
-      comprarAhoraDesdeCard(idx);
-    };
-    const selectTalla = card.querySelector("select");
-    if (selectTalla) {
-      selectTalla.onclick = function(e) { e.stopPropagation(); };
-    }
-  });
 }
 
 // ============================================================
@@ -939,7 +827,7 @@ function vaciarCarrito() {
 }
 
 // ============================================================
-//  FUNCIONES DEL CARRITO (modificadas para persistencia)
+//  FUNCIONES DEL CARRITO (con cambio de talla)
 // ============================================================
 function agregarAlCarrito(index) {
   const p = productos[index];
@@ -965,6 +853,14 @@ function removerDelCarrito(i) {
   actualizarCarrito();
 }
 
+function cambiarTallaEnCarrito(i, nuevaTalla) {
+  if (carrito[i]) {
+    carrito[i].talla = nuevaTalla;
+    guardarCarrito();
+    actualizarCarrito();
+  }
+}
+
 function agregarDesdeGaleria() {
   const p = productos[galeriaProductoIndex];
   for (let i = 0; i < galeriaCantidad; i++) {
@@ -988,7 +884,7 @@ function comprarAhora() {
 }
 
 // ============================================================
-//  ACTUALIZAR INTERFAZ DEL CARRITO
+//  ACTUALIZAR INTERFAZ DEL CARRITO (con selector de talla)
 // ============================================================
 function actualizarCarrito() {
   const count = carrito.length;
@@ -1009,11 +905,24 @@ function actualizarCarrito() {
   let subtotal = 0;
   carrito.forEach(function(item, i) {
     subtotal += item.precio;
+    // Obtener tallas disponibles para este producto (buscamos el producto original)
+    const prod = productos.find(p => p.nombre === item.nombre);
+    const tallasDisponibles = prod ? prod.tallas : [37,38,39,40,41,42,43,44,45];
+    let opcionesTalla = "";
+    tallasDisponibles.forEach(t => {
+      opcionesTalla += `<option value="${t}" ${t == item.talla ? 'selected' : ''}>${t}</option>`;
+    });
+
     htmlItems += `<div class="cart-item">
       <img src="${item.imagen}" onerror="this.src='logo.webp'">
       <div class="cart-item-info">
         <div class="cart-item-name">${item.nombre}</div>
-        <div class="cart-item-talla">Talla: ${item.talla}</div>
+        <div class="cart-item-talla">
+          Talla: 
+          <select class="cambiar-talla" onchange="cambiarTallaEnCarrito(${i}, this.value)">
+            ${opcionesTalla}
+          </select>
+        </div>
         <div class="cart-item-precio">$${item.precio.toLocaleString("es-CL")}</div>
       </div>
       <button class="cart-item-remove" onclick="removerDelCarrito(${i})">✕</button>
@@ -1158,7 +1067,7 @@ async function confirmarPedido() {
 
   const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
 
-  // Enviar a Formspree (en segundo plano)
+  // Enviar a Formspree
   let productosTexto = "";
   carrito.forEach((item, i) => {
     productosTexto += (i + 1) + ". " + item.nombre + " — Talla: " + item.talla + " — $" + item.precio.toLocaleString("es-CL") + "\n";
@@ -1256,7 +1165,7 @@ function cerrarCarrito() {
 }
 
 // ============================================================
-//  GALERÍA DE PRODUCTOS (funciones existentes)
+//  GALERÍA DE PRODUCTOS
 // ============================================================
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
@@ -1274,7 +1183,6 @@ function abrirGaleria(index) {
   document.getElementById("galeria-overlay").classList.add("open");
   document.getElementById("galeria-modal").classList.add("open");
   history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
-  // Breadcrumbs y Open Graph
   actualizarBreadcrumbs(p);
   actualizarOG(p);
 }
@@ -1312,7 +1220,7 @@ function mostrarFotoGaleria() {
   const fotos = p.imagenes;
 
   const track = document.getElementById("galeria-img-track");
-  track.innerHTML = fotos.map(url => `<img src="${url}" alt="${p.nombre}" onerror="this.src='logo.webp'">`).join("");
+  track.innerHTML = fotos.map(url => `<img src="${url}" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.src='logo.webp'">`).join("");
   track.style.transform = "translateX(0%)";
 
   const dotsCont = document.getElementById("galeria-dots");
@@ -1359,7 +1267,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ============================================================
-//  BREADCRUMBS y OPEN GRAPH
+//  BREADCRUMBS Y OPEN GRAPH
 // ============================================================
 function actualizarBreadcrumbs(producto) {
   const bc = document.getElementById("breadcrumbs");
@@ -1447,7 +1355,7 @@ function generarDescripcion(nombre) {
 }
 
 // ============================================================
-//  CATÁLOGO (carga, caché, renderizado, filtros, orden)
+//  CATÁLOGO (carga, caché, renderizado, filtros)
 // ============================================================
 const CACHE_KEY = "productos_cache";
 const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hora
@@ -1459,6 +1367,8 @@ async function cargarProductosConCache() {
       const data = JSON.parse(cache);
       if (Date.now() - data.timestamp < CACHE_EXPIRY) {
         productos = data.productos;
+        // Guardar orden original
+        ordenOriginal = productos.map((_, i) => i);
         generarMenuCategorias();
         render();
         cargarDatosGuardados();
@@ -1508,6 +1418,7 @@ async function cargarProductos() {
     const destacados = productos.filter(esDestacado);
     const resto = productos.filter(p => !esDestacado(p));
     productos = mezclar(destacados).concat(mezclar(resto));
+    ordenOriginal = productos.map((_, i) => i);
 
     localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), productos: productos }));
     generarMenuCategorias();
@@ -1653,7 +1564,7 @@ function render() {
     const zoomIcon = `<div class="img-zoom-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`;
     html += `<div class="card" data-index="${index}">
       <div class="img-wrapper">
-        <img src="${p.imagenes[0]}" class="img-producto" alt="${p.nombre}" onerror="this.src='logo.webp'">
+        <img src="${p.imagenes[0]}" class="img-producto" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.src='logo.webp'">
         ${badgeFotos}
         ${zoomIcon}
       </div>
@@ -1668,7 +1579,7 @@ function render() {
   });
   cont.innerHTML = html;
   aplicar();
-  // Restaurar orden
+  // Restaurar orden seleccionado
   document.getElementById("orden-select").value = ordenActual;
   ordenarProductos();
 }
@@ -1755,7 +1666,6 @@ function agregarPoliticaPrivacidad() {
 window.onload = function() {
   cargarProductosConCache();
   agregarPoliticaPrivacidad();
-  // Evento de scroll para volver arriba
   window.addEventListener("scroll", function() {
     const btn = document.getElementById("volver-arriba");
     if (window.scrollY > 300) {
@@ -1766,7 +1676,6 @@ window.onload = function() {
   });
 };
 
-// Manejar popstate para galería
 window.addEventListener("popstate", function() {
   if (galeriaProductoIndex !== null) {
     cerrarGaleria();
