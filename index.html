@@ -1300,37 +1300,6 @@ function mostrarToast() {
   setTimeout(function() { t.classList.remove("show"); }, 2000);
 }
 
-function initGooglePlaces() {
-  const input = document.getElementById("c-calle");
-  if (!input || typeof google === "undefined") return;
-  const autocomplete = new google.maps.places.Autocomplete(input, {
-    componentRestrictions: { country: "cl" },
-    fields: ["address_components"],
-    types: ["address"]
-  });
-  autocomplete.addListener("place_changed", function() {
-    const place = autocomplete.getPlace();
-    if (!place.address_components) return;
-    let calle = "", numero = "", region = "", comuna = "", cp = "";
-    place.address_components.forEach(function(comp) {
-      const tipo = comp.types[0];
-      if (tipo === "route") calle = comp.long_name;
-      if (tipo === "street_number") numero = comp.long_name;
-      if (tipo === "administrative_area_level_1") region = comp.long_name;
-      if (tipo === "locality" || tipo === "administrative_area_level_3") comuna = comp.long_name;
-      if (tipo === "postal_code") cp = comp.long_name;
-    });
-    if (calle) document.getElementById("c-calle").value = calle;
-    if (numero) document.getElementById("c-numero").value = numero;
-    if (region) document.getElementById("c-region").value = region;
-    if (comuna) document.getElementById("c-comuna").value = comuna;
-    if (cp) document.getElementById("c-cp").value = cp;
-    const msg = document.getElementById("ubicacion-msg");
-    msg.textContent = "✅ Dirección completada desde Google Maps.";
-    msg.className = "ubicacion-msg ok";
-  });
-}
-
 window.onload = cargarProductos;
 
 window.addEventListener("scroll", function() {
@@ -1342,8 +1311,5 @@ window.addEventListener("scroll", function() {
   }
 });
 </script>
-<!-- Google Places Autocomplete: reemplaza AIzaSyCfurDJufEbrbSiQiaG8mrZ-lw5eo5bdmg con tu clave de Google Maps -->
-<!-- Obtén tu clave gratis en: https://console.cloud.google.com → APIs → Places API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY_AQUI&libraries=places&callback=initGooglePlaces" async defer onerror="console.warn('Google Maps no disponible — el campo de dirección funciona igual, solo sin autocompletado')"></script>
 </body>
 </html>
