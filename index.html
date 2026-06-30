@@ -15,23 +15,19 @@ gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
-/* ===== RESET Y ESTILOS BASE ===== */
+/* ===== ESTILOS COMPLETOS (los mismos que antes, pero compactos) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
-
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
 .logo{width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid #e60012;}
 h1{margin-top:10px;font-size:34px;}
 .sub{color:#e60012;font-weight:bold;}
-
 .trust-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:14px 20px;background:#111;border-bottom:1px solid #1f1f1f;}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#aaa;}
 .trust-item span:first-child{font-size:16px;}
-
 .search{padding:20px 20px 0;position:relative;}
 .search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;padding-right:50px;}
 .search input:focus{border:2px solid #e60012;}
-
 .sugerencias-busqueda{position:absolute;top:100%;left:0;right:0;background:#1c1c1c;border-radius:0 0 12px 12px;max-height:300px;overflow-y:auto;z-index:100;display:none;border:1px solid #2a2a2a;border-top:none;}
 .sugerencia-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid #2a2a2a;transition:0.15s;}
 .sugerencia-item:hover{background:#2a2a2a;}
@@ -46,7 +42,6 @@ h1{margin-top:10px;font-size:34px;}
 .menu-categorias-btn span{display:block;width:22px;height:2px;background:white;border-radius:2px;}
 .filtro-activo{display:none;align-items:center;gap:8px;background:#2a1010;border:1px solid #e60012;color:#ff8888;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:bold;}
 .filtro-activo button{background:none;border:none;color:#ff8888;font-size:16px;cursor:pointer;padding:0;}
-
 .categorias-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
 .categorias-overlay.open{display:block;}
 .categorias-panel{position:fixed;top:0;left:-100%;width:320px;max-width:85%;height:100%;background:#111;z-index:1001;display:flex;flex-direction:column;transition:left 0.3s;overflow-y:auto;}
@@ -118,7 +113,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .checkout-container{background:#151515;border-radius:24px;max-width:700px;width:95%;max-height:95vh;overflow-y:auto;padding:30px;position:relative;border:1px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
 .checkout-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#888;font-size:28px;cursor:pointer;transition:0.2s;}
 .checkout-close:hover{color:white;}
-
 .checkout-pasos{display:flex;justify-content:space-between;margin:0 0 30px;position:relative;}
 .checkout-pasos::before{content:'';position:absolute;top:16px;left:0;right:0;height:2px;background:#2a2a2a;z-index:0;}
 .paso-indicador{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative;z-index:1;}
@@ -127,11 +121,9 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .paso-numero.completado{background:#3ddc84;color:white;}
 .paso-label{font-size:12px;color:#888;text-align:center;transition:0.3s;}
 .paso-label.activo{color:white;font-weight:bold;}
-
 .paso-contenido{display:none;animation:fadeIn 0.3s ease;}
 .paso-contenido.activo{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-
 .checkout-paso-titulo{font-size:20px;font-weight:bold;margin-bottom:20px;color:white;}
 .resumen-item{display:flex;align-items:center;gap:12px;background:#1a1a1a;border-radius:12px;padding:12px;margin-bottom:10px;}
 .resumen-item img{width:60px;height:60px;object-fit:cover;border-radius:8px;background:#222;}
@@ -141,14 +133,12 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .resumen-item-precio{color:#e60012;font-weight:bold;}
 .resumen-total{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #2a2a2a;margin-top:12px;font-size:18px;font-weight:bold;}
 .resumen-total span:last-child{color:#e60012;}
-
 .checkout-botones{display:flex;justify-content:space-between;margin-top:25px;gap:12px;}
 .btn-checkout{background:#1a1a1a;border:1px solid #2a2a2a;color:white;padding:12px 28px;border-radius:12px;font-weight:bold;cursor:pointer;transition:0.3s;}
 .btn-checkout:hover{border-color:#e60012;background:#241010;}
 .btn-checkout.primario{background:#e60012;border-color:#e60012;color:white;}
 .btn-checkout.primario:hover{background:#b8000e;}
 .btn-checkout:disabled{opacity:0.5;cursor:not-allowed;}
-
 .checkout-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 .checkout-form .form-row.single{grid-template-columns:1fr;}
 .checkout-form .form-input{width:100%;padding:12px 14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;color:white;font-size:14px;outline:none;}
@@ -156,12 +146,10 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .checkout-form .form-input::placeholder{color:#555;}
 .checkout-form .form-input.error{border-color:#ff6b6b;}
 .checkout-form .form-input.success{border-color:#3ddc84;}
-
 .calle-wrapper{position:relative;}
 .sugerencias-direccion{position:absolute;top:100%;left:0;right:0;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;z-index:100;display:none;}
 .sug-dir-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid #222;color:#ccc;font-size:13px;transition:0.15s;}
 .sug-dir-item:hover{background:#2a2a2a;color:white;}
-
 .metodos-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
 .metodo-pago{background:#1a1a1a;border:2px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;transition:0.3s;}
 .metodo-pago:hover{border-color:#e60012;}
@@ -215,25 +203,20 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);display:flex;align-items:center;gap:8px;}
 .whatsapp:hover{background:#1ebe5d;}
-
 .volver-arriba{position:fixed;bottom:80px;right:20px;background:#222;color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;transform:translateY(10px);}
 .volver-arriba.visible{opacity:1;pointer-events:all;transform:translateY(0);}
 .volver-arriba:hover{background:#e60012;}
-
 .toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .toast.show{opacity:1;}
 .toast-con-imagen{display:flex;align-items:center;gap:10px;}
 .toast-con-imagen img{width:40px;height:40px;object-fit:cover;border-radius:8px;background:#222;}
-
 .loading{text-align:center;grid-column:1/-1;padding:60px 40px;font-size:18px;color:#e60012;font-weight:bold;display:flex;flex-direction:column;align-items:center;gap:20px;}
 .loading-spinner{width:50px;height:50px;border:4px solid #2a2a2a;border-top-color:#e60012;border-radius:50%;animation:spin 1.2s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-
 .aviso-consulta{background:#161616;border:1px solid #2a2a2a;border-left:4px solid #e60012;border-radius:14px;padding:20px 24px;margin:30px 20px 10px;text-align:center;}
 .aviso-consulta p{color:#ccc;font-size:15px;line-height:1.5;}
 .aviso-consulta a{color:#e60012;font-weight:bold;text-decoration:none;border-bottom:1px dashed #e60012;}
 .aviso-consulta a:hover{color:#ff3344;}
-
 footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3px solid #e60012;}
 .footer-top{background:#111;padding:40px 20px 30px;}
 .footer-brand{font-size:22px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;}
@@ -248,7 +231,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 .footer-text{opacity:0.4;font-size:12px;margin-bottom:14px;letter-spacing:0.5px;}
 .footer-logos{display:flex;justify-content:center;align-items:center;}
 .footer-stripe{display:block;height:4px;background:linear-gradient(90deg,#000,#e60012,#000);margin-bottom:0;}
-
 #breadcrumbs{padding:4px 20px 0;font-size:13px;color:#888;margin-top:-6px;}
 #breadcrumbs a{color:#e60012;text-decoration:none;}
 </style>
@@ -262,9 +244,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </header>
 
 <button class="menu-categorias-btn" onclick="abrirCategorias()" aria-label="Abrir categorías">
-<span></span>
-<span></span>
-<span></span>
+<span></span><span></span><span></span>
 </button>
 
 <div class="trust-row">
@@ -323,7 +303,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <button class="btn-vaciar-carrito" onclick="vaciarCarrito()" aria-label="Vaciar carrito">🗑️ Vaciar carrito</button>
 </div>
 <div id="checkout-form" style="display:none;">
-<button class="btn btn-pago btn-mp" onclick="abrirCheckout()" style="width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;background:#009EE3;color:white;">
+<button class="btn" onclick="abrirCheckout()" style="width:100%;padding:15px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;border:none;background:#009EE3;color:white;">
 💳 Ir a pagar
 </button>
 </div>
@@ -1143,7 +1123,7 @@ function cerrarCarrito() {
 }
 
 // ============================================================
-//  GALERÍA DE PRODUCTOS
+//  GALERÍA DE PRODUCTOS (CORREGIDA)
 // ============================================================
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
@@ -1152,6 +1132,7 @@ let galeriaCantidad = 1;
 let galeriaTouchStartX = null;
 
 function abrirGaleria(index) {
+  if (typeof index !== 'number' || index < 0 || index >= productos.length) return;
   galeriaProductoIndex = index;
   galeriaFotoIndex = 0;
   galeriaCantidad = 1;
@@ -1163,10 +1144,12 @@ function abrirGaleria(index) {
   history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
   actualizarBreadcrumbs(p);
   actualizarOG(p);
+  // Actualizar WhatsApp
   const link = document.getElementById("whatsapp-flotante");
   link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(p.nombre)}%20que%20vi%20en%20Maikol%20Jordan.%20%C2%BFpodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F`;
   link.textContent = "💬 Consultar este producto";
 }
+
 function cerrarGaleria() {
   document.getElementById("galeria-overlay").classList.remove("open");
   document.getElementById("galeria-modal").classList.remove("open");
@@ -1178,20 +1161,24 @@ function cerrarGaleria() {
   link.href = "https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta";
   link.textContent = "💬 Consultas";
 }
+
 function cambiarFotoGaleria(direccion) {
   const fotos = productos[galeriaProductoIndex].imagenes;
   galeriaFotoIndex = (galeriaFotoIndex + direccion + fotos.length) % fotos.length;
   moverCarrusel();
 }
+
 function irAFoto(i) {
   galeriaFotoIndex = i;
   moverCarrusel();
 }
+
 function moverCarrusel() {
   const track = document.getElementById("galeria-img-track");
   track.style.transform = "translateX(-" + (galeriaFotoIndex * 100) + "%)";
   document.querySelectorAll(".galeria-dot").forEach((dot, i) => dot.classList.toggle("activo", i === galeriaFotoIndex));
 }
+
 function mostrarFotoGaleria() {
   const p = productos[galeriaProductoIndex];
   const fotos = p.imagenes;
@@ -1210,15 +1197,19 @@ function mostrarFotoGaleria() {
   const grid = document.getElementById("galeria-tallas-grid");
   grid.innerHTML = p.tallas.map(t => `<div class="talla-btn${t===galeriaTallaSeleccionada?' activo':''}" onclick="seleccionarTallaGaleria(${t}, this)">${t}</div>`).join("");
 }
+
 function seleccionarTallaGaleria(talla, el) {
   galeriaTallaSeleccionada = talla;
   document.querySelectorAll(".talla-btn").forEach(b => b.classList.remove("activo"));
   el.classList.add("activo");
 }
+
 function cambiarCantidadGaleria(delta) {
   galeriaCantidad = Math.max(1, galeriaCantidad + delta);
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
 }
+
+// Touch para galería
 document.addEventListener("DOMContentLoaded", function() {
   const area = document.getElementById("galeria-foto-area");
   area.addEventListener("touchstart", e => { galeriaTouchStartX = e.touches[0].clientX; });
@@ -1240,6 +1231,7 @@ function actualizarBreadcrumbs(producto) {
   const categoria = producto.tags[0] || "Producto";
   bc.innerHTML = `<a href="#" onclick="filtrar('todos')">Inicio</a> > <a href="#" onclick="filtrar('${categoria}')">${categoria}</a> > ${producto.nombre}`;
 }
+
 function actualizarOG(producto) {
   let metaTitle = document.querySelector('meta[property="og:title"]');
   let metaDesc = document.querySelector('meta[property="og:description"]');
@@ -1263,6 +1255,7 @@ function actualizarOG(producto) {
 // ============================================================
 const PALABRAS_COLOR = { "black":"negro","white":"blanco","red":"rojo","blue":"azul","pink":"rosado","green":"verde","grey":"gris","gray":"gris","silver":"plateado","gold":"dorado","purple":"morado","orange":"naranjo","marine":"marino","beige":"beige","yellow":"amarillo","brown":"café","navy":"azul marino" };
 const PALABRAS_EDICION = ["reimagined","oreo","bred","chicago","royal","shadow","panda","graffiti"];
+
 function extraerDetalleNombre(nombre) {
   const n = normalizar(nombre);
   const detalles = [];
@@ -1271,6 +1264,7 @@ function extraerDetalleNombre(nombre) {
   if (detalles.length === 0) return "";
   return " Colorway " + detalles.join(" / ") + ".";
 }
+
 function generarDescripcion(nombre) {
   const n = normalizar(nombre);
   const detalle = extraerDetalleNombre(nombre);
@@ -1313,6 +1307,13 @@ async function cargarProductosConCache() {
         abrirProductoPorHash();
         initValidacion();
         agregarBreadcrumbs();
+        // Autocompletado direcciones: evento input
+        document.getElementById("dir-calle").addEventListener("input", function() {
+          clearTimeout(timeoutDireccion);
+          const q = this.value.trim();
+          if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
+          timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
+        });
         return;
       }
     } catch(e) {}
@@ -1363,6 +1364,13 @@ async function cargarProductos() {
     abrirProductoPorHash();
     initValidacion();
     agregarBreadcrumbs();
+    // Autocompletado direcciones
+    document.getElementById("dir-calle").addEventListener("input", function() {
+      clearTimeout(timeoutDireccion);
+      const q = this.value.trim();
+      if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
+      timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
+    });
   } catch (error) {
     document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
   }
@@ -1480,7 +1488,7 @@ function render() {
     const badgeFotos = p.imagenes.length > 1 ? `<span class="foto-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.3"/></svg>${p.imagenes.length}</span>` : '';
     const zoomIcon = `<div class="img-zoom-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`;
     html += `<div class="card" data-index="${index}">
-      <div class="img-wrapper">
+      <div class="img-wrapper" onclick="abrirGaleria(${index})">
         <img src="${p.imagenes[0]}" class="img-producto" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.src='logo.webp'">
         ${badgeFotos}
         ${zoomIcon}
@@ -1546,6 +1554,12 @@ window.onload = function() {
   });
   document.getElementById("checkout-overlay").addEventListener("click", function(e) {
     if (e.target === this) cerrarCheckout();
+  });
+  // Cerrar sugerencias de dirección al hacer clic fuera
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".calle-wrapper")) {
+      document.getElementById("sugerencias-direccion").style.display = "none";
+    }
   });
 };
 
