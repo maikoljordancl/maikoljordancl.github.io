@@ -15,7 +15,7 @@ gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
-/* ===== ESTILOS COMPLETOS (los mismos que antes, pero compactos) ===== */
+/* ===== TODOS TUS ESTILOS (los mismos que antes, sin cambios) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
@@ -237,6 +237,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </head>
 <body>
 
+<!-- ===== HEADER ===== -->
 <header>
 <img src="logo.webp" class="logo" alt="Maikol Jordan Logo">
 <h1>MAIKOL JORDAN</h1>
@@ -253,11 +254,13 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="trust-item"><span>💬</span> Atención por WhatsApp</div>
 </div>
 
+<!-- ===== BUSCADOR ===== -->
 <div class="search">
 <input type="text" id="buscar" placeholder="Buscar modelo..." aria-label="Buscar productos" autocomplete="off">
 <div class="sugerencias-busqueda" id="sugerencias-busqueda"></div>
 </div>
 
+<!-- ===== ORDENAMIENTO ===== -->
 <div class="orden-row">
 <label for="orden-select">Ordenar por:</label>
 <select id="orden-select" onchange="ordenarProductos()" aria-label="Ordenar productos">
@@ -275,6 +278,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
+<!-- ===== CATEGORÍAS ===== -->
 <div class="categorias-overlay" id="categorias-overlay" onclick="cerrarCategorias()"></div>
 <div class="categorias-panel" id="categorias-panel">
 <div class="categorias-header">
@@ -284,10 +288,12 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="categorias-lista" id="categorias-lista"></div>
 </div>
 
+<!-- ===== PRODUCTOS ===== -->
 <div class="produtos" id="productos">
 <div class="loading"><div class="loading-spinner"></div><span>🔥 Cargando catálogo...</span></div>
 </div>
 
+<!-- ===== CARRITO LATERAL ===== -->
 <button class="cart-btn" onclick="abrirCarrito()" aria-label="Abrir carrito">
 🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
 </button>
@@ -309,6 +315,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
+<!-- ===== CHECKOUT POR PASOS ===== -->
 <div class="checkout-overlay" id="checkout-overlay">
 <div class="checkout-container">
 <button class="checkout-close" onclick="cerrarCheckout()" aria-label="Cerrar checkout">✕</button>
@@ -392,8 +399,10 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
+<!-- ===== TOAST ===== -->
 <div class="toast" id="toast">✅ Agregado al carrito</div>
 
+<!-- ===== GALERÍA DE PRODUCTOS ===== -->
 <div class="galeria-overlay" id="galeria-overlay" onclick="cerrarGaleria()"></div>
 <div class="galeria-modal" id="galeria-modal">
 <div class="galeria-foto-area" id="galeria-foto-area">
@@ -407,6 +416,8 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="galeria-info-marca" id="galeria-marca"></div>
 <div class="galeria-info-nombre" id="galeria-nombre"></div>
 <div class="galeria-info-precio" id="galeria-precio"></div>
+<!-- BOTÓN CONSULTAR POR WHATSAPP DENTRO DE LA GALERÍA -->
+<div id="galeria-whatsapp-btn" style="margin-bottom:16px;"></div>
 <div class="galeria-info-descripcion" id="galeria-descripcion"></div>
 <div class="galeria-seccion-titulo">Seleccioná tu talla</div>
 <div class="galeria-tallas-grid" id="galeria-tallas-grid"></div>
@@ -425,6 +436,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
+<!-- ===== WHATSAPP FLOTANTE (se actualiza en tiempo real) ===== -->
 <a class="whatsapp" id="whatsapp-flotante" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank" aria-label="Consultar por WhatsApp">
 💬 Consultas
 </a>
@@ -1123,7 +1135,7 @@ function cerrarCarrito() {
 }
 
 // ============================================================
-//  GALERÍA DE PRODUCTOS (CORREGIDA)
+//  GALERÍA DE PRODUCTOS (con botón WhatsApp incluido)
 // ============================================================
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
@@ -1144,10 +1156,12 @@ function abrirGaleria(index) {
   history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
   actualizarBreadcrumbs(p);
   actualizarOG(p);
-  // Actualizar WhatsApp
+  // Actualizar WhatsApp flotante
   const link = document.getElementById("whatsapp-flotante");
-  link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(p.nombre)}%20que%20vi%20en%20Maikol%20Jordan.%20%C2%BFpodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F`;
+  link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(p.nombre)}.%20Quisiera%20saber%20disponibilidad%20y%20precio.`;
   link.textContent = "💬 Consultar este producto";
+  // Actualizar botón WhatsApp dentro de la galería
+  actualizarBotonWhatsAppGaleria(p);
 }
 
 function cerrarGaleria() {
@@ -1160,7 +1174,41 @@ function cerrarGaleria() {
   const link = document.getElementById("whatsapp-flotante");
   link.href = "https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta";
   link.textContent = "💬 Consultas";
+  // Limpiar botón de WhatsApp en galería
+  document.getElementById("galeria-whatsapp-btn").innerHTML = "";
 }
+
+function actualizarBotonWhatsAppGaleria(producto) {
+  const cont = document.getElementById("galeria-whatsapp-btn");
+  if (!producto) { cont.innerHTML = ""; return; }
+  const talla = galeriaTallaSeleccionada || "sin talla";
+  const cantidad = galeriaCantidad || 1;
+  const msg = `Hola, estoy interesado en la zapatilla ${producto.nombre} (Talla: ${talla}, Cantidad: ${cantidad}). ¿Podrían darme más información?`;
+  const url = `https://wa.me/56931402987?text=${encodeURIComponent(msg)}`;
+  cont.innerHTML = `<a href="${url}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:white;padding:10px 18px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:14px;transition:0.2s;">
+    💬 Consultar por WhatsApp
+  </a>`;
+}
+
+// Esta función se llama al cambiar talla o cantidad en la galería
+function actualizarWhatsAppGaleria() {
+  if (galeriaProductoIndex === null || !productos[galeriaProductoIndex]) return;
+  const p = productos[galeriaProductoIndex];
+  actualizarBotonWhatsAppGaleria(p);
+}
+
+// Sobrescribimos seleccionarTallaGaleria y cambiarCantidadGaleria para actualizar el botón
+const originalSeleccionarTalla = seleccionarTallaGaleria;
+seleccionarTallaGaleria = function(talla, el) {
+  originalSeleccionarTalla(talla, el);
+  actualizarWhatsAppGaleria();
+};
+
+const originalCambiarCantidad = cambiarCantidadGaleria;
+cambiarCantidadGaleria = function(delta) {
+  originalCambiarCantidad(delta);
+  actualizarWhatsAppGaleria();
+};
 
 function cambiarFotoGaleria(direccion) {
   const fotos = productos[galeriaProductoIndex].imagenes;
@@ -1196,17 +1244,8 @@ function mostrarFotoGaleria() {
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
   const grid = document.getElementById("galeria-tallas-grid");
   grid.innerHTML = p.tallas.map(t => `<div class="talla-btn${t===galeriaTallaSeleccionada?' activo':''}" onclick="seleccionarTallaGaleria(${t}, this)">${t}</div>`).join("");
-}
-
-function seleccionarTallaGaleria(talla, el) {
-  galeriaTallaSeleccionada = talla;
-  document.querySelectorAll(".talla-btn").forEach(b => b.classList.remove("activo"));
-  el.classList.add("activo");
-}
-
-function cambiarCantidadGaleria(delta) {
-  galeriaCantidad = Math.max(1, galeriaCantidad + delta);
-  document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
+  // Actualizar botón WhatsApp
+  actualizarBotonWhatsAppGaleria(p);
 }
 
 // Touch para galería
@@ -1307,7 +1346,7 @@ async function cargarProductosConCache() {
         abrirProductoPorHash();
         initValidacion();
         agregarBreadcrumbs();
-        // Autocompletado direcciones: evento input
+        // Autocompletado direcciones
         document.getElementById("dir-calle").addEventListener("input", function() {
           clearTimeout(timeoutDireccion);
           const q = this.value.trim();
