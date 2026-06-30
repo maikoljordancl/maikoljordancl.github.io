@@ -254,7 +254,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 
 <div class="search">
-<input type="text" id="buscar" placeholder="Buscar modelo..." aria-label="Buscar productos" autocomplete="off">
+<input type="text" id="buscar" placeholder="Buscar modelo..." aria-label="Buscar productos" autocomplete="off" oninput="aplicar()">
 <div class="sugerencias-busqueda" id="sugerencias-busqueda"></div>
 </div>
 
@@ -1314,6 +1314,8 @@ async function cargarProductosConCache() {
           if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
           timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
         });
+        // Aplicar categoría desde hash después de cargar
+        aplicarCategoriaDesdeHash();
         return;
       }
     } catch(e) {}
@@ -1371,6 +1373,8 @@ async function cargarProductos() {
       if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
       timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
     });
+    // Aplicar categoría desde hash después de cargar
+    aplicarCategoriaDesdeHash();
   } catch (error) {
     document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
   }
@@ -1429,6 +1433,13 @@ function toggleCategoria(el) {
 
 function filtrar(tag) {
   categoriaActual = tag;
+  // Actualizar hash en la URL
+  if (tag === 'todos') {
+    history.pushState(null, '', window.location.pathname);
+  } else {
+    const slug = tag.toLowerCase().replace(/\s+/g, '-');
+    history.pushState(null, '', '#' + slug);
+  }
   generarMenuCategorias();
   actualizarFiltroActivo();
   aplicar();
@@ -1543,6 +1554,51 @@ function agregarPoliticaPrivacidad() {
 }
 
 // ============================================================
+//  ===== NUEVO: FUNCIONES PARA EL MANEJO DEL HASH =====
+// ============================================================
+function aplicarCategoriaDesdeHash() {
+  const hash = window.location.hash.replace('#', '');
+  if (!hash) return;
+  // Buscar la categoría que coincida
+  let categoriaEncontrada = null;
+  const tagsUnicos = [];
+  productos.forEach(p => {
+    if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]);
+  });
+  // Intentar coincidir con tags existentes (ej. "dc", "nike")
+  for (let tag of tagsUnicos) {
+    if (normalizar(tag) === normalizar(hash) || normalizar(tag) === normalizar(hash.replace(/-/g, ' '))) {
+      categoriaEncontrada = tag;
+      break;
+    }
+  }
+  // Si no, buscar en CATEGORIA_PADRES (ej. "nike" -> "Nike")
+  if (!categoriaEncontrada) {
+    for (let padre of Object.keys(CATEGORIA_PADRES)) {
+      if (normalizar(padre) === normalizar(hash)) {
+        categoriaEncontrada = padre;
+        break;
+      }
+    }
+  }
+  if (categoriaEncontrada) {
+    categoriaActual = categoriaEncontrada;
+    generarMenuCategorias();
+    actualizarFiltroActivo();
+    aplicar();
+  }
+}
+
+// Escuchar cambios en el hash (popstate y hashchange)
+window.addEventListener('hashchange', function() {
+  aplicarCategoriaDesdeHash();
+});
+
+window.addEventListener('popstate', function() {
+  aplicarCategoriaDesdeHash();
+});
+
+// ============================================================
 //  INICIALIZACIÓN
 // ============================================================
 window.onload = function() {
@@ -1569,7 +1625,8 @@ window.addEventListener("popstate", function() {
 
 function abrirProductoPorHash() {
   const hash = window.location.hash.replace("#", "");
-  if (!hash || productos.length === 0) return;
+  // Si el hash es una categoría (solo letras y guiones), no abrir galería
+  if (!hash || /^[a-z-]+$/i.test(hash)) return;
   const index = productos.findIndex(p => slugify(p.nombre) === hash);
   if (index !== -1) abrirGaleria(index);
 }
