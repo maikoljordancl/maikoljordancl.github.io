@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maikol Jordan</title>
+
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EN8SLMRST"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -11,25 +13,31 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-2EN8SLMRST');
 </script>
+
 <style>
-/* ===== TODOS LOS ESTILOS (completos) ===== */
+/* ===== RESET Y ESTILOS BASE ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
+
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
 .logo{width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid #e60012;}
 h1{margin-top:10px;font-size:34px;}
 .sub{color:#e60012;font-weight:bold;}
+
 .trust-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:14px 20px;background:#111;border-bottom:1px solid #1f1f1f;}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#aaa;}
 .trust-item span:first-child{font-size:16px;}
+
 .search{padding:20px 20px 0;}
 .search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;}
+
 .filtro-row{display:flex;align-items:center;gap:10px;padding:14px 20px;flex-wrap:wrap;}
 .menu-categorias-btn{position:fixed;top:16px;left:16px;z-index:999;background:#1a1a1a;border:1px solid #2a2a2a;width:46px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.4);transition:0.3s;}
 .menu-categorias-btn:hover{border-color:#e60012;}
 .menu-categorias-btn span{display:block;width:22px;height:2px;background:white;border-radius:2px;}
 .filtro-activo{display:none;align-items:center;gap:8px;background:#2a1010;border:1px solid #e60012;color:#ff8888;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:bold;}
 .filtro-activo button{background:none;border:none;color:#ff8888;font-size:16px;cursor:pointer;padding:0;}
+
 .categorias-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
 .categorias-overlay.open{display:block;}
 .categorias-panel{position:fixed;top:0;left:-100%;width:320px;max-width:85%;height:100%;background:#111;z-index:1001;display:flex;flex-direction:column;transition:left 0.3s;overflow-y:auto;}
@@ -91,6 +99,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn-vaciar-carrito{background:#1a1a1a;border:1px solid #444;color:#888;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;transition:0.3s;}
 .btn-vaciar-carrito:hover{border-color:#e60012;color:#ff6b6b;}
 
+/* ===== CHECKOUT ===== */
 .checkout-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;justify-content:center;align-items:center;}
 .checkout-overlay.open{display:flex;}
 .checkout-container{background:#151515;border-radius:24px;max-width:700px;width:95%;max-height:95vh;overflow-y:auto;padding:30px;position:relative;border:1px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
@@ -147,6 +156,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .transferencia-info strong{color:white;}
 .pago-seguro-msg{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#777;margin-bottom:10px;}
 
+/* ===== GALERÍA (CORREGIDA) ===== */
 .galeria-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1100;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
 .galeria-overlay.open{visibility:visible;opacity:1;pointer-events:all;}
 .galeria-modal{display:flex;flex-direction:column;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:95%;max-width:700px;max-height:90vh;background:#151515;border-radius:24px;z-index:1101;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;transition:all 0.3s ease;border:1px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.9);}
@@ -237,7 +247,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 
 <div class="search">
-<input type="text" id="buscar" placeholder="Buscar modelo..." aria-label="Buscar productos" autocomplete="off" onkeyup="aplicar()">
+<input type="text" id="buscar" placeholder="Buscar modelo..." aria-label="Buscar productos" autocomplete="off">
 </div>
 
 <div class="filtro-row">
@@ -366,6 +376,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 
 <div class="toast" id="toast">✅ Agregado al carrito</div>
 
+<!-- ===== GALERÍA MODAL (CORREGIDA) ===== -->
 <div class="galeria-overlay" id="galeria-overlay" onclick="cerrarGaleria()"></div>
 <div class="galeria-modal" id="galeria-modal">
 <button class="galeria-close" onclick="cerrarGaleria()">✕</button>
@@ -686,7 +697,7 @@ function comprarAhoraDesdeCard(index) {
   carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: talla });
   guardarCarrito();
   actualizarCarrito();
-  abrirCheckout();
+  abrirCarrito();
 }
 function removerDelCarrito(i) {
   carrito.splice(i, 1);
@@ -714,7 +725,7 @@ function comprarAhora() {
   guardarCarrito();
   actualizarCarrito();
   cerrarGaleria();
-  abrirCheckout();
+  abrirCarrito();
 }
 
 function actualizarCarrito() {
@@ -1043,7 +1054,7 @@ function cerrarCarrito() {
 }
 
 // ============================================================
-//  GALERÍA DE PRODUCTOS
+//  GALERÍA DE PRODUCTOS (CORREGIDA Y FUNCIONAL)
 // ============================================================
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
@@ -1056,10 +1067,17 @@ function abrirGaleria(index) {
   galeriaFotoIndex = 0;
   galeriaCantidad = 1;
   const p = productos[index];
+  // Seleccionar talla por defecto (la 41 si existe, sino la primera)
   galeriaTallaSeleccionada = p.tallas.indexOf(41) !== -1 ? 41 : p.tallas[0];
+  
+  // Mostrar contenido
   mostrarFotoGaleria();
+  
+  // Abrir modal
   document.getElementById("galeria-overlay").classList.add("open");
   document.getElementById("galeria-modal").classList.add("open");
+  
+  // Actualizar URL (para compartir)
   history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
 }
 
@@ -1085,25 +1103,37 @@ function irAFoto(i) {
 function moverCarrusel() {
   const track = document.getElementById("galeria-img-track");
   track.style.transform = "translateX(-" + (galeriaFotoIndex * 100) + "%)";
-  document.querySelectorAll(".galeria-dot").forEach((dot, i) => dot.classList.toggle("activo", i === galeriaFotoIndex));
+  document.querySelectorAll(".galeria-dot").forEach((dot, i) => {
+    dot.classList.toggle("activo", i === galeriaFotoIndex);
+  });
 }
 
 function mostrarFotoGaleria() {
   if (galeriaProductoIndex === null) return;
   const p = productos[galeriaProductoIndex];
   const fotos = p.imagenes;
+  
+  // Llenar track de imágenes
   const track = document.getElementById("galeria-img-track");
   track.innerHTML = fotos.map(url => `<img src="${url}" alt="${p.nombre}" onerror="this.src='logo.webp'">`).join("");
   track.style.transform = "translateX(0%)";
+  
+  // Dots
   const dotsCont = document.getElementById("galeria-dots");
   dotsCont.innerHTML = fotos.length > 1 ? fotos.map((_, i) => `<div class="galeria-dot${i===0?' activo':''}" onclick="irAFoto(${i})"></div>`).join("") : "";
+  
+  // Mostrar/ocultar botones de navegación
   document.querySelector(".galeria-prev").style.display = fotos.length > 1 ? "block" : "none";
   document.querySelector(".galeria-next").style.display = fotos.length > 1 ? "block" : "none";
+  
+  // Información del producto
   document.getElementById("galeria-marca").textContent = (p.tags[0] || "MAIKOL JORDAN");
   document.getElementById("galeria-nombre").textContent = p.nombre;
   document.getElementById("galeria-precio").textContent = "$" + p.precio.toLocaleString("es-CL");
   document.getElementById("galeria-descripcion").textContent = generarDescripcion(p.nombre);
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
+  
+  // Tallas
   const grid = document.getElementById("galeria-tallas-grid");
   grid.innerHTML = p.tallas.map(t => `<div class="talla-btn${t===galeriaTallaSeleccionada?' activo':''}" onclick="seleccionarTallaGaleria(${t}, this)">${t}</div>`).join("");
 }
@@ -1200,8 +1230,6 @@ async function cargarProductos() {
     productos = mezclar(destacados).concat(mezclar(resto));
     
     renderizarCatalogo();
-    // Aplicar categoría desde hash (#dc)
-    aplicarCategoriaDesdeHash();
   } catch (error) {
     console.error("Error cargando CSV:", error);
     // Productos de ejemplo
@@ -1214,7 +1242,6 @@ async function cargarProductos() {
       { nombre: "LV Trainer White", precio: 250000, imagenes: ["logo.webp"], tags: ["Louis Vuitton"], tallas: [37,38,39,40,41,42,43,44] }
     ];
     renderizarCatalogo();
-    aplicarCategoriaDesdeHash();
     document.getElementById("productos").innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:10px;background:#2a1010;border:1px solid #e60012;border-radius:10px;margin:0 20px;color:#ff8888;">
       ⚠️ No se pudo cargar el catálogo desde Google Sheets. Mostrando productos de ejemplo.
       <br><button onclick="cargarProductos()" style="margin-top:8px;padding:6px 14px;background:#e60012;border:none;border-radius:6px;color:white;font-weight:bold;cursor:pointer;">Reintentar</button>
@@ -1240,7 +1267,7 @@ function renderizarCatalogo() {
 }
 
 // ============================================================
-//  CATEGORÍAS, FILTROS, BÚSQUEDA Y HASH
+//  CATEGORÍAS, FILTROS Y RENDER
 // ============================================================
 function generarMenuCategorias() {
   const lista = document.getElementById("categorias-lista");
@@ -1295,29 +1322,18 @@ function toggleCategoria(el) {
 
 function filtrar(tag) {
   categoriaActual = tag;
-  // Actualizar hash en la URL
-  if (tag === 'todos') {
-    history.pushState(null, '', window.location.pathname);
-  } else {
-    // Convertir tag a slug (ej. "DC" -> "dc")
-    const slug = tag.toLowerCase().replace(/\s+/g, '-');
-    history.pushState(null, '', '#' + slug);
-  }
   generarMenuCategorias();
   actualizarFiltroActivo();
   aplicar();
   cerrarCategorias();
 }
-
 function actualizarFiltroActivo() {
   const chip = document.getElementById("filtro-activo");
   const texto = document.getElementById("filtro-activo-texto");
   if (categoriaActual === "todos") chip.style.display = "none";
   else { chip.style.display = "flex"; texto.textContent = categoriaActual; }
 }
-
 function quitarFiltro() { filtrar("todos"); }
-
 function abrirCategorias() {
   document.getElementById("categorias-panel").classList.add("open");
   document.getElementById("categorias-overlay").classList.add("open");
@@ -1339,14 +1355,14 @@ function tagsParaFiltro(cat) {
 }
 
 function aplicar() {
-  const texto = document.getElementById("buscar").value.toLowerCase().trim();
+  const texto = document.getElementById("buscar").value.toLowerCase();
   const tagsValidos = tagsParaFiltro(categoriaActual);
   document.querySelectorAll(".card").forEach(card => {
     const index = parseInt(card.dataset.index);
     const p = productos[index];
     if (!p) return;
     const enCategoria = categoriaActual === "todos" || p.tags.some(t => tagsValidos.indexOf(normalizar(t)) !== -1);
-    const enBusqueda = p.nombre.toLowerCase().includes(texto);
+    const enBusqueda = p.nombre.toLowerCase().indexOf(texto) !== -1;
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
 }
@@ -1383,50 +1399,6 @@ function render() {
 }
 
 // ============================================================
-//  NAVEGACIÓN POR HASH (#categoria)
-// ============================================================
-function aplicarCategoriaDesdeHash() {
-  const hash = window.location.hash.replace('#', '');
-  if (!hash) return;
-  // Buscar la categoría que coincida
-  let categoriaEncontrada = null;
-  const tagsUnicos = [];
-  productos.forEach(p => {
-    if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]);
-  });
-  for (let tag of tagsUnicos) {
-    if (normalizar(tag) === normalizar(hash) || normalizar(tag) === normalizar(hash.replace(/-/g, ' '))) {
-      categoriaEncontrada = tag;
-      break;
-    }
-  }
-  // Buscar en CATEGORIA_PADRES (ej. "nike" -> "Nike")
-  if (!categoriaEncontrada) {
-    for (let padre of Object.keys(CATEGORIA_PADRES)) {
-      if (normalizar(padre) === normalizar(hash)) {
-        categoriaEncontrada = padre;
-        break;
-      }
-    }
-  }
-  if (categoriaEncontrada) {
-    categoriaActual = categoriaEncontrada;
-    generarMenuCategorias();
-    actualizarFiltroActivo();
-    aplicar();
-  }
-}
-
-// Escuchar cambios en el hash (popstate y hashchange)
-window.addEventListener('hashchange', function() {
-  aplicarCategoriaDesdeHash();
-});
-
-window.addEventListener('popstate', function() {
-  aplicarCategoriaDesdeHash();
-});
-
-// ============================================================
 //  INICIALIZACIÓN
 // ============================================================
 window.onload = function() {
@@ -1435,9 +1407,11 @@ window.onload = function() {
     const btn = document.getElementById("volver-arriba");
     btn.classList.toggle("visible", window.scrollY > 300);
   });
+  // Cerrar galería con tecla ESC
   document.addEventListener("keydown", function(e) {
     if (e.key === "Escape") cerrarGaleria();
   });
+  // Cerrar sugerencias de dirección al hacer clic fuera
   document.addEventListener("click", function(e) {
     if (!e.target.closest(".calle-wrapper")) {
       document.getElementById("sugerencias-direccion").style.display = "none";
@@ -1445,11 +1419,13 @@ window.onload = function() {
   });
 };
 
-// También detectar popstate para la galería (ya está arriba)
+window.addEventListener("popstate", function() {
+  if (galeriaProductoIndex !== null) cerrarGaleria();
+});
+
 function abrirProductoPorHash() {
   const hash = window.location.hash.replace("#", "");
-  // Si el hash es una categoría (letras), no abrir galería
-  if (!hash || /^[a-z-]+$/i.test(hash)) return;
+  if (!hash || productos.length === 0) return;
   const index = productos.findIndex(p => slugify(p.nombre) === hash);
   if (index !== -1) abrirGaleria(index);
 }
