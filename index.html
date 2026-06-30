@@ -19,59 +19,27 @@ gtag('config', 'G-2EN8SLMRST');
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 
-/* ===== HEADER ===== */
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
 .logo{width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid #e60012;}
 h1{margin-top:10px;font-size:34px;}
 .sub{color:#e60012;font-weight:bold;}
 
-/* ===== TRUST ROW ===== */
 .trust-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:14px 20px;background:#111;border-bottom:1px solid #1f1f1f;}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#aaa;}
 .trust-item span:first-child{font-size:16px;}
 
-/* ===== BUSCADOR ===== */
 .search{padding:20px 20px 0;position:relative;}
 .search input{width:100%;padding:14px;border:none;border-radius:12px;background:#1c1c1c;color:white;font-size:16px;outline:none;padding-right:50px;}
 .search input:focus{border:2px solid #e60012;}
 
-/* ===== AUTOCOMPLETADO DEL BUSCADOR ===== */
-.sugerencias-busqueda {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #1c1c1c;
-  border-radius: 0 0 12px 12px;
-  max-height: 300px;
-  overflow-y: auto;
-  z-index: 100;
-  display: none;
-  border: 1px solid #2a2a2a;
-  border-top: none;
-}
-.sugerencia-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  cursor: pointer;
-  border-bottom: 1px solid #2a2a2a;
-  transition: 0.15s;
-}
-.sugerencia-item:hover { background: #2a2a2a; }
-.sugerencia-item img {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #222;
-}
-.sugerencia-info { flex: 1; }
-.sugerencia-nombre { font-size: 14px; color: white; }
-.sugerencia-precio { font-size: 12px; color: #e60012; }
+.sugerencias-busqueda{position:absolute;top:100%;left:0;right:0;background:#1c1c1c;border-radius:0 0 12px 12px;max-height:300px;overflow-y:auto;z-index:100;display:none;border:1px solid #2a2a2a;border-top:none;}
+.sugerencia-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid #2a2a2a;transition:0.15s;}
+.sugerencia-item:hover{background:#2a2a2a;}
+.sugerencia-item img{width:40px;height:40px;object-fit:cover;border-radius:8px;background:#222;}
+.sugerencia-info{flex:1;}
+.sugerencia-nombre{font-size:14px;color:white;}
+.sugerencia-precio{font-size:12px;color:#e60012;}
 
-/* ===== FILTROS Y CATEGORÍAS ===== */
 .filtro-row{display:flex;align-items:center;gap:10px;padding:14px 20px;flex-wrap:wrap;}
 .menu-categorias-btn{position:fixed;top:16px;left:16px;z-index:999;background:#1a1a1a;border:1px solid #2a2a2a;width:46px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.4);transition:0.3s;}
 .menu-categorias-btn:hover{border-color:#e60012;}
@@ -98,13 +66,11 @@ h1{margin-top:10px;font-size:34px;}
 .cat-child:hover{background:#181818;color:white;}
 .cat-child.activo{color:#e60012;font-weight:bold;}
 
-/* ===== ORDENAMIENTO ===== */
 .orden-row{display:flex;align-items:center;gap:10px;padding:8px 20px 12px;flex-wrap:wrap;}
 .orden-row label{color:#888;font-size:13px;}
 .orden-row select{background:#1c1c1c;border:1px solid #2a2a2a;color:white;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;width:auto;}
 .orden-row select:focus{border-color:#e60012;}
 
-/* ===== PRODUCTOS ===== */
 .produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:20px;}
 .card{background:#151515;border-radius:18px;padding:15px;border:1px solid #2a2a2a;transition:0.3s;display:flex;flex-direction:column;gap:10px;justify-content:space-between;cursor:pointer;}
 .card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
@@ -123,7 +89,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn{background:#e60012;border:none;padding:12px;border-radius:10px;color:white;font-weight:bold;cursor:pointer;transition:0.3s;}
 .btn:hover{background:#b8000e;}
 
-/* ===== CARRITO LATERAL ===== */
 .cart-btn{position:fixed;bottom:20px;left:20px;background:#e60012;color:white;padding:14px 18px;border-radius:50px;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);cursor:pointer;border:none;font-size:16px;}
 .cart-badge{background:white;color:#e60012;border-radius:50%;padding:2px 7px;font-size:13px;margin-left:5px;font-weight:bold;}
 .cart-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;}
@@ -148,14 +113,12 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn-vaciar-carrito{background:#1a1a1a;border:1px solid #444;color:#888;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;transition:0.3s;}
 .btn-vaciar-carrito:hover{border-color:#e60012;color:#ff6b6b;}
 
-/* ===== CHECKOUT POR PASOS ===== */
 .checkout-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;justify-content:center;align-items:center;}
 .checkout-overlay.open{display:flex;}
 .checkout-container{background:#151515;border-radius:24px;max-width:700px;width:95%;max-height:95vh;overflow-y:auto;padding:30px;position:relative;border:1px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
 .checkout-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#888;font-size:28px;cursor:pointer;transition:0.2s;}
 .checkout-close:hover{color:white;}
 
-/* Barra de progreso */
 .checkout-pasos{display:flex;justify-content:space-between;margin:0 0 30px;position:relative;}
 .checkout-pasos::before{content:'';position:absolute;top:16px;left:0;right:0;height:2px;background:#2a2a2a;z-index:0;}
 .paso-indicador{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative;z-index:1;}
@@ -165,15 +128,11 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .paso-label{font-size:12px;color:#888;text-align:center;transition:0.3s;}
 .paso-label.activo{color:white;font-weight:bold;}
 
-/* Pasos del checkout */
 .paso-contenido{display:none;animation:fadeIn 0.3s ease;}
 .paso-contenido.activo{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
 .checkout-paso-titulo{font-size:20px;font-weight:bold;margin-bottom:20px;color:white;}
-.checkout-paso-subtitulo{color:#888;font-size:14px;margin-bottom:20px;}
-
-/* Tarjetas de resumen en paso 1 */
 .resumen-item{display:flex;align-items:center;gap:12px;background:#1a1a1a;border-radius:12px;padding:12px;margin-bottom:10px;}
 .resumen-item img{width:60px;height:60px;object-fit:cover;border-radius:8px;background:#222;}
 .resumen-item-info{flex:1;}
@@ -183,7 +142,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .resumen-total{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #2a2a2a;margin-top:12px;font-size:18px;font-weight:bold;}
 .resumen-total span:last-child{color:#e60012;}
 
-/* Botones de navegación */
 .checkout-botones{display:flex;justify-content:space-between;margin-top:25px;gap:12px;}
 .btn-checkout{background:#1a1a1a;border:1px solid #2a2a2a;color:white;padding:12px 28px;border-radius:12px;font-weight:bold;cursor:pointer;transition:0.3s;}
 .btn-checkout:hover{border-color:#e60012;background:#241010;}
@@ -191,7 +149,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn-checkout.primario:hover{background:#b8000e;}
 .btn-checkout:disabled{opacity:0.5;cursor:not-allowed;}
 
-/* Formulario en paso 2 */
 .checkout-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 .checkout-form .form-row.single{grid-template-columns:1fr;}
 .checkout-form .form-input{width:100%;padding:12px 14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;color:white;font-size:14px;outline:none;}
@@ -200,13 +157,11 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .checkout-form .form-input.error{border-color:#ff6b6b;}
 .checkout-form .form-input.success{border-color:#3ddc84;}
 
-/* Autocompletado de dirección */
 .calle-wrapper{position:relative;}
 .sugerencias-direccion{position:absolute;top:100%;left:0;right:0;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;z-index:100;display:none;}
 .sug-dir-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid #222;color:#ccc;font-size:13px;transition:0.15s;}
 .sug-dir-item:hover{background:#2a2a2a;color:white;}
 
-/* Métodos de pago en paso 3 */
 .metodos-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
 .metodo-pago{background:#1a1a1a;border:2px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;transition:0.3s;}
 .metodo-pago:hover{border-color:#e60012;}
@@ -221,7 +176,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .transferencia-info strong{color:white;}
 .pago-seguro-msg{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#777;margin-bottom:10px;}
 
-/* ===== GALERÍA ===== */
 .galeria-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0b0b;z-index:1100;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.28s ease;}
 .galeria-overlay.open{visibility:visible;opacity:1;pointer-events:all;}
 .galeria-modal{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1101;flex-direction:column;background:#0b0b0b;visibility:hidden;opacity:0;transform:scale(0.94);pointer-events:none;transition:opacity 0.28s ease, transform 0.28s ease;}
@@ -259,33 +213,27 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn-comprar-ahora{background:#009EE3;color:white;}
 .btn-comprar-ahora:hover{background:#0081bb;}
 
-/* ===== WHATSAPP FLOTANTE ===== */
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);display:flex;align-items:center;gap:8px;}
 .whatsapp:hover{background:#1ebe5d;}
 
-/* ===== VOLVER ARRIBA ===== */
 .volver-arriba{position:fixed;bottom:80px;right:20px;background:#222;color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;transform:translateY(10px);}
 .volver-arriba.visible{opacity:1;pointer-events:all;transform:translateY(0);}
 .volver-arriba:hover{background:#e60012;}
 
-/* ===== TOAST ===== */
 .toast{position:fixed;bottom:90px;left:20px;background:#e60012;color:white;padding:10px 18px;border-radius:10px;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .toast.show{opacity:1;}
 .toast-con-imagen{display:flex;align-items:center;gap:10px;}
 .toast-con-imagen img{width:40px;height:40px;object-fit:cover;border-radius:8px;background:#222;}
 
-/* ===== LOADING ===== */
 .loading{text-align:center;grid-column:1/-1;padding:60px 40px;font-size:18px;color:#e60012;font-weight:bold;display:flex;flex-direction:column;align-items:center;gap:20px;}
 .loading-spinner{width:50px;height:50px;border:4px solid #2a2a2a;border-top-color:#e60012;border-radius:50%;animation:spin 1.2s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ===== AVISO CONSULTA ===== */
 .aviso-consulta{background:#161616;border:1px solid #2a2a2a;border-left:4px solid #e60012;border-radius:14px;padding:20px 24px;margin:30px 20px 10px;text-align:center;}
 .aviso-consulta p{color:#ccc;font-size:15px;line-height:1.5;}
 .aviso-consulta a{color:#e60012;font-weight:bold;text-decoration:none;border-bottom:1px dashed #e60012;}
 .aviso-consulta a:hover{color:#ff3344;}
 
-/* ===== FOOTER ===== */
 footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3px solid #e60012;}
 .footer-top{background:#111;padding:40px 20px 30px;}
 .footer-brand{font-size:22px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;}
@@ -301,7 +249,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 .footer-logos{display:flex;justify-content:center;align-items:center;}
 .footer-stripe{display:block;height:4px;background:linear-gradient(90deg,#000,#e60012,#000);margin-bottom:0;}
 
-/* ===== BREADCRUMBS ===== */
 #breadcrumbs{padding:4px 20px 0;font-size:13px;color:#888;margin-top:-6px;}
 #breadcrumbs a{color:#e60012;text-decoration:none;}
 </style>
@@ -326,7 +273,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="trust-item"><span>💬</span> Atención por WhatsApp</div>
 </div>
 
-<!-- BUSCADOR CON AUTOCOMPLETADO -->
 <div class="search">
 <input type="text" id="buscar" placeholder="Buscar modelo..." aria-label="Buscar productos" autocomplete="off">
 <div class="sugerencias-busqueda" id="sugerencias-busqueda"></div>
@@ -359,18 +305,13 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 
 <div class="produtos" id="productos">
-<div class="loading">
-  <div class="loading-spinner"></div>
-  <span>🔥 Cargando catálogo de lujo...</span>
-</div>
+<div class="loading"><div class="loading-spinner"></div><span>🔥 Cargando catálogo...</span></div>
 </div>
 
-<!-- BOTÓN CARRITO -->
 <button class="cart-btn" onclick="abrirCarrito()" aria-label="Abrir carrito">
 🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
 </button>
 
-<!-- CARRITO LATERAL -->
 <div class="cart-overlay" id="cart-overlay" onclick="cerrarCarrito()"></div>
 <div class="cart-panel" id="cart-panel">
 <div class="cart-header">
@@ -388,37 +329,19 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
-<!-- CHECKOUT POR PASOS -->
 <div class="checkout-overlay" id="checkout-overlay">
 <div class="checkout-container">
 <button class="checkout-close" onclick="cerrarCheckout()" aria-label="Cerrar checkout">✕</button>
-
-<!-- Barra de progreso -->
 <div class="checkout-pasos">
-<div class="paso-indicador">
-<div class="paso-numero activo" id="paso1-num">1</div>
-<div class="paso-label activo" id="paso1-label">Carrito</div>
+<div class="paso-indicador"><div class="paso-numero activo" id="paso1-num">1</div><div class="paso-label activo" id="paso1-label">Carrito</div></div>
+<div class="paso-indicador"><div class="paso-numero" id="paso2-num">2</div><div class="paso-label" id="paso2-label">Envío</div></div>
+<div class="paso-indicador"><div class="paso-numero" id="paso3-num">3</div><div class="paso-label" id="paso3-label">Pago</div></div>
 </div>
-<div class="paso-indicador">
-<div class="paso-numero" id="paso2-num">2</div>
-<div class="paso-label" id="paso2-label">Envío</div>
-</div>
-<div class="paso-indicador">
-<div class="paso-numero" id="paso3-num">3</div>
-<div class="paso-label" id="paso3-label">Pago</div>
-</div>
-</div>
-
-<!-- PASO 1: Resumen del carrito -->
 <div class="paso-contenido activo" id="paso1">
 <div class="checkout-paso-titulo">📦 Resumen de tu pedido</div>
 <div id="checkout-resumen"></div>
-<div class="checkout-botones">
-<button class="btn-checkout primario" onclick="irPaso(2)">Continuar →</button>
+<div class="checkout-botones"><button class="btn-checkout primario" onclick="irPaso(2)">Continuar →</button></div>
 </div>
-</div>
-
-<!-- PASO 2: Datos de envío -->
 <div class="paso-contenido" id="paso2">
 <div class="checkout-paso-titulo">📍 Datos de envío</div>
 <div class="checkout-form">
@@ -450,30 +373,19 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <button class="btn-checkout primario" onclick="irPaso(3)">Continuar →</button>
 </div>
 </div>
-
-<!-- PASO 3: Método de pago y confirmación -->
 <div class="paso-contenido" id="paso3">
 <div class="checkout-paso-titulo">💳 Método de pago</div>
 <div class="metodos-grid">
 <div class="metodo-pago selected" id="metodo-mp" onclick="seleccionarMetodoCheckout('mp')">
-<div class="metodo-pago-header">
-<div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <span class="badge-mejor">⭐ Mejor opción</span></div>
-<img src="mp-chico.png" alt="Mercado Pago" style="height:30px;width:auto;">
-</div>
+<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <span class="badge-mejor">⭐ Mejor opción</span></div><img src="mp-chico.png" alt="Mercado Pago" style="height:30px;width:auto;"></div>
 <div class="metodo-pago-desc">Paga con tarjeta o débito — rápido y seguro</div>
 </div>
 <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodoCheckout('transferencia')">
-<div class="metodo-pago-header">
-<div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div>
-<img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" alt="Banco">
-</div>
+<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div><img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" alt="Banco"></div>
 <div class="metodo-pago-desc">Acepta cualquier banco — BCI, Santander, Banco Estado, Falabella</div>
 </div>
 <div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodoCheckout('wsp')">
-<div class="metodo-pago-header">
-<div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div>
-<img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" alt="WhatsApp">
-</div>
+<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div><img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" alt="WhatsApp"></div>
 <div class="metodo-pago-desc">Coordina tu pago directamente por WhatsApp</div>
 </div>
 </div>
@@ -497,14 +409,11 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <button class="btn-checkout primario" id="btn-confirmar-checkout" onclick="confirmarPedidoCheckout()">💳 Pagar ahora</button>
 </div>
 </div>
-
 </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">✅ Agregado al carrito</div>
 
-<!-- GALERÍA -->
 <div class="galeria-overlay" id="galeria-overlay" onclick="cerrarGaleria()"></div>
 <div class="galeria-modal" id="galeria-modal">
 <div class="galeria-foto-area" id="galeria-foto-area">
@@ -536,7 +445,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 </div>
 
-<!-- WHATSAPP FLOTANTE -->
 <a class="whatsapp" id="whatsapp-flotante" href="https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta" target="_blank" aria-label="Consultar por WhatsApp">
 💬 Consultas
 </a>
@@ -555,38 +463,22 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="footer-divider"></div>
 <div class="footer-redes">
 <a href="https://www.instagram.com/maikoljordan.cl" target="_blank" aria-label="Instagram">
-<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-<stop offset="0%" style="stop-color:#f09433"/><stop offset="25%" style="stop-color:#e6683c"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="75%" style="stop-color:#cc2366"/><stop offset="100%" style="stop-color:#bc1888"/>
-</linearGradient></defs>
-<rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="url(#ig-grad)"/>
-<circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/>
-<circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
-</svg>
+<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="url(#ig-grad)"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="white"/></svg>
 @maikoljordan.cl
 </a>
 <a href="https://www.facebook.com/maikoljordan.cl" target="_blank" aria-label="Facebook">
-<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<rect width="24" height="24" rx="5" fill="#1877F2"/>
-<path d="M16 8h-2a1 1 0 0 0-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 0 1 4-4h2v3z" fill="white"/>
-</svg>
+<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="5" fill="#1877F2"/><path d="M16 8h-2a1 1 0 0 0-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 0 1 4-4h2v3z" fill="white"/></svg>
 @maikoljordan.cl
 </a>
 <a href="mailto:maikoljordancl@gmail.com" aria-label="Correo electrónico">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="24" height="24" rx="5" fill="#e60012"/>
-<path d="M4 8l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-<rect x="4" y="7" width="16" height="11" rx="2" stroke="white" stroke-width="1.6" fill="none"/>
-</svg>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="5" fill="#e60012"/><path d="M4 8l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/><rect x="4" y="7" width="16" height="11" rx="2" stroke="white" stroke-width="1.6" fill="none"/></svg>
 maikoljordancl@gmail.com
 </a>
 </div>
 </div>
 <div class="footer-bottom">
 <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
-<div class="footer-logos">
-<img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:160px;height:auto;display:block;margin:0 auto;">
-</div>
+<div class="footer-logos"><img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:160px;height:auto;display:block;margin:0 auto;"></div>
 </div>
 </footer>
 
@@ -652,19 +544,15 @@ function slugify(nombre) {
 }
 
 // ============================================================
-//  PERSISTENCIA DEL CARRITO Y DATOS
+//  PERSISTENCIA
 // ============================================================
 function guardarCarrito() {
   localStorage.setItem('carrito', JSON.stringify(carrito));
 }
-
 function cargarCarrito() {
   const data = localStorage.getItem('carrito');
-  if (data) {
-    try { carrito = JSON.parse(data); } catch(e) { carrito = []; }
-  } else { carrito = []; }
+  if (data) { try { carrito = JSON.parse(data); } catch(e) { carrito = []; } } else { carrito = []; }
 }
-
 function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) {
   localStorage.setItem("m_nombre", nombre);
   localStorage.setItem("m_whatsapp", whatsapp);
@@ -673,42 +561,32 @@ function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) 
   localStorage.setItem("m_comuna", comuna);
   localStorage.setItem("m_cp", cp);
 }
-
 function cargarDatosGuardados() {
-  const campos = {
-    "c-nombre": "m_nombre",
-    "c-whatsapp": "m_whatsapp",
-    "dir-calle": "m_calle",
-    "dir-numero": "m_numero",
-    "dir-region": "m_region",
-    "dir-comuna": "m_comuna",
-    "dir-cp": "m_cp"
-  };
-  Object.keys(campos).forEach(function(id) {
+  const campos = { "c-nombre":"m_nombre", "c-whatsapp":"m_whatsapp", "dir-calle":"m_calle", "dir-numero":"m_numero", "dir-region":"m_region", "dir-comuna":"m_comuna", "dir-cp":"m_cp" };
+  Object.keys(campos).forEach(id => {
     const val = localStorage.getItem(campos[id]);
     if (val) document.getElementById(id).value = val;
   });
 }
 
 // ============================================================
-//  TOAST CON IMAGEN
+//  TOAST
 // ============================================================
 function mostrarToast(nombre, imagen) {
   const t = document.getElementById("toast");
   t.innerHTML = '<div class="toast-con-imagen"><img src="' + imagen + '" onerror="this.src=\'logo.webp\'"> <span>✅ ' + nombre + '</span></div>';
   t.classList.add("show");
   clearTimeout(t._timeout);
-  t._timeout = setTimeout(function() { t.classList.remove("show"); }, 2500);
+  t._timeout = setTimeout(() => t.classList.remove("show"), 2500);
 }
 
 // ============================================================
-//  VALIDACIÓN DEL FORMULARIO
+//  VALIDACIÓN
 // ============================================================
 function validarWhatsapp(val) {
   const limpio = val.replace(/\s/g, '');
   return /^(\+569|9)\d{8}$/.test(limpio);
 }
-
 function validarCampo(id) {
   const el = document.getElementById(id);
   const val = el.value.trim();
@@ -722,7 +600,6 @@ function validarCampo(id) {
     return true;
   }
 }
-
 function validarWhatsappCampo(id) {
   const el = document.getElementById(id);
   const val = el.value.trim();
@@ -736,10 +613,8 @@ function validarWhatsappCampo(id) {
     return true;
   }
 }
-
 function initValidacion() {
-  const campos = ["c-nombre", "dir-calle", "dir-numero", "dir-region", "dir-comuna"];
-  campos.forEach(id => {
+  ["c-nombre", "dir-calle", "dir-numero", "dir-region", "dir-comuna"].forEach(id => {
     document.getElementById(id).addEventListener("input", function() { validarCampo(id); });
   });
   document.getElementById("c-whatsapp").addEventListener("input", function() { validarWhatsappCampo("c-whatsapp"); });
@@ -749,20 +624,13 @@ function initValidacion() {
 //  AUTOCOMPLETADO DE DIRECCIÓN (OpenStreetMap)
 // ============================================================
 let timeoutDireccion = null;
-
 function buscarDirecciones(query) {
   const cont = document.getElementById("sugerencias-direccion");
-  if (query.length < 3) {
-    cont.style.display = "none";
-    return;
-  }
+  if (query.length < 3) { cont.style.display = "none"; return; }
   fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=cl&limit=5&addressdetails=1`)
     .then(res => res.json())
     .then(data => {
-      if (data.length === 0) {
-        cont.style.display = "none";
-        return;
-      }
+      if (data.length === 0) { cont.style.display = "none"; return; }
       let html = "";
       data.forEach(item => {
         const a = item.address || {};
@@ -791,22 +659,8 @@ function buscarDirecciones(query) {
     .catch(() => { cont.style.display = "none"; });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  const input = document.getElementById("dir-calle");
-  const cont = document.getElementById("sugerencias-direccion");
-  input.addEventListener("input", function() {
-    clearTimeout(timeoutDireccion);
-    const q = this.value.trim();
-    if (q.length < 3) { cont.style.display = "none"; return; }
-    timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
-  });
-  document.addEventListener("click", function(e) {
-    if (!e.target.closest(".calle-wrapper")) cont.style.display = "none";
-  });
-});
-
 // ============================================================
-//  GEOLOCALIZACIÓN MEJORADA
+//  GEOLOCALIZACIÓN
 // ============================================================
 function usarMiUbicacion() {
   const btn = document.querySelector(".btn-ubicacion");
@@ -820,7 +674,7 @@ function usarMiUbicacion() {
   btn.textContent = "📍 Buscando tu ubicación...";
   msg.textContent = "Obteniendo coordenadas...";
   msg.className = "ubicacion-msg";
-  navigator.geolocation.getCurrentPosition(function(pos) {
+  navigator.geolocation.getCurrentPosition(pos => {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
     msg.textContent = "Obteniendo dirección...";
@@ -850,7 +704,7 @@ function usarMiUbicacion() {
         btn.disabled = false;
         btn.textContent = "📍 Usar mi ubicación actual";
       });
-  }, function(error) {
+  }, error => {
     btn.disabled = false;
     btn.textContent = "📍 Usar mi ubicación actual";
     msg.textContent = error.code === error.PERMISSION_DENIED ? "Permiso denegado. Escríbela manualmente." : "Error al obtener ubicación.";
@@ -859,42 +713,29 @@ function usarMiUbicacion() {
 }
 
 // ============================================================
-//  NOTIFICACIONES PUSH (recordatorio de carrito)
+//  NOTIFICACIONES PUSH
 // ============================================================
 function solicitarPermisoNotificacion() {
   if (!("Notification" in window)) return;
-  if (Notification.permission === "default") {
-    Notification.requestPermission();
-  }
+  if (Notification.permission === "default") Notification.requestPermission();
 }
-
 function mostrarNotificacionRecordatorio() {
-  if (!("Notification" in window)) return;
-  if (Notification.permission !== "granted") return;
-  if (carrito.length === 0) return;
+  if (!("Notification" in window) || Notification.permission !== "granted" || carrito.length === 0) return;
   const total = carrito.reduce((sum, item) => sum + item.precio, 0);
   new Notification("👟 ¡No olvides tu pedido en Maikol Jordan!", {
     body: `Tienes ${carrito.length} productos en tu carrito por $${total.toLocaleString("es-CL")}. ¡Termina tu compra ahora!`,
     icon: "logo.webp"
   });
 }
-
-window.addEventListener("beforeunload", function() {
-  if (carrito.length > 0) {
-    // Solo si el usuario aceptó notificaciones, mostramos un recordatorio (no se puede en beforeunload directamente)
-    // En su lugar, programamos una notificación después de un breve retraso
-    setTimeout(mostrarNotificacionRecordatorio, 1000);
-  }
-});
+window.addEventListener("beforeunload", () => setTimeout(mostrarNotificacionRecordatorio, 1000));
 
 // ============================================================
-//  BÚSQUEDA INTELIGENTE (autocompletado)
+//  BÚSQUEDA INTELIGENTE
 // ============================================================
 document.addEventListener("DOMContentLoaded", function() {
   const input = document.getElementById("buscar");
   const cont = document.getElementById("sugerencias-busqueda");
   let timeoutBusqueda = null;
-
   input.addEventListener("input", function() {
     clearTimeout(timeoutBusqueda);
     const q = this.value.trim().toLowerCase();
@@ -921,14 +762,11 @@ document.addEventListener("DOMContentLoaded", function() {
       cont.style.display = "block";
     }, 300);
   });
-
-  document.addEventListener("click", function(e) {
-    if (!e.target.closest(".search")) cont.style.display = "none";
-  });
+  document.addEventListener("click", e => { if (!e.target.closest(".search")) cont.style.display = "none"; });
 });
 
 // ============================================================
-//  ORDENAMIENTO DE PRODUCTOS (CORREGIDO)
+//  ORDENAMIENTO
 // ============================================================
 function ordenarProductos() {
   const select = document.getElementById("orden-select");
@@ -936,9 +774,7 @@ function ordenarProductos() {
   const cont = document.getElementById("productos");
   const cards = Array.from(cont.querySelectorAll(".card"));
   if (cards.length === 0) return;
-  const indicesVisibles = cards
-    .filter(card => card.style.display !== "none")
-    .map(card => parseInt(card.dataset.index));
+  const indicesVisibles = cards.filter(c => c.style.display !== "none").map(c => parseInt(c.dataset.index));
   if (indicesVisibles.length === 0) return;
   let indicesOrdenados = [];
   switch (ordenActual) {
@@ -957,7 +793,7 @@ function ordenarProductos() {
 }
 
 // ============================================================
-//  BOTÓN VACIAR CARRITO
+//  CARRITO
 // ============================================================
 function vaciarCarrito() {
   if (carrito.length === 0) return;
@@ -968,10 +804,6 @@ function vaciarCarrito() {
     mostrarToast("Carrito vaciado", "logo.webp");
   }
 }
-
-// ============================================================
-//  FUNCIONES DEL CARRITO
-// ============================================================
 function agregarAlCarrito(index) {
   const p = productos[index];
   const talla = document.getElementById("talla-" + index).value;
@@ -981,7 +813,6 @@ function agregarAlCarrito(index) {
   mostrarToast(p.nombre, p.imagenes[0]);
   solicitarPermisoNotificacion();
 }
-
 function comprarAhoraDesdeCard(index) {
   const p = productos[index];
   const talla = parseInt(document.getElementById("talla-" + index).value);
@@ -990,21 +821,14 @@ function comprarAhoraDesdeCard(index) {
   actualizarCarrito();
   abrirCheckout();
 }
-
 function removerDelCarrito(i) {
   carrito.splice(i, 1);
   guardarCarrito();
   actualizarCarrito();
 }
-
 function cambiarTallaEnCarrito(i, nuevaTalla) {
-  if (carrito[i]) {
-    carrito[i].talla = nuevaTalla;
-    guardarCarrito();
-    actualizarCarrito();
-  }
+  if (carrito[i]) { carrito[i].talla = nuevaTalla; guardarCarrito(); actualizarCarrito(); }
 }
-
 function agregarDesdeGaleria() {
   const p = productos[galeriaProductoIndex];
   for (let i = 0; i < galeriaCantidad; i++) {
@@ -1016,7 +840,6 @@ function agregarDesdeGaleria() {
   cerrarGaleria();
   solicitarPermisoNotificacion();
 }
-
 function comprarAhora() {
   const p = productos[galeriaProductoIndex];
   for (let i = 0; i < galeriaCantidad; i++) {
@@ -1028,41 +851,31 @@ function comprarAhora() {
   abrirCheckout();
 }
 
-// ============================================================
-//  ACTUALIZAR INTERFAZ DEL CARRITO
-// ============================================================
 function actualizarCarrito() {
   const count = carrito.length;
   document.getElementById("cart-count").textContent = count;
   const itemsEl = document.getElementById("cart-items");
   const formEl = document.getElementById("checkout-form");
   const vaciarBtn = document.getElementById("vaciar-carrito-btn");
-
   if (count === 0) {
     itemsEl.innerHTML = '<div class="cart-empty">😕 Tu carrito está vacío</div>';
     formEl.style.display = "none";
     vaciarBtn.style.display = "none";
     return;
   }
-
   vaciarBtn.style.display = "block";
-  let htmlItems = "";
-  let subtotal = 0;
-  carrito.forEach(function(item, i) {
+  let htmlItems = "", subtotal = 0;
+  carrito.forEach((item, i) => {
     subtotal += item.precio;
     const prod = productos.find(p => p.nombre === item.nombre);
     const tallasDisponibles = prod ? prod.tallas : [37,38,39,40,41,42,43,44,45];
     let opcionesTalla = "";
-    tallasDisponibles.forEach(t => {
-      opcionesTalla += `<option value="${t}" ${t == item.talla ? 'selected' : ''}>${t}</option>`;
-    });
+    tallasDisponibles.forEach(t => opcionesTalla += `<option value="${t}" ${t == item.talla ? 'selected' : ''}>${t}</option>`);
     htmlItems += `<div class="cart-item">
       <img src="${item.imagen}" onerror="this.src='logo.webp'">
       <div class="cart-item-info">
         <div class="cart-item-name">${item.nombre}</div>
-        <div class="cart-item-talla">
-          Talla: <select class="cambiar-talla" onchange="cambiarTallaEnCarrito(${i}, this.value)">${opcionesTalla}</select>
-        </div>
+        <div class="cart-item-talla">Talla: <select class="cambiar-talla" onchange="cambiarTallaEnCarrito(${i}, this.value)">${opcionesTalla}</select></div>
         <div class="cart-item-precio">$${item.precio.toLocaleString("es-CL")}</div>
       </div>
       <button class="cart-item-remove" onclick="removerDelCarrito(${i})" aria-label="Eliminar producto">✕</button>
@@ -1076,28 +889,18 @@ function actualizarCarrito() {
 //  CHECKOUT POR PASOS
 // ============================================================
 function abrirCheckout() {
-  if (carrito.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
-  }
+  if (carrito.length === 0) { alert("Tu carrito está vacío."); return; }
   document.getElementById("checkout-overlay").classList.add("open");
   pasoActual = 1;
   irPaso(1);
   actualizarResumenCheckout();
-  // Cerrar carrito lateral si está abierto
   cerrarCarrito();
 }
-
-function cerrarCheckout() {
-  document.getElementById("checkout-overlay").classList.remove("open");
-}
-
+function cerrarCheckout() { document.getElementById("checkout-overlay").classList.remove("open"); }
 function irPaso(n) {
   pasoActual = n;
-  // Ocultar todos los pasos
   document.querySelectorAll(".paso-contenido").forEach(el => el.classList.remove("activo"));
   document.getElementById("paso" + n).classList.add("activo");
-  // Actualizar indicadores
   for (let i = 1; i <= 3; i++) {
     const num = document.getElementById("paso" + i + "-num");
     const label = document.getElementById("paso" + i + "-label");
@@ -1108,15 +911,10 @@ function irPaso(n) {
   }
   if (n === 3) actualizarTotalesCheckout();
 }
-
 function actualizarResumenCheckout() {
   const cont = document.getElementById("checkout-resumen");
-  if (carrito.length === 0) {
-    cont.innerHTML = "<p style='color:#888;'>No hay productos en el carrito.</p>";
-    return;
-  }
-  let html = "";
-  let subtotal = 0;
+  if (carrito.length === 0) { cont.innerHTML = "<p style='color:#888;'>No hay productos.</p>"; return; }
+  let html = "", subtotal = 0;
   carrito.forEach(item => {
     subtotal += item.precio;
     html += `<div class="resumen-item">
@@ -1134,7 +932,6 @@ function actualizarResumenCheckout() {
   html += `<div class="resumen-total" style="border-top:none;padding-top:0;font-size:20px;color:#e60012;"><span>TOTAL</span><span>$${total.toLocaleString("es-CL")}</span></div>`;
   cont.innerHTML = html;
 }
-
 function actualizarTotalesCheckout() {
   let subtotal = 0;
   carrito.forEach(item => subtotal += item.precio);
@@ -1147,23 +944,17 @@ function actualizarTotalesCheckout() {
     descRow.style.display = "flex";
     document.getElementById("checkout-descuento-label").textContent = "Descuento (" + cuponAplicado.codigo + ")";
     document.getElementById("checkout-descuento-valor").textContent = "-$" + descuento.toLocaleString("es-CL");
-  } else {
-    descRow.style.display = "none";
-  }
+  } else { descRow.style.display = "none"; }
   document.getElementById("checkout-total").textContent = "$" + total.toLocaleString("es-CL");
 }
-
 function seleccionarMetodoCheckout(tipo) {
   metodoPago = tipo;
   document.querySelectorAll(".metodo-pago").forEach(el => el.classList.remove("selected"));
   document.getElementById("metodo-" + tipo).classList.add("selected");
   const transInfo = document.getElementById("transferencia-info");
   const btnConfirmar = document.getElementById("btn-confirmar-checkout");
-  if (tipo === "transferencia") {
-    transInfo.classList.add("show");
-  } else {
-    transInfo.classList.remove("show");
-  }
+  if (tipo === "transferencia") transInfo.classList.add("show");
+  else transInfo.classList.remove("show");
   if (tipo === "mp") {
     btnConfirmar.className = "btn-checkout primario";
     btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
@@ -1191,7 +982,6 @@ function calcularDescuento(subtotal, envio) {
   if (descuento > totalSinDescuento) descuento = totalSinDescuento;
   return descuento;
 }
-
 function aplicarCupon() {
   const inputEl = document.getElementById("c-cupon");
   const msgEl = document.getElementById("cupon-msg");
@@ -1214,14 +1004,10 @@ function aplicarCupon() {
   msgEl.className = "cupon-msg";
   const cuponRow = document.getElementById("cupon-row");
   cuponRow.style.display = "none";
-  const aplicadoHtml = `<div class="cupon-aplicado" id="cupon-aplicado-box">
-    <span>✅ ${codigo} aplicado — ${cupon.descripcion}</span>
-    <button onclick="quitarCupon()" aria-label="Quitar cupón">✕</button>
-  </div>`;
+  const aplicadoHtml = `<div class="cupon-aplicado" id="cupon-aplicado-box"><span>✅ ${codigo} aplicado — ${cupon.descripcion}</span><button onclick="quitarCupon()" aria-label="Quitar cupón">✕</button></div>`;
   cuponRow.insertAdjacentHTML('afterend', aplicadoHtml);
   actualizarCarrito();
 }
-
 function quitarCupon() {
   cuponAplicado = null;
   const box = document.getElementById("cupon-aplicado-box");
@@ -1237,7 +1023,6 @@ function quitarCupon() {
 //  CONFIRMAR PEDIDO DESDE CHECKOUT
 // ============================================================
 async function confirmarPedidoCheckout() {
-  // Validar datos de envío
   const nombre = document.getElementById("c-nombre").value.trim();
   const whatsapp = document.getElementById("c-whatsapp").value.trim();
   const calle = document.getElementById("dir-calle").value.trim();
@@ -1265,7 +1050,6 @@ async function confirmarPedidoCheckout() {
   const envio = 5000;
   const descuento = calcularDescuento(subtotal, envio);
   const total = subtotal + envio - descuento;
-
   const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
 
   // Enviar a Formspree
@@ -1290,13 +1074,7 @@ async function confirmarPedidoCheckout() {
   if (descuento > 0 && cuponAplicado) {
     datos["🏷️ Cupón usado"] = cuponAplicado.codigo + " (-$" + descuento.toLocaleString("es-CL") + ")";
   }
-  try {
-    await fetch(FORMSPREE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(datos)
-    });
-  } catch(e) {}
+  try { await fetch(FORMSPREE_URL, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(datos) }); } catch(e) {}
 
   // Mensaje WhatsApp
   let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
@@ -1359,7 +1137,6 @@ function abrirCarrito() {
   document.getElementById("cart-panel").classList.add("open");
   document.getElementById("cart-overlay").classList.add("open");
 }
-
 function cerrarCarrito() {
   document.getElementById("cart-panel").classList.remove("open");
   document.getElementById("cart-overlay").classList.remove("open");
@@ -1386,10 +1163,10 @@ function abrirGaleria(index) {
   history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
   actualizarBreadcrumbs(p);
   actualizarOG(p);
-  // Actualizar WhatsApp con el producto actual
-  actualizarWhatsApp(p.nombre);
+  const link = document.getElementById("whatsapp-flotante");
+  link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(p.nombre)}%20que%20vi%20en%20Maikol%20Jordan.%20%C2%BFpodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F`;
+  link.textContent = "💬 Consultar este producto";
 }
-
 function cerrarGaleria() {
   document.getElementById("galeria-overlay").classList.remove("open");
   document.getElementById("galeria-modal").classList.remove("open");
@@ -1397,29 +1174,24 @@ function cerrarGaleria() {
   history.pushState(null, "", window.location.pathname);
   actualizarBreadcrumbs(null);
   actualizarOG(null);
-  // Restaurar WhatsApp
-  actualizarWhatsApp(null);
+  const link = document.getElementById("whatsapp-flotante");
+  link.href = "https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta";
+  link.textContent = "💬 Consultas";
 }
-
 function cambiarFotoGaleria(direccion) {
   const fotos = productos[galeriaProductoIndex].imagenes;
   galeriaFotoIndex = (galeriaFotoIndex + direccion + fotos.length) % fotos.length;
   moverCarrusel();
 }
-
 function irAFoto(i) {
   galeriaFotoIndex = i;
   moverCarrusel();
 }
-
 function moverCarrusel() {
   const track = document.getElementById("galeria-img-track");
   track.style.transform = "translateX(-" + (galeriaFotoIndex * 100) + "%)";
-  document.querySelectorAll(".galeria-dot").forEach(function(dot, i) {
-    dot.classList.toggle("activo", i === galeriaFotoIndex);
-  });
+  document.querySelectorAll(".galeria-dot").forEach((dot, i) => dot.classList.toggle("activo", i === galeriaFotoIndex));
 }
-
 function mostrarFotoGaleria() {
   const p = productos[galeriaProductoIndex];
   const fotos = p.imagenes;
@@ -1438,47 +1210,25 @@ function mostrarFotoGaleria() {
   const grid = document.getElementById("galeria-tallas-grid");
   grid.innerHTML = p.tallas.map(t => `<div class="talla-btn${t===galeriaTallaSeleccionada?' activo':''}" onclick="seleccionarTallaGaleria(${t}, this)">${t}</div>`).join("");
 }
-
 function seleccionarTallaGaleria(talla, el) {
   galeriaTallaSeleccionada = talla;
   document.querySelectorAll(".talla-btn").forEach(b => b.classList.remove("activo"));
   el.classList.add("activo");
 }
-
 function cambiarCantidadGaleria(delta) {
   galeriaCantidad = Math.max(1, galeriaCantidad + delta);
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
 }
-
-// Touch para galería
 document.addEventListener("DOMContentLoaded", function() {
   const area = document.getElementById("galeria-foto-area");
-  area.addEventListener("touchstart", function(e) {
-    galeriaTouchStartX = e.touches[0].clientX;
-  });
-  area.addEventListener("touchend", function(e) {
+  area.addEventListener("touchstart", e => { galeriaTouchStartX = e.touches[0].clientX; });
+  area.addEventListener("touchend", e => {
     if (galeriaTouchStartX === null) return;
     const delta = e.changedTouches[0].clientX - galeriaTouchStartX;
-    if (Math.abs(delta) > 40) {
-      cambiarFotoGaleria(delta < 0 ? 1 : -1);
-    }
+    if (Math.abs(delta) > 40) cambiarFotoGaleria(delta < 0 ? 1 : -1);
     galeriaTouchStartX = null;
   });
 });
-
-// ============================================================
-//  WHATSAPP DINÁMICO
-// ============================================================
-function actualizarWhatsApp(nombreProducto) {
-  const link = document.getElementById("whatsapp-flotante");
-  if (nombreProducto) {
-    link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(nombreProducto)}%20que%20vi%20en%20Maikol%20Jordan.%20%C2%BFpodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F`;
-    link.textContent = "💬 Consultar este producto";
-  } else {
-    link.href = "https://wa.me/56931402987?text=Hola,%20tengo%20una%20consulta";
-    link.textContent = "💬 Consultas";
-  }
-}
 
 // ============================================================
 //  BREADCRUMBS Y OPEN GRAPH
@@ -1486,33 +1236,17 @@ function actualizarWhatsApp(nombreProducto) {
 function actualizarBreadcrumbs(producto) {
   const bc = document.getElementById("breadcrumbs");
   if (!bc) return;
-  if (!producto) {
-    bc.innerHTML = '<a href="#" onclick="filtrar(\'todos\')">Inicio</a>';
-    return;
-  }
+  if (!producto) { bc.innerHTML = '<a href="#" onclick="filtrar(\'todos\')">Inicio</a>'; return; }
   const categoria = producto.tags[0] || "Producto";
   bc.innerHTML = `<a href="#" onclick="filtrar('todos')">Inicio</a> > <a href="#" onclick="filtrar('${categoria}')">${categoria}</a> > ${producto.nombre}`;
 }
-
 function actualizarOG(producto) {
   let metaTitle = document.querySelector('meta[property="og:title"]');
   let metaDesc = document.querySelector('meta[property="og:description"]');
   let metaImage = document.querySelector('meta[property="og:image"]');
-  if (!metaTitle) {
-    metaTitle = document.createElement('meta');
-    metaTitle.setAttribute('property', 'og:title');
-    document.head.appendChild(metaTitle);
-  }
-  if (!metaDesc) {
-    metaDesc = document.createElement('meta');
-    metaDesc.setAttribute('property', 'og:description');
-    document.head.appendChild(metaDesc);
-  }
-  if (!metaImage) {
-    metaImage = document.createElement('meta');
-    metaImage.setAttribute('property', 'og:image');
-    document.head.appendChild(metaImage);
-  }
+  if (!metaTitle) { metaTitle = document.createElement('meta'); metaTitle.setAttribute('property', 'og:title'); document.head.appendChild(metaTitle); }
+  if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.setAttribute('property', 'og:description'); document.head.appendChild(metaDesc); }
+  if (!metaImage) { metaImage = document.createElement('meta'); metaImage.setAttribute('property', 'og:image'); document.head.appendChild(metaImage); }
   if (producto) {
     metaTitle.setAttribute('content', producto.nombre + ' - Maikol Jordan');
     metaDesc.setAttribute('content', 'Zapatilla ' + producto.nombre + ' | Envío a todo Chile');
@@ -1525,29 +1259,18 @@ function actualizarOG(producto) {
 }
 
 // ============================================================
-//  DESCRIPCIONES AUTOMÁTICAS
+//  DESCRIPCIONES
 // ============================================================
-const PALABRAS_COLOR = {
-  "black": "negro", "white": "blanco", "red": "rojo", "blue": "azul", "pink": "rosado",
-  "green": "verde", "grey": "gris", "gray": "gris", "silver": "plateado", "gold": "dorado",
-  "purple": "morado", "orange": "naranjo", "marine": "marino", "beige": "beige",
-  "yellow": "amarillo", "brown": "café", "navy": "azul marino"
-};
-const PALABRAS_EDICION = ["reimagined", "oreo", "bred", "chicago", "royal", "shadow", "panda", "graffiti"];
-
+const PALABRAS_COLOR = { "black":"negro","white":"blanco","red":"rojo","blue":"azul","pink":"rosado","green":"verde","grey":"gris","gray":"gris","silver":"plateado","gold":"dorado","purple":"morado","orange":"naranjo","marine":"marino","beige":"beige","yellow":"amarillo","brown":"café","navy":"azul marino" };
+const PALABRAS_EDICION = ["reimagined","oreo","bred","chicago","royal","shadow","panda","graffiti"];
 function extraerDetalleNombre(nombre) {
   const n = normalizar(nombre);
   const detalles = [];
-  Object.keys(PALABRAS_COLOR).forEach(palabra => {
-    if (n.indexOf(palabra) !== -1) detalles.push(PALABRAS_COLOR[palabra]);
-  });
-  PALABRAS_EDICION.forEach(palabra => {
-    if (n.indexOf(palabra) !== -1) detalles.push("edición \"" + palabra.charAt(0).toUpperCase() + palabra.slice(1) + "\"");
-  });
+  Object.keys(PALABRAS_COLOR).forEach(palabra => { if (n.indexOf(palabra) !== -1) detalles.push(PALABRAS_COLOR[palabra]); });
+  PALABRAS_EDICION.forEach(palabra => { if (n.indexOf(palabra) !== -1) detalles.push("edición \"" + palabra.charAt(0).toUpperCase() + palabra.slice(1) + "\""); });
   if (detalles.length === 0) return "";
   return " Colorway " + detalles.join(" / ") + ".";
 }
-
 function generarDescripcion(nombre) {
   const n = normalizar(nombre);
   const detalle = extraerDetalleNombre(nombre);
@@ -1613,7 +1336,6 @@ async function cargarProductos() {
         tallas: columnas[4] ? columnas[4].split(";").map(t => parseInt(t.trim())).filter(t => !isNaN(t)) : [37,38,39,40,41,42,43,44,45]
       };
     });
-    // Orden inicial: destacados primero
     const PALABRAS_DESTACADAS = ["dc court graffik", "tn plus", "shox tl", "dior b30", "balenciaga track graffiti", "dolce & gabbana", "dolce e gabbana"];
     function esDestacado(p) {
       const texto = normalizar(p.nombre) + " " + normalizar(p.tags[0] || "");
@@ -1654,10 +1376,7 @@ function generarMenuCategorias() {
     const original = p.tags[0];
     if (!original) return;
     const norm = normalizar(original);
-    if (!vistos[norm]) {
-      vistos[norm] = true;
-      tagsUnicos.push(original);
-    }
+    if (!vistos[norm]) { vistos[norm] = true; tagsUnicos.push(original); }
   });
   const todosLosHijosNorm = [];
   Object.keys(CATEGORIA_PADRES).forEach(padre => {
@@ -1707,27 +1426,17 @@ function filtrar(tag) {
   aplicar();
   cerrarCategorias();
 }
-
 function actualizarFiltroActivo() {
   const chip = document.getElementById("filtro-activo");
   const texto = document.getElementById("filtro-activo-texto");
-  if (categoriaActual === "todos") {
-    chip.style.display = "none";
-  } else {
-    chip.style.display = "flex";
-    texto.textContent = categoriaActual;
-  }
+  if (categoriaActual === "todos") chip.style.display = "none";
+  else { chip.style.display = "flex"; texto.textContent = categoriaActual; }
 }
-
-function quitarFiltro() {
-  filtrar("todos");
-}
-
+function quitarFiltro() { filtrar("todos"); }
 function abrirCategorias() {
   document.getElementById("categorias-panel").classList.add("open");
   document.getElementById("categorias-overlay").classList.add("open");
 }
-
 function cerrarCategorias() {
   document.getElementById("categorias-panel").classList.remove("open");
   document.getElementById("categorias-overlay").classList.remove("open");
@@ -1765,11 +1474,9 @@ function render() {
     return;
   }
   let html = "";
-  productos.forEach(function(p, index) {
+  productos.forEach((p, index) => {
     let opcionesTalla = "";
-    p.tallas.forEach(t => {
-      opcionesTalla += `<option value="${t}" ${t===41?'selected':''}>Talla: ${t}</option>`;
-    });
+    p.tallas.forEach(t => opcionesTalla += `<option value="${t}" ${t===41?'selected':''}>Talla: ${t}</option>`);
     const badgeFotos = p.imagenes.length > 1 ? `<span class="foto-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.3"/></svg>${p.imagenes.length}</span>` : '';
     const zoomIcon = `<div class="img-zoom-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`;
     html += `<div class="card" data-index="${index}">
@@ -1793,9 +1500,6 @@ function render() {
   ordenarProductos();
 }
 
-// ============================================================
-//  BREADCRUMBS (insertar en el DOM)
-// ============================================================
 function agregarBreadcrumbs() {
   const filtroRow = document.querySelector(".filtro-row");
   if (!filtroRow) return;
@@ -1811,8 +1515,7 @@ function agregarBreadcrumbs() {
 // ============================================================
 function agregarPoliticaPrivacidad() {
   const footer = document.querySelector(".footer-bottom");
-  if (!footer) return;
-  if (document.getElementById("link-politica")) return;
+  if (!footer || document.getElementById("link-politica")) return;
   const termsLink = document.createElement("a");
   termsLink.id = "link-politica";
   termsLink.href = "#";
@@ -1839,22 +1542,15 @@ window.onload = function() {
   agregarPoliticaPrivacidad();
   window.addEventListener("scroll", function() {
     const btn = document.getElementById("volver-arriba");
-    if (window.scrollY > 300) {
-      btn.classList.add("visible");
-    } else {
-      btn.classList.remove("visible");
-    }
+    btn.classList.toggle("visible", window.scrollY > 300);
   });
-  // Cerrar checkout al hacer clic fuera
   document.getElementById("checkout-overlay").addEventListener("click", function(e) {
     if (e.target === this) cerrarCheckout();
   });
 };
 
 window.addEventListener("popstate", function() {
-  if (galeriaProductoIndex !== null) {
-    cerrarGaleria();
-  }
+  if (galeriaProductoIndex !== null) cerrarGaleria();
 });
 
 function abrirProductoPorHash() {
