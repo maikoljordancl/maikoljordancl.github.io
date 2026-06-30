@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maikol Jordan</title>
-
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EN8SLMRST"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -13,9 +11,8 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-2EN8SLMRST');
 </script>
-
 <style>
-/* ===== ESTILOS (los mismos que antes, compactos pero completos) ===== */
+/* ===== TODOS LOS ESTILOS (completos) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
@@ -94,7 +91,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn-vaciar-carrito{background:#1a1a1a;border:1px solid #444;color:#888;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;transition:0.3s;}
 .btn-vaciar-carrito:hover{border-color:#e60012;color:#ff6b6b;}
 
-/* ===== CHECKOUT ===== */
 .checkout-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;justify-content:center;align-items:center;}
 .checkout-overlay.open{display:flex;}
 .checkout-container{background:#151515;border-radius:24px;max-width:700px;width:95%;max-height:95vh;overflow-y:auto;padding:30px;position:relative;border:1px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
@@ -151,7 +147,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .transferencia-info strong{color:white;}
 .pago-seguro-msg{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#777;margin-bottom:10px;}
 
-/* ===== GALERÍA ===== */
 .galeria-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1100;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
 .galeria-overlay.open{visibility:visible;opacity:1;pointer-events:all;}
 .galeria-modal{display:flex;flex-direction:column;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:95%;max-width:700px;max-height:90vh;background:#151515;border-radius:24px;z-index:1101;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;transition:all 0.3s ease;border:1px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.9);}
@@ -371,7 +366,6 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 
 <div class="toast" id="toast">✅ Agregado al carrito</div>
 
-<!-- ===== GALERÍA ===== -->
 <div class="galeria-overlay" id="galeria-overlay" onclick="cerrarGaleria()"></div>
 <div class="galeria-modal" id="galeria-modal">
 <button class="galeria-close" onclick="cerrarGaleria()">✕</button>
@@ -692,7 +686,6 @@ function comprarAhoraDesdeCard(index) {
   carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: talla });
   guardarCarrito();
   actualizarCarrito();
-  // ABRIR CHECKOUT DIRECTAMENTE
   abrirCheckout();
 }
 function removerDelCarrito(i) {
@@ -1162,7 +1155,7 @@ function generarDescripcion(nombre) {
 }
 
 // ============================================================
-//  CATÁLOGO (CARGA CON FALLBACK Y URL AMIGABLE)
+//  CATÁLOGO (CARGA CON FALLBACK)
 // ============================================================
 async function cargarProductos() {
   try {
@@ -1207,8 +1200,8 @@ async function cargarProductos() {
     productos = mezclar(destacados).concat(mezclar(resto));
     
     renderizarCatalogo();
-    // Aplicar categoría desde URL
-    aplicarCategoriaDesdeURL();
+    // Aplicar categoría desde hash (#dc)
+    aplicarCategoriaDesdeHash();
   } catch (error) {
     console.error("Error cargando CSV:", error);
     // Productos de ejemplo
@@ -1221,7 +1214,7 @@ async function cargarProductos() {
       { nombre: "LV Trainer White", precio: 250000, imagenes: ["logo.webp"], tags: ["Louis Vuitton"], tallas: [37,38,39,40,41,42,43,44] }
     ];
     renderizarCatalogo();
-    aplicarCategoriaDesdeURL();
+    aplicarCategoriaDesdeHash();
     document.getElementById("productos").innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:10px;background:#2a1010;border:1px solid #e60012;border-radius:10px;margin:0 20px;color:#ff8888;">
       ⚠️ No se pudo cargar el catálogo desde Google Sheets. Mostrando productos de ejemplo.
       <br><button onclick="cargarProductos()" style="margin-top:8px;padding:6px 14px;background:#e60012;border:none;border-radius:6px;color:white;font-weight:bold;cursor:pointer;">Reintentar</button>
@@ -1247,7 +1240,7 @@ function renderizarCatalogo() {
 }
 
 // ============================================================
-//  CATEGORÍAS, FILTROS, BÚSQUEDA Y URL AMIGABLE
+//  CATEGORÍAS, FILTROS, BÚSQUEDA Y HASH
 // ============================================================
 function generarMenuCategorias() {
   const lista = document.getElementById("categorias-lista");
@@ -1302,13 +1295,13 @@ function toggleCategoria(el) {
 
 function filtrar(tag) {
   categoriaActual = tag;
-  // Actualizar URL amigable sin recargar
+  // Actualizar hash en la URL
   if (tag === 'todos') {
-    history.pushState(null, '', '/');
+    history.pushState(null, '', window.location.pathname);
   } else {
-    // Normalizar tag para URL (ej. "DC" -> "dc")
+    // Convertir tag a slug (ej. "DC" -> "dc")
     const slug = tag.toLowerCase().replace(/\s+/g, '-');
-    history.pushState(null, '', '/categoria/' + slug);
+    history.pushState(null, '', '#' + slug);
   }
   generarMenuCategorias();
   actualizarFiltroActivo();
@@ -1390,47 +1383,47 @@ function render() {
 }
 
 // ============================================================
-//  NAVEGACIÓN POR URL (CATEGORÍA AMIGABLE)
+//  NAVEGACIÓN POR HASH (#categoria)
 // ============================================================
-function aplicarCategoriaDesdeURL() {
-  const path = window.location.pathname;
-  const match = path.match(/^\/categoria\/([^\/]+)/);
-  if (match) {
-    let slug = match[1];
-    // Buscar la categoría que coincida (case-insensitive)
-    let categoriaEncontrada = null;
-    const tagsUnicos = [];
-    productos.forEach(p => {
-      if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]);
-    });
-    // Intentar coincidir con tags existentes
-    for (let tag of tagsUnicos) {
-      if (normalizar(tag) === normalizar(slug) || normalizar(tag) === normalizar(slug.replace(/-/g, ' '))) {
-        categoriaEncontrada = tag;
+function aplicarCategoriaDesdeHash() {
+  const hash = window.location.hash.replace('#', '');
+  if (!hash) return;
+  // Buscar la categoría que coincida
+  let categoriaEncontrada = null;
+  const tagsUnicos = [];
+  productos.forEach(p => {
+    if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]);
+  });
+  for (let tag of tagsUnicos) {
+    if (normalizar(tag) === normalizar(hash) || normalizar(tag) === normalizar(hash.replace(/-/g, ' '))) {
+      categoriaEncontrada = tag;
+      break;
+    }
+  }
+  // Buscar en CATEGORIA_PADRES (ej. "nike" -> "Nike")
+  if (!categoriaEncontrada) {
+    for (let padre of Object.keys(CATEGORIA_PADRES)) {
+      if (normalizar(padre) === normalizar(hash)) {
+        categoriaEncontrada = padre;
         break;
       }
     }
-    // Si no, buscar en CATEGORIA_PADRES (para "nike", "jordan", etc.)
-    if (!categoriaEncontrada) {
-      for (let padre of Object.keys(CATEGORIA_PADRES)) {
-        if (normalizar(padre) === normalizar(slug)) {
-          categoriaEncontrada = padre;
-          break;
-        }
-      }
-    }
-    if (categoriaEncontrada) {
-      categoriaActual = categoriaEncontrada;
-      generarMenuCategorias();
-      actualizarFiltroActivo();
-      aplicar();
-    }
+  }
+  if (categoriaEncontrada) {
+    categoriaActual = categoriaEncontrada;
+    generarMenuCategorias();
+    actualizarFiltroActivo();
+    aplicar();
   }
 }
 
-// También escuchar cambios en el historial (popstate) para actualizar la categoría
+// Escuchar cambios en el hash (popstate y hashchange)
+window.addEventListener('hashchange', function() {
+  aplicarCategoriaDesdeHash();
+});
+
 window.addEventListener('popstate', function() {
-  aplicarCategoriaDesdeURL();
+  aplicarCategoriaDesdeHash();
 });
 
 // ============================================================
@@ -1452,13 +1445,11 @@ window.onload = function() {
   });
 };
 
-window.addEventListener("popstate", function() {
-  if (galeriaProductoIndex !== null) cerrarGaleria();
-});
-
+// También detectar popstate para la galería (ya está arriba)
 function abrirProductoPorHash() {
   const hash = window.location.hash.replace("#", "");
-  if (!hash || productos.length === 0) return;
+  // Si el hash es una categoría (letras), no abrir galería
+  if (!hash || /^[a-z-]+$/i.test(hash)) return;
   const index = productos.findIndex(p => slugify(p.nombre) === hash);
   if (index !== -1) abrirGaleria(index);
 }
