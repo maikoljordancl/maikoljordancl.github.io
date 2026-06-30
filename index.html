@@ -15,7 +15,7 @@ gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
-/* ===== TODOS TUS ESTILOS (compactos pero completos) ===== */
+/* ===== TODOS TUS ESTILOS (los mismos que antes, compactos) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
@@ -71,6 +71,7 @@ h1{margin-top:10px;font-size:34px;}
   padding: 20px 20px 0;
   overflow: hidden;
   position: relative;
+  display: none; /* se muestra si hay destacados */
 }
 .carrusel-track {
   display: flex;
@@ -247,7 +248,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .btn-comprar-ahora{background:#009EE3;color:white;}
 .btn-comprar-ahora:hover{background:#0081bb;}
 
-/* ===== WHATSAPP FLOTANTE ===== */
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,0.4);display:flex;align-items:center;gap:8px;}
 .whatsapp:hover{background:#1ebe5d;}
 .volver-arriba{position:fixed;bottom:80px;right:20px;background:#222;color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;z-index:998;box-shadow:0 4px 10px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;transform:translateY(10px);}
@@ -306,7 +306,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 
 <!-- CARRUSEL DE DESTACADOS -->
-<div class="carrusel-destacados" id="carrusel-destacados" style="display:none;">
+<div class="carrusel-destacados" id="carrusel-destacados">
   <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">‹</button>
   <div class="carrusel-track" id="carrusel-track"></div>
   <button class="carrusel-btn next" onclick="moverCarrusel(1)">›</button>
@@ -807,6 +807,7 @@ let carruselIndex = 0;
 let carruselItems = [];
 
 function renderCarrusel() {
+  if (!productos.length) return;
   const destacados = productos.filter(p => {
     const palabras = ["dc court graffik", "tn plus", "shox tl", "dior b30", "balenciaga", "dolce", "gabbana"];
     const texto = normalizar(p.nombre) + " " + normalizar(p.tags[0] || "");
@@ -818,13 +819,14 @@ function renderCarrusel() {
   }
   carruselItems = destacados;
   const track = document.getElementById("carrusel-track");
-  track.innerHTML = destacados.map((p, i) => `
-    <div class="carrusel-item" onclick="abrirGaleria(productos.indexOf(p))">
+  track.innerHTML = destacados.map((p, i) => {
+    const idx = productos.indexOf(p);
+    return `<div class="carrusel-item" onclick="abrirGaleria(${idx})">
       <img src="${p.imagenes[0]}" onerror="this.src='logo.webp'" loading="lazy">
       <h4>${p.nombre}</h4>
       <div class="precio">$${p.precio.toLocaleString("es-CL")}</div>
-    </div>
-  `).join("");
+    </div>`;
+  }).join("");
   document.getElementById("carrusel-destacados").style.display = "block";
   carruselIndex = 0;
   actualizarCarrusel();
@@ -1228,7 +1230,7 @@ function cerrarCarrito() {
 }
 
 // ============================================================
-//  GALERÍA DE PRODUCTOS (CORREGIDA)
+//  GALERÍA DE PRODUCTOS
 // ============================================================
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
@@ -1236,7 +1238,6 @@ let galeriaTallaSeleccionada = null;
 let galeriaCantidad = 1;
 let galeriaTouchStartX = null;
 
-// Función global para abrir la galería (se usa desde onclick en HTML)
 function abrirGaleria(index) {
   if (typeof index !== 'number' || index < 0 || index >= productos.length) return;
   galeriaProductoIndex = index;
@@ -1250,11 +1251,9 @@ function abrirGaleria(index) {
   history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
   actualizarBreadcrumbs(p);
   actualizarOG(p);
-  // Actualizar WhatsApp flotante
   const link = document.getElementById("whatsapp-flotante");
   link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(p.nombre)}.%20Quisiera%20saber%20disponibilidad%20y%20precio.`;
   link.textContent = "💬 Consultar este producto";
-  // Actualizar botón WhatsApp dentro de la galería
   actualizarBotonWhatsAppGaleria(p);
 }
 
@@ -1289,7 +1288,6 @@ function actualizarWhatsAppGaleria() {
   actualizarBotonWhatsAppGaleria(p);
 }
 
-// Sobrescribimos seleccionarTallaGaleria y cambiarCantidadGaleria
 const originalSeleccionarTalla = seleccionarTallaGaleria;
 seleccionarTallaGaleria = function(talla, el) {
   originalSeleccionarTalla(talla, el);
@@ -1339,7 +1337,6 @@ function mostrarFotoGaleria() {
   actualizarBotonWhatsAppGaleria(p);
 }
 
-// Touch para galería
 document.addEventListener("DOMContentLoaded", function() {
   const area = document.getElementById("galeria-foto-area");
   area.addEventListener("touchstart", e => { galeriaTouchStartX = e.touches[0].clientX; });
@@ -1416,43 +1413,8 @@ function generarDescripcion(nombre) {
 }
 
 // ============================================================
-//  CATÁLOGO (carga, caché, renderizado, filtros)
+//  CATÁLOGO (carga directa, sin caché para evitar errores)
 // ============================================================
-const CACHE_KEY = "productos_cache";
-const CACHE_EXPIRY = 60 * 60 * 1000;
-
-async function cargarProductosConCache() {
-  const cache = localStorage.getItem(CACHE_KEY);
-  if (cache) {
-    try {
-      const data = JSON.parse(cache);
-      if (Date.now() - data.timestamp < CACHE_EXPIRY) {
-        productos = data.productos;
-        ordenOriginal = productos.map((_, i) => i);
-        generarMenuCategorias();
-        render();
-        cargarDatosGuardados();
-        cargarCarrito();
-        actualizarCarrito();
-        abrirProductoPorHash();
-        initValidacion();
-        agregarBreadcrumbs();
-        // Autocompletado direcciones
-        document.getElementById("dir-calle").addEventListener("input", function() {
-          clearTimeout(timeoutDireccion);
-          const q = this.value.trim();
-          if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
-          timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
-        });
-        // Carrusel
-        renderCarrusel();
-        return;
-      }
-    } catch(e) {}
-  }
-  await cargarProductos();
-}
-
 async function cargarProductos() {
   try {
     const respuesta = await fetch(SHEETS_CSV_URL);
@@ -1469,6 +1431,7 @@ async function cargarProductos() {
         tallas: columnas[4] ? columnas[4].split(";").map(t => parseInt(t.trim())).filter(t => !isNaN(t)) : [37,38,39,40,41,42,43,44,45]
       };
     });
+    // Orden inicial: destacados primero
     const PALABRAS_DESTACADAS = ["dc court graffik", "tn plus", "shox tl", "dior b30", "balenciaga", "dolce", "gabbana"];
     function esDestacado(p) {
       const texto = normalizar(p.nombre) + " " + normalizar(p.tags[0] || "");
@@ -1487,7 +1450,10 @@ async function cargarProductos() {
     productos = mezclar(destacados).concat(mezclar(resto));
     ordenOriginal = productos.map((_, i) => i);
 
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), productos: productos }));
+    // Guardar en caché para futuras visitas (solo si se cargó bien)
+    localStorage.setItem("productos_cache", JSON.stringify({ timestamp: Date.now(), productos: productos }));
+
+    // Renderizar todo
     generarMenuCategorias();
     render();
     cargarDatosGuardados();
@@ -1496,19 +1462,25 @@ async function cargarProductos() {
     abrirProductoPorHash();
     initValidacion();
     agregarBreadcrumbs();
-    // Autocompletado
+    renderCarrusel();
+
+    // Autocompletado de dirección
     document.getElementById("dir-calle").addEventListener("input", function() {
       clearTimeout(timeoutDireccion);
       const q = this.value.trim();
       if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
       timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
     });
-    renderCarrusel();
+
   } catch (error) {
-    document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
+    console.error("Error cargando productos:", error);
+    document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al cargar el catálogo. Por favor recarga la página.</div>';
   }
 }
 
+// ============================================================
+//  CATEGORÍAS, FILTROS Y RENDER
+// ============================================================
 function generarMenuCategorias() {
   const lista = document.getElementById("categorias-lista");
   const tagsUnicos = [];
@@ -1567,12 +1539,14 @@ function filtrar(tag) {
   aplicar();
   cerrarCategorias();
 }
+
 function actualizarFiltroActivo() {
   const chip = document.getElementById("filtro-activo");
   const texto = document.getElementById("filtro-activo-texto");
   if (categoriaActual === "todos") chip.style.display = "none";
   else { chip.style.display = "flex"; texto.textContent = categoriaActual; }
 }
+
 function quitarFiltro() { filtrar("todos"); }
 function abrirCategorias() {
   document.getElementById("categorias-panel").classList.add("open");
@@ -1676,42 +1650,10 @@ function agregarPoliticaPrivacidad() {
 }
 
 // ============================================================
-//  INTEGRACIÓN CON API DE WHATSAPP BUSINESS (ejemplo)
-// ============================================================
-/*
-  Para usar la API de WhatsApp Business, necesitas:
-  1. Una cuenta de Meta Business y un número de teléfono verificado.
-  2. Un token de acceso permanente.
-  3. Un endpoint en tu backend (Vercel) que envíe mensajes usando la API de Meta.
-
-  Ejemplo de función para enviar mensaje desde el servidor:
-  async function enviarMensajeWhatsApp(numero, mensaje) {
-    const url = `https://graph.facebook.com/v18.0/${process.env.PHONE_NUMBER_ID}/messages`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.WHATSAPP_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        to: numero,
-        type: 'text',
-        text: { body: mensaje }
-      })
-    });
-    return response.json();
-  }
-
-  Puedes llamar esta función desde el servidor (ej. en confirmarPedidoCheckout) para enviar
-  un mensaje de confirmación automático al cliente.
-*/
-
-// ============================================================
 //  INICIALIZACIÓN
 // ============================================================
 window.onload = function() {
-  cargarProductosConCache();
+  cargarProductos();
   agregarPoliticaPrivacidad();
   window.addEventListener("scroll", function() {
     const btn = document.getElementById("volver-arriba");
