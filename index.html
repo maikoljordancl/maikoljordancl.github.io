@@ -710,7 +710,7 @@ function mostrarNotificacionRecordatorio() {
 window.addEventListener("beforeunload", () => setTimeout(mostrarNotificacionRecordatorio, 1000));
 
 // ============================================================
-//  BÚSQUEDA INTELIGENTE
+//  BÚSQUEDA INTELIGENTE (CORREGIDA: al hacer clic en sugerencia, se oculta)
 // ============================================================
 document.addEventListener("DOMContentLoaded", function() {
   const input = document.getElementById("buscar");
@@ -730,7 +730,8 @@ document.addEventListener("DOMContentLoaded", function() {
       let html = "";
       resultados.slice(0, 6).forEach(p => {
         const idx = productos.indexOf(p);
-        html += `<div class="sugerencia-item" onclick="abrirGaleria(${idx})">
+        // Al hacer clic, ocultamos la lista antes de abrir la galería
+        html += `<div class="sugerencia-item" onclick="cont.style.display='none'; abrirGaleria(${idx})">
           <img src="${p.imagenes[0]}" onerror="this.src='logo.webp'">
           <div class="sugerencia-info">
             <div class="sugerencia-nombre">${p.nombre}</div>
@@ -741,6 +742,12 @@ document.addEventListener("DOMContentLoaded", function() {
       cont.innerHTML = html;
       cont.style.display = "block";
     }, 300);
+  });
+  // Al presionar Enter, ocultar la lista
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      cont.style.display = "none";
+    }
   });
   document.addEventListener("click", e => { if (!e.target.closest(".search")) cont.style.display = "none"; });
 });
