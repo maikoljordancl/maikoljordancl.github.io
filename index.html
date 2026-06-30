@@ -200,7 +200,6 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .aviso-consulta a{color:#e60012;font-weight:bold;text-decoration:none;border-bottom:1px dashed #e60012;}
 .aviso-consulta a:hover{color:#ff3344;}
 
-/* FOOTER */
 footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3px solid #e60012;}
 .footer-top{background:#111;padding:40px 20px 30px;}
 .footer-brand{font-size:22px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;}
@@ -300,15 +299,15 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <input class="form-input" id="c-whatsapp" placeholder="WhatsApp (+569...)" type="text">
 </div>
 <div class="form-row" style="grid-template-columns:2fr 1fr;">
-<input class="form-input" id="c-calle" placeholder="Calle (ej: Víctor Domingo Silva)" type="text" autocomplete="off">
-<input class="form-input" id="c-numero" placeholder="N°" type="text">
+<input class="form-input" id="dir-calle" placeholder="Calle (ej: Víctor Domingo Silva)" type="text" autocomplete="address-line1">
+<input class="form-input" id="dir-numero" placeholder="N°" type="text" autocomplete="address-line2">
 </div>
 <div class="form-row">
-<input class="form-input" id="c-region" placeholder="Región" type="text">
-<input class="form-input" id="c-comuna" placeholder="Comuna" type="text">
+<input class="form-input" id="dir-region" placeholder="Región" type="text">
+<input class="form-input" id="dir-comuna" placeholder="Comuna" type="text">
 </div>
 <div class="form-row single">
-<input class="form-input" id="c-cp" placeholder="Código postal (opcional)" type="text">
+<input class="form-input" id="dir-cp" placeholder="Código postal (opcional)" type="text">
 </div>
 </div>
 
@@ -456,19 +455,12 @@ maikoljordancl@gmail.com
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/1sunQ0MoXRI-HoL2MzTwCwHEgEcM4C2rgzsQR-U854AM/export?format=csv";
 const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 
-// ===== SISTEMA DE CUPONES =====
-// Para agregar más cupones, solo agrega otra línea aquí con el mismo formato.
-// tipo "fijo" = descuento en pesos. tipo "porcentaje" = descuento en %.
 const CUPONES = {
   "SIKMAS26": { tipo: "fijo", valor: 5000, descripcion: "$5.000 de descuento" }
 };
 
 let cuponAplicado = null;
 
-// ===== ESTRUCTURA DE CATEGORÍAS =====
-// Cada "padre" agrupa categorías específicas (hijos) que vienen de la columna
-// de categoría en tu Google Sheet. Para que un producto aparezca como subcategoría,
-// escribe el nombre EXACTO del hijo en esa columna (mayúsculas/minúsculas no importan).
 const CATEGORIA_PADRES = {
   "Nike": ["Air Force 1", "TN Plus", "Air Max 97", "Shox TL", "Air Max 95"],
   "Jordan": ["Jordan Retro 1", "Jordan Retro 3", "Jordan Retro 4", "Jordan Retro 5", "Jordan Retro 6", "Jordan Retro 8", "Jordan Retro 9", "Jordan Retro 11", "Jordan Retro 12", "Jordan Retro 13", "Jordan Retro 14", "Jordan Retro 312"],
@@ -505,9 +497,6 @@ function parsearFilaCSV(linea) {
   return resultado;
 }
 
-// ===== ORDEN ALEATORIO DEL FEED, CON MODELOS DESTACADOS MÁS VISIBLES =====
-// Estos modelos aparecen primero (en orden al azar entre ellos) cada vez que se abre la página.
-// Para agregar/quitar destacados, edita esta lista (coincide por nombre o categoría del producto).
 const PALABRAS_DESTACADAS = [
   "dc court graffik",
   "tn plus",
@@ -697,8 +686,6 @@ function filtrar(tag) {
 
 document.getElementById("buscar").addEventListener("keyup", aplicar);
 
-// Si la categoría elegida es un "padre" (ej: Jordan), esto devuelve el padre
-// + todas sus subcategorías, para que "Todos los Jordan" muestre TODO lo de Jordan.
 function tagsParaFiltro(cat) {
   const norm = normalizar(cat);
   const padreKey = Object.keys(CATEGORIA_PADRES).find(function(p) { return normalizar(p) === norm; });
@@ -739,10 +726,6 @@ function agregarAlCarrito(index) {
   mostrarToast();
 }
 
-// ===== GALERÍA DE FOTOS =====
-// ===== DESCRIPCIONES AUTOMÁTICAS DE MODELOS =====
-// Detecta colores/ediciones especiales mencionados en el nombre y los suma a la descripción base,
-// para que se sienta escrita específicamente para ESE modelo y no un texto genérico repetido.
 const PALABRAS_COLOR = {
   "black": "negro", "white": "blanco", "red": "rojo", "blue": "azul", "pink": "rosado",
   "green": "verde", "grey": "gris", "gray": "gris", "silver": "plateado", "gold": "dorado",
@@ -850,14 +833,12 @@ function mostrarFotoGaleria() {
   const p = productos[galeriaProductoIndex];
   const fotos = p.imagenes;
 
-  // Pista de fotos (carrusel deslizable)
   const track = document.getElementById("galeria-img-track");
   track.innerHTML = fotos.map(function(url) {
     return '<img src="' + url + '" alt="' + p.nombre + '" onerror="this.src=\'logo.webp\'">';
   }).join("");
   track.style.transform = "translateX(0%)";
 
-  // Puntos indicadores
   const dotsCont = document.getElementById("galeria-dots");
   dotsCont.innerHTML = fotos.length > 1 ? fotos.map(function(_, i) {
     return '<div class="galeria-dot' + (i === 0 ? ' activo' : '') + '" onclick="irAFoto(' + i + ')"></div>';
@@ -866,14 +847,12 @@ function mostrarFotoGaleria() {
   document.querySelector(".galeria-prev").style.display = fotos.length > 1 ? "flex" : "none";
   document.querySelector(".galeria-next").style.display = fotos.length > 1 ? "flex" : "none";
 
-  // Info del producto
   document.getElementById("galeria-marca").textContent = (p.tags[0] || "MAIKOL JORDAN");
   document.getElementById("galeria-nombre").textContent = p.nombre;
   document.getElementById("galeria-precio").textContent = "$" + p.precio.toLocaleString("es-CL");
   document.getElementById("galeria-descripcion").textContent = generarDescripcion(p.nombre);
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
 
-  // Tallas en grilla
   const grid = document.getElementById("galeria-tallas-grid");
   grid.innerHTML = p.tallas.map(function(t) {
     return '<div class="talla-btn' + (t === galeriaTallaSeleccionada ? ' activo' : '') + '" onclick="seleccionarTallaGaleria(' + t + ', this)">' + t + '</div>';
@@ -891,7 +870,6 @@ function cambiarCantidadGaleria(delta) {
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
 }
 
-// Deslizar con el dedo para cambiar de foto
 document.addEventListener("DOMContentLoaded", function() {
   const area = document.getElementById("galeria-foto-area");
   area.addEventListener("touchstart", function(e) {
@@ -948,8 +926,6 @@ function abrirProductoPorHash() {
   const index = productos.findIndex(function(p) { return slugify(p.nombre) === hash; });
   if (index !== -1) abrirGaleria(index);
 }
-
-// ===== LÓGICA DE CUPONES =====
 
 function calcularDescuento(subtotal, envio) {
   if (!cuponAplicado) return 0;
@@ -1087,7 +1063,6 @@ function seleccionarMetodo(tipo) {
   }
 }
 
-// ===== UBICACIÓN AUTOMÁTICA (GPS + geocodificación) =====
 function usarMiUbicacion() {
   const btn = document.getElementById("btn-ubicacion");
   const msg = document.getElementById("ubicacion-msg");
@@ -1103,39 +1078,48 @@ function usarMiUbicacion() {
   msg.textContent = "";
   msg.className = "ubicacion-msg";
 
-  navigator.geolocation.getCurrentPosition(async function(pos) {
+  navigator.geolocation.getCurrentPosition(function(pos) {
     try {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
-      const respuesta = await fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon + "&addressdetails=1");
-      const data = await respuesta.json();
-      const a = data.address || {};
+      fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon + "&addressdetails=1")
+        .then(function(resp) { return resp.json(); })
+        .then(function(data) {
+          const a = data.address || {};
+          const calle = a.road || a.pedestrian || "";
+          const numero = a.house_number || "";
+          const direccion = (calle + " " + numero).trim();
+          const comuna = a.city || a.town || a.municipality || a.suburb || a.village || "";
+          const region = a.state || a.region || "";
+          const cp = a.postcode || "";
 
-      const calle = a.road || a.pedestrian || "";
-      const numero = a.house_number || "";
-      const direccion = (calle + " " + numero).trim();
-      const comuna = a.city || a.town || a.municipality || a.suburb || a.village || "";
-      const region = a.state || a.region || "";
-      const cp = a.postcode || "";
+          const partesCalle = direccion.split(" ");
+          const numGeo = partesCalle[partesCalle.length - 1];
+          const calleGeo = partesCalle.slice(0, -1).join(" ");
+          if (calleGeo) document.getElementById("dir-calle").value = calleGeo;
+          if (/^\d+/.test(numGeo)) document.getElementById("dir-numero").value = numGeo;
+          else if (direccion) document.getElementById("dir-calle").value = direccion;
+          if (comuna) document.getElementById("dir-comuna").value = comuna;
+          if (region) document.getElementById("dir-region").value = region;
+          if (cp) document.getElementById("dir-cp").value = cp;
 
-      const partesCalle = direccion.split(" ");
-      const numGeo = partesCalle[partesCalle.length - 1];
-      const calleGeo = partesCalle.slice(0, -1).join(" ");
-      if (calleGeo) document.getElementById("c-calle").value = calleGeo;
-      if (/^\d+/.test(numGeo)) document.getElementById("c-numero").value = numGeo;
-      else if (direccion) document.getElementById("c-calle").value = direccion;
-      if (comuna) document.getElementById("c-comuna").value = comuna;
-      if (region) document.getElementById("c-region").value = region;
-      if (cp) document.getElementById("c-cp").value = cp;
-
-      msg.textContent = cp ? "✅ Dirección completada automáticamente." : "✅ Dirección completada (no encontramos el código postal, complétalo si lo sabes).";
-      msg.className = "ubicacion-msg ok";
+          msg.textContent = cp ? "✅ Dirección completada automáticamente." : "✅ Dirección completada (código postal no encontrado, complétalo si lo sabes).";
+          msg.className = "ubicacion-msg ok";
+          btn.disabled = false;
+          btn.textContent = "📍 Usar mi ubicación actual";
+        })
+        .catch(function(e) {
+          msg.textContent = "No pudimos completar la dirección automáticamente. Escríbela manualmente.";
+          msg.className = "ubicacion-msg error";
+          btn.disabled = false;
+          btn.textContent = "📍 Usar mi ubicación actual";
+        });
     } catch (e) {
-      msg.textContent = "No pudimos completar la dirección automáticamente. Escríbela manualmente.";
+      msg.textContent = "Error al procesar la ubicación. Escríbela manualmente.";
       msg.className = "ubicacion-msg error";
+      btn.disabled = false;
+      btn.textContent = "📍 Usar mi ubicación actual";
     }
-    btn.disabled = false;
-    btn.textContent = "📍 Usar mi ubicación actual";
   }, function(error) {
     btn.disabled = false;
     btn.textContent = "📍 Usar mi ubicación actual";
@@ -1151,17 +1135,17 @@ function usarMiUbicacion() {
 function cargarDatosGuardados() {
   if (localStorage.getItem("m_nombre")) document.getElementById("c-nombre").value = localStorage.getItem("m_nombre");
   if (localStorage.getItem("m_whatsapp")) document.getElementById("c-whatsapp").value = localStorage.getItem("m_whatsapp");
-  if (localStorage.getItem("m_calle")) document.getElementById("c-calle").value = localStorage.getItem("m_calle");
-  if (localStorage.getItem("m_numero")) document.getElementById("c-numero").value = localStorage.getItem("m_numero");
-  if (localStorage.getItem("m_region")) document.getElementById("c-region").value = localStorage.getItem("m_region");
-  if (localStorage.getItem("m_comuna")) document.getElementById("c-comuna").value = localStorage.getItem("m_comuna");
-  if (localStorage.getItem("m_cp")) document.getElementById("c-cp").value = localStorage.getItem("m_cp");
+  if (localStorage.getItem("m_calle")) document.getElementById("dir-calle").value = localStorage.getItem("m_calle");
+  if (localStorage.getItem("m_numero")) document.getElementById("dir-numero").value = localStorage.getItem("m_numero");
+  if (localStorage.getItem("m_region")) document.getElementById("dir-region").value = localStorage.getItem("m_region");
+  if (localStorage.getItem("m_comuna")) document.getElementById("dir-comuna").value = localStorage.getItem("m_comuna");
+  if (localStorage.getItem("m_cp")) document.getElementById("dir-cp").value = localStorage.getItem("m_cp");
 }
 
 function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) {
   localStorage.setItem("m_nombre", nombre);
   localStorage.setItem("m_whatsapp", whatsapp);
-  localStorage.setItem("m_direccion", direccion);
+  localStorage.setItem("m_calle", direccion); // guardamos la calle completa
   localStorage.setItem("m_region", region);
   localStorage.setItem("m_comuna", comuna);
   localStorage.setItem("m_cp", cp);
@@ -1199,19 +1183,19 @@ async function enviarAFormspree(nombre, whatsapp, direccion, region, comuna, cp,
       body: JSON.stringify(datos)
     });
   } catch (e) {
-    // Silencioso — el pedido igual se procesa por WhatsApp o MP
+    // silencioso
   }
 }
 
 async function confirmarPedido() {
   const nombre = document.getElementById("c-nombre").value.trim();
   const whatsapp = document.getElementById("c-whatsapp").value.trim();
-  const calle = document.getElementById("c-calle").value.trim();
-  const numero = document.getElementById("c-numero").value.trim();
+  const calle = document.getElementById("dir-calle").value.trim();
+  const numero = document.getElementById("dir-numero").value.trim();
   const direccion = (calle + " " + numero).trim();
-  const region = document.getElementById("c-region").value.trim();
-  const comuna = document.getElementById("c-comuna").value.trim();
-  const cp = document.getElementById("c-cp").value.trim();
+  const region = document.getElementById("dir-region").value.trim();
+  const comuna = document.getElementById("dir-comuna").value.trim();
+  const cp = document.getElementById("dir-cp").value.trim();
 
   if (!nombre || !whatsapp || !direccion || !region || !comuna) {
     alert("Por favor, completa todos los campos de envío.");
