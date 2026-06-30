@@ -15,7 +15,7 @@ gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
-/* ===== TODOS TUS ESTILOS (los mismos que antes, compactos) ===== */
+/* ===== ESTILOS COMPLETOS (los mismos de antes, compactos) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
@@ -71,7 +71,7 @@ h1{margin-top:10px;font-size:34px;}
   padding: 20px 20px 0;
   overflow: hidden;
   position: relative;
-  display: none; /* se muestra si hay destacados */
+  display: none;
 }
 .carrusel-track {
   display: flex;
@@ -835,7 +835,7 @@ function renderCarrusel() {
 function actualizarCarrusel() {
   const track = document.getElementById("carrusel-track");
   const visible = track.parentElement.offsetWidth;
-  const itemWidth = 236; // 220 + 16 gap
+  const itemWidth = 236;
   const maxIndex = Math.max(0, carruselItems.length - Math.floor(visible / itemWidth));
   if (carruselIndex > maxIndex) carruselIndex = maxIndex;
   if (carruselIndex < 0) carruselIndex = 0;
@@ -1413,29 +1413,43 @@ function generarDescripcion(nombre) {
 }
 
 // ============================================================
-//  CATÁLOGO (carga directa, sin caché para evitar errores)
+//  CARGA DEL CATÁLOGO (directa, sin caché)
 // ============================================================
 async function cargarProductos() {
   try {
     const respuesta = await fetch(SHEETS_CSV_URL);
+    if (!respuesta.ok) throw new Error("Error al descargar el CSV");
     const textoCSV = await respuesta.text();
-    if (!textoCSV) throw new Error("Vacío");
+    if (!textoCSV.trim()) throw new Error("El CSV está vacío");
+    
+    // Dividir por líneas, eliminar líneas vacías
     const lineas = textoCSV.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-    productos = lineas.slice(1).map(linea => {
+    if (lineas.length < 2) throw new Error("El CSV no tiene datos suficientes");
+    
+    // La primera línea es el encabezado, la saltamos
+    const datos = lineas.slice(1).map(linea => {
       const columnas = parsearFilaCSV(linea);
+      // Asegurar que tengamos al menos 5 columnas
+      while (columnas.length < 5) columnas.push("");
       return {
-        nombre: columnas[0] ? columnas[0].replace(/"/g, "") : "Modelo sin nombre",
-        precio: columnas[1] ? parseInt(columnas[1].replace(/[^0-9]/g, "")) || 0 : 0,
+        nombre: columnas[0] || "Modelo sin nombre",
+        precio: parseInt(columnas[1].replace(/[^0-9]/g, "")) || 0,
         imagenes: columnas[2] ? columnas[2].split(";").map(s => s.trim()).filter(s => s.length > 0) : ["logo.webp"],
-        tags: [columnas[3] ? columnas[3] : "Otros"],
+        tags: [columnas[3] || "Otros"],
         tallas: columnas[4] ? columnas[4].split(";").map(t => parseInt(t.trim())).filter(t => !isNaN(t)) : [37,38,39,40,41,42,43,44,45]
       };
     });
+
+    // Filtrar productos sin nombre o precio 0 (posibles líneas vacías)
+    productos = datos.filter(p => p.nombre && p.nombre !== "Modelo sin nombre" && p.precio > 0);
+    
+    if (productos.length === 0) throw new Error("No se encontraron productos válidos en el CSV");
+
     // Orden inicial: destacados primero
     const PALABRAS_DESTACADAS = ["dc court graffik", "tn plus", "shox tl", "dior b30", "balenciaga", "dolce", "gabbana"];
     function esDestacado(p) {
       const texto = normalizar(p.nombre) + " " + normalizar(p.tags[0] || "");
-      return PALABRAS_DESTACADAS.some(palabra => texto.indexOf(palabra) !== -1);
+      return PALABRAS_DESTACADAS.some(palabra => texto.includes(palabra));
     }
     function mezclar(lista) {
       const copia = lista.slice();
@@ -1450,8 +1464,10 @@ async function cargarProductos() {
     productos = mezclar(destacados).concat(mezclar(resto));
     ordenOriginal = productos.map((_, i) => i);
 
-    // Guardar en caché para futuras visitas (solo si se cargó bien)
-    localStorage.setItem("productos_cache", JSON.stringify({ timestamp: Date.now(), productos: productos }));
+    // Guardar en caché local (opcional)
+    try {
+      localStorage.setItem("productos_cache", JSON.stringify({ timestamp: Date.now(), productos: productos }));
+    } catch(e) {}
 
     // Renderizar todo
     generarMenuCategorias();
@@ -1464,7 +1480,7 @@ async function cargarProductos() {
     agregarBreadcrumbs();
     renderCarrusel();
 
-    // Autocompletado de dirección
+    // Evento para autocompletado de dirección
     document.getElementById("dir-calle").addEventListener("input", function() {
       clearTimeout(timeoutDireccion);
       const q = this.value.trim();
@@ -1474,7 +1490,13 @@ async function cargarProductos() {
 
   } catch (error) {
     console.error("Error cargando productos:", error);
-    document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al cargar el catálogo. Por favor recarga la página.</div>';
+    document.getElementById("productos").innerHTML = `
+      <div class="loading" style="color:#ff6b6b;">
+        <div>❌ Error al cargar el catálogo</div>
+        <div style="font-size:14px;color:#888;margin-top:10px;">${error.message}</div>
+        <button onclick="cargarProductos()" style="margin-top:15px;padding:10px 20px;background:#e60012;border:none;border-radius:8px;color:white;font-weight:bold;cursor:pointer;">Reintentar</button>
+      </div>
+    `;
   }
 }
 
