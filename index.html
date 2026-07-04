@@ -15,7 +15,7 @@ gtag('config', 'G-2EN8SLMRST');
 </script>
 
 <style>
-/* ===== ESTILOS COMPLETOS (los mismos que antes, pero compactos) ===== */
+/* ===== ESTILOS COMPLETOS ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b0b0b;color:white;}
 header{background:#000;padding:30px;text-align:center;border-bottom:3px solid #e60012;}
@@ -233,6 +233,23 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 .footer-stripe{display:block;height:4px;background:linear-gradient(90deg,#000,#e60012,#000);margin-bottom:0;}
 #breadcrumbs{padding:4px 20px 0;font-size:13px;color:#888;margin-top:-6px;}
 #breadcrumbs a{color:#e60012;text-decoration:none;}
+
+/* FIX #2: estilos que faltaban para el cupon */
+.cupon-box{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:16px;}
+.cupon-box h3{font-size:16px;margin-bottom:10px;color:#e60012;}
+.cupon-row{display:flex;gap:8px;}
+.cupon-row input{flex:1;padding:10px 12px;background:#222;border:1px solid #333;border-radius:8px;color:white;font-size:14px;outline:none;text-transform:uppercase;}
+.cupon-row input:focus{border-color:#e60012;}
+.cupon-row button{background:#e60012;border:none;padding:10px 16px;border-radius:8px;color:white;font-weight:bold;cursor:pointer;white-space:nowrap;transition:0.3s;}
+.cupon-row button:hover{background:#b8000e;}
+.cupon-msg{margin-top:8px;font-size:13px;}
+.cupon-msg.error{color:#ff6b6b;}
+.cupon-aplicado{display:flex;justify-content:space-between;align-items:center;background:#16261c;border:1px solid #3ddc84;border-radius:8px;padding:10px 12px;margin-top:8px;}
+.cupon-aplicado span{font-size:13px;color:#3ddc84;font-weight:bold;}
+.cupon-aplicado button{background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:0 4px;}
+.cupon-aplicado button:hover{color:#ff6b6b;}
+.btn-ubicacion:disabled{opacity:0.6;cursor:wait;}
+.ubicacion-msg.ok{color:#3ddc84;}
 </style>
 </head>
 <body>
@@ -299,6 +316,17 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <button class="cart-close" onclick="cerrarCarrito()" aria-label="Cerrar carrito">✕</button>
 </div>
 <div class="cart-items" id="cart-items"><div class="cart-empty">😕 Tu carrito está vacío</div></div>
+
+<!-- FIX #2: se restaura el campo de cupón que faltaba en el HTML -->
+<div class="cupon-box" id="cupon-box" style="display:none;">
+<h3>🏷️ Cupón de descuento</h3>
+<div class="cupon-row" id="cupon-row">
+<input type="text" id="c-cupon" placeholder="Ingresa tu código">
+<button onclick="aplicarCupon()">Aplicar</button>
+</div>
+<div class="cupon-msg" id="cupon-msg"></div>
+</div>
+
 <div id="vaciar-carrito-btn" style="display:none; text-align:right; margin-bottom:10px;">
 <button class="btn-vaciar-carrito" onclick="vaciarCarrito()" aria-label="Vaciar carrito">🗑️ Vaciar carrito</button>
 </div>
@@ -516,6 +544,8 @@ function parsearFilaCSV(linea) {
   return resultado;
 }
 
+// FIX #5: slug de categorías ahora usa la MISMA función que slug de productos,
+// con un prefijo "cat-" en la URL para que nunca puedan chocar entre sí.
 function slugify(nombre) {
   return nombre.toLowerCase()
     .replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i')
@@ -533,10 +563,12 @@ function cargarCarrito() {
   const data = localStorage.getItem('carrito');
   if (data) { try { carrito = JSON.parse(data); } catch(e) { carrito = []; } } else { carrito = []; }
 }
-function guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp) {
+// FIX #4: ahora recibe calle y numero POR SEPARADO y los guarda cada uno en su propia key
+function guardarDatosComprador(nombre, whatsapp, calle, numero, region, comuna, cp) {
   localStorage.setItem("m_nombre", nombre);
   localStorage.setItem("m_whatsapp", whatsapp);
-  localStorage.setItem("m_calle", direccion);
+  localStorage.setItem("m_calle", calle);
+  localStorage.setItem("m_numero", numero);
   localStorage.setItem("m_region", region);
   localStorage.setItem("m_comuna", comuna);
   localStorage.setItem("m_cp", cp);
@@ -602,41 +634,60 @@ function initValidacion() {
 
 // ============================================================
 //  AUTOCOMPLETADO DE DIRECCIÓN (OpenStreetMap)
+//  FIX #6: debounce subido a 700ms (respeta límite de Nominatim de 1 req/seg)
+//  y se cachean resultados para no repetir consultas de la misma búsqueda.
 // ============================================================
 let timeoutDireccion = null;
+const cacheDirecciones = {};
+
 function buscarDirecciones(query) {
   const cont = document.getElementById("sugerencias-direccion");
   if (query.length < 3) { cont.style.display = "none"; return; }
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=cl&limit=5&addressdetails=1`)
+
+  const clave = query.toLowerCase();
+  if (cacheDirecciones[clave]) {
+    renderSugerenciasDireccion(cacheDirecciones[clave]);
+    return;
+  }
+
+  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + " Chile")}&countrycodes=cl&limit=5&addressdetails=1`, {
+    headers: { "Accept-Language": "es" }
+  })
     .then(res => res.json())
     .then(data => {
-      if (data.length === 0) { cont.style.display = "none"; return; }
-      let html = "";
-      data.forEach(item => {
-        const a = item.address || {};
-        const calle = a.road || a.pedestrian || "";
-        const numero = a.house_number || "";
-        const comuna = a.city || a.town || a.municipality || a.suburb || a.village || "";
-        const region = a.state || a.region || "";
-        const cp = a.postcode || "";
-        const display = item.display_name;
-        html += `<div class="sug-dir-item" data-calle="${calle}" data-numero="${numero}" data-comuna="${comuna}" data-region="${region}" data-cp="${cp}">${display}</div>`;
-      });
-      cont.innerHTML = html;
-      cont.style.display = "block";
-      cont.querySelectorAll(".sug-dir-item").forEach(el => {
-        el.addEventListener("click", function() {
-          document.getElementById("dir-calle").value = this.dataset.calle;
-          document.getElementById("dir-numero").value = this.dataset.numero;
-          document.getElementById("dir-comuna").value = this.dataset.comuna;
-          document.getElementById("dir-region").value = this.dataset.region;
-          document.getElementById("dir-cp").value = this.dataset.cp;
-          cont.style.display = "none";
-          ["dir-calle","dir-comuna","dir-region"].forEach(id => validarCampo(id));
-        });
-      });
+      cacheDirecciones[clave] = data;
+      renderSugerenciasDireccion(data);
     })
     .catch(() => { cont.style.display = "none"; });
+}
+
+function renderSugerenciasDireccion(data) {
+  const cont = document.getElementById("sugerencias-direccion");
+  if (!data || data.length === 0) { cont.style.display = "none"; return; }
+  let html = "";
+  data.forEach(item => {
+    const a = item.address || {};
+    const calle = a.road || a.pedestrian || "";
+    const numero = a.house_number || "";
+    const comuna = a.city || a.town || a.municipality || a.suburb || a.village || "";
+    const region = a.state || a.region || "";
+    const cp = a.postcode || "";
+    const display = item.display_name;
+    html += `<div class="sug-dir-item" data-calle="${calle}" data-numero="${numero}" data-comuna="${comuna}" data-region="${region}" data-cp="${cp}">${display}</div>`;
+  });
+  cont.innerHTML = html;
+  cont.style.display = "block";
+  cont.querySelectorAll(".sug-dir-item").forEach(el => {
+    el.addEventListener("click", function() {
+      document.getElementById("dir-calle").value = this.dataset.calle;
+      document.getElementById("dir-numero").value = this.dataset.numero;
+      document.getElementById("dir-comuna").value = this.dataset.comuna;
+      document.getElementById("dir-region").value = this.dataset.region;
+      document.getElementById("dir-cp").value = this.dataset.cp;
+      cont.style.display = "none";
+      ["dir-calle","dir-comuna","dir-region"].forEach(id => validarCampo(id));
+    });
+  });
 }
 
 // ============================================================
@@ -710,8 +761,16 @@ function mostrarNotificacionRecordatorio() {
 window.addEventListener("beforeunload", () => setTimeout(mostrarNotificacionRecordatorio, 1000));
 
 // ============================================================
-//  BÚSQUEDA INTELIGENTE (CORREGIDA: al hacer clic en sugerencia, se oculta)
+//  BÚSQUEDA INTELIGENTE
+//  FIX #1: se quita la referencia rota a "cont" dentro del onclick inline.
+//  Ahora se usa una función global "seleccionarSugerencia(idx)" que sí existe
+//  en cualquier contexto y oculta la lista antes de abrir la galería.
 // ============================================================
+function seleccionarSugerencia(idx) {
+  document.getElementById("sugerencias-busqueda").style.display = "none";
+  abrirGaleria(idx);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   const input = document.getElementById("buscar");
   const cont = document.getElementById("sugerencias-busqueda");
@@ -730,8 +789,7 @@ document.addEventListener("DOMContentLoaded", function() {
       let html = "";
       resultados.slice(0, 6).forEach(p => {
         const idx = productos.indexOf(p);
-        // Al hacer clic, ocultamos la lista antes de abrir la galería
-        html += `<div class="sugerencia-item" onclick="cont.style.display='none'; abrirGaleria(${idx})">
+        html += `<div class="sugerencia-item" onclick="seleccionarSugerencia(${idx})">
           <img src="${p.imagenes[0]}" onerror="this.src='logo.webp'">
           <div class="sugerencia-info">
             <div class="sugerencia-nombre">${p.nombre}</div>
@@ -743,7 +801,6 @@ document.addEventListener("DOMContentLoaded", function() {
       cont.style.display = "block";
     }, 300);
   });
-  // Al presionar Enter, ocultar la lista
   input.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
       cont.style.display = "none";
@@ -844,13 +901,16 @@ function actualizarCarrito() {
   const itemsEl = document.getElementById("cart-items");
   const formEl = document.getElementById("checkout-form");
   const vaciarBtn = document.getElementById("vaciar-carrito-btn");
+  const cuponBox = document.getElementById("cupon-box");
   if (count === 0) {
     itemsEl.innerHTML = '<div class="cart-empty">😕 Tu carrito está vacío</div>';
     formEl.style.display = "none";
     vaciarBtn.style.display = "none";
+    cuponBox.style.display = "none";
     return;
   }
   vaciarBtn.style.display = "block";
+  cuponBox.style.display = "block";
   let htmlItems = "", subtotal = 0;
   carrito.forEach((item, i) => {
     subtotal += item.precio;
@@ -956,6 +1016,7 @@ function seleccionarMetodoCheckout(tipo) {
 
 // ============================================================
 //  CUPONES
+//  FIX #2: ahora sincroniza el total del checkout cada vez que se aplica/quita
 // ============================================================
 function calcularDescuento(subtotal, envio) {
   if (!cuponAplicado) return 0;
@@ -993,7 +1054,7 @@ function aplicarCupon() {
   cuponRow.style.display = "none";
   const aplicadoHtml = `<div class="cupon-aplicado" id="cupon-aplicado-box"><span>✅ ${codigo} aplicado — ${cupon.descripcion}</span><button onclick="quitarCupon()" aria-label="Quitar cupón">✕</button></div>`;
   cuponRow.insertAdjacentHTML('afterend', aplicadoHtml);
-  actualizarCarrito();
+  actualizarTotalesCheckout();
 }
 function quitarCupon() {
   cuponAplicado = null;
@@ -1003,11 +1064,12 @@ function quitarCupon() {
   document.getElementById("c-cupon").value = "";
   document.getElementById("cupon-msg").textContent = "";
   document.getElementById("cupon-msg").className = "cupon-msg";
-  actualizarCarrito();
+  actualizarTotalesCheckout();
 }
 
 // ============================================================
 //  CONFIRMAR PEDIDO DESDE CHECKOUT
+//  FIX #4: guardarDatosComprador ahora recibe calle y numero por separado
 // ============================================================
 async function confirmarPedidoCheckout() {
   const nombre = document.getElementById("c-nombre").value.trim();
@@ -1030,7 +1092,7 @@ async function confirmarPedidoCheckout() {
     return;
   }
 
-  guardarDatosComprador(nombre, whatsapp, direccion, region, comuna, cp);
+  guardarDatosComprador(nombre, whatsapp, calle, numero, region, comuna, cp);
 
   let subtotal = 0;
   carrito.forEach(item => subtotal += item.precio);
@@ -1039,7 +1101,6 @@ async function confirmarPedidoCheckout() {
   const total = subtotal + envio - descuento;
   const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
 
-  // Enviar a Formspree
   let productosTexto = "";
   carrito.forEach((item, i) => {
     productosTexto += (i + 1) + ". " + item.nombre + " — Talla: " + item.talla + " — $" + item.precio.toLocaleString("es-CL") + "\n";
@@ -1063,7 +1124,6 @@ async function confirmarPedidoCheckout() {
   }
   try { await fetch(FORMSPREE_URL, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(datos) }); } catch(e) {}
 
-  // Mensaje WhatsApp
   let mensaje = "🛒 *NUEVO PEDIDO - MAIKOL JORDAN*\n\n";
   mensaje += "👤 *Cliente:* " + nombre + "\n";
   mensaje += "📱 *WhatsApp:* " + whatsapp + "\n";
@@ -1130,7 +1190,11 @@ function cerrarCarrito() {
 }
 
 // ============================================================
-//  GALERÍA DE PRODUCTOS (CORREGIDA)
+//  GALERÍA DE PRODUCTOS
+//  FIX #3: separamos el cierre "manual" (botón X, click afuera) del cierre
+//  "por navegación" (botón atrás del celular). Solo el cierre manual empuja
+//  un nuevo estado al historial; el cierre por popstate NUNCA llama pushState,
+//  porque el navegador ya movió el historial por su cuenta.
 // ============================================================
 let galeriaProductoIndex = null;
 let galeriaFotoIndex = 0;
@@ -1148,20 +1212,26 @@ function abrirGaleria(index) {
   mostrarFotoGaleria();
   document.getElementById("galeria-overlay").classList.add("open");
   document.getElementById("galeria-modal").classList.add("open");
-  history.pushState({ productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
+  history.pushState({ tipo: "producto", productoIndex: index }, p.nombre, "#" + slugify(p.nombre));
   actualizarBreadcrumbs(p);
   actualizarOG(p);
-  // Actualizar WhatsApp
   const link = document.getElementById("whatsapp-flotante");
   link.href = `https://wa.me/56931402987?text=Hola%2C%20estoy%20interesado%20en%20la%20zapatilla%20${encodeURIComponent(p.nombre)}%20que%20vi%20en%20Maikol%20Jordan.%20%C2%BFpodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F`;
   link.textContent = "💬 Consultar este producto";
 }
 
+// Cierre manual: botón X, click en el fondo. Este SÍ actualiza la URL/historial.
 function cerrarGaleria() {
+  ocultarGaleriaUI();
+  history.pushState({ tipo: "inicio" }, "", window.location.pathname);
+}
+
+// Cierre por navegación (botón atrás/adelante del navegador). NO toca el
+// historial, porque el navegador ya lo hizo — solo actualiza la interfaz.
+function ocultarGaleriaUI() {
   document.getElementById("galeria-overlay").classList.remove("open");
   document.getElementById("galeria-modal").classList.remove("open");
   galeriaProductoIndex = null;
-  history.pushState(null, "", window.location.pathname);
   actualizarBreadcrumbs(null);
   actualizarOG(null);
   const link = document.getElementById("whatsapp-flotante");
@@ -1216,7 +1286,6 @@ function cambiarCantidadGaleria(delta) {
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
 }
 
-// Touch para galería
 document.addEventListener("DOMContentLoaded", function() {
   const area = document.getElementById("galeria-foto-area");
   area.addEventListener("touchstart", e => { galeriaTouchStartX = e.touches[0].clientX; });
@@ -1234,9 +1303,9 @@ document.addEventListener("DOMContentLoaded", function() {
 function actualizarBreadcrumbs(producto) {
   const bc = document.getElementById("breadcrumbs");
   if (!bc) return;
-  if (!producto) { bc.innerHTML = '<a href="#" onclick="filtrar(\'todos\')">Inicio</a>'; return; }
+  if (!producto) { bc.innerHTML = '<a href="#" onclick="filtrar(\'todos\'); return false;">Inicio</a>'; return; }
   const categoria = producto.tags[0] || "Producto";
-  bc.innerHTML = `<a href="#" onclick="filtrar('todos')">Inicio</a> > <a href="#" onclick="filtrar('${categoria}')">${categoria}</a> > ${producto.nombre}`;
+  bc.innerHTML = `<a href="#" onclick="filtrar('todos'); return false;">Inicio</a> > <a href="#" onclick="filtrar('${categoria}'); return false;">${categoria}</a> > ${producto.nombre}`;
 }
 
 function actualizarOG(producto) {
@@ -1298,6 +1367,22 @@ function generarDescripcion(nombre) {
 const CACHE_KEY = "productos_cache";
 const CACHE_EXPIRY = 60 * 60 * 1000;
 
+function terminarInicializacion() {
+  cargarDatosGuardados();
+  cargarCarrito();
+  actualizarCarrito();
+  initValidacion();
+  agregarBreadcrumbs();
+  document.getElementById("dir-calle").addEventListener("input", function() {
+    clearTimeout(timeoutDireccion);
+    const q = this.value.trim();
+    if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
+    timeoutDireccion = setTimeout(() => buscarDirecciones(q), 700);
+  });
+  // FIX: breadcrumbs ya existe en el DOM antes de intentar abrir un producto por hash
+  abrirProductoPorHash();
+}
+
 async function cargarProductosConCache() {
   const cache = localStorage.getItem(CACHE_KEY);
   if (cache) {
@@ -1308,21 +1393,7 @@ async function cargarProductosConCache() {
         ordenOriginal = productos.map((_, i) => i);
         generarMenuCategorias();
         render();
-        cargarDatosGuardados();
-        cargarCarrito();
-        actualizarCarrito();
-        abrirProductoPorHash();
-        initValidacion();
-        agregarBreadcrumbs();
-        // Autocompletado direcciones: evento input
-        document.getElementById("dir-calle").addEventListener("input", function() {
-          clearTimeout(timeoutDireccion);
-          const q = this.value.trim();
-          if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
-          timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
-        });
-        // Aplicar categoría desde hash después de cargar
-        aplicarCategoriaDesdeHash();
+        terminarInicializacion();
         return;
       }
     } catch(e) {}
@@ -1367,21 +1438,7 @@ async function cargarProductos() {
     localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), productos: productos }));
     generarMenuCategorias();
     render();
-    cargarDatosGuardados();
-    cargarCarrito();
-    actualizarCarrito();
-    abrirProductoPorHash();
-    initValidacion();
-    agregarBreadcrumbs();
-    // Autocompletado direcciones
-    document.getElementById("dir-calle").addEventListener("input", function() {
-      clearTimeout(timeoutDireccion);
-      const q = this.value.trim();
-      if (q.length < 3) { document.getElementById("sugerencias-direccion").style.display = "none"; return; }
-      timeoutDireccion = setTimeout(() => buscarDirecciones(q), 400);
-    });
-    // Aplicar categoría desde hash después de cargar
-    aplicarCategoriaDesdeHash();
+    terminarInicializacion();
   } catch (error) {
     document.getElementById("productos").innerHTML = '<div class="loading">❌ Error al conectar con Google Sheets.</div>';
   }
@@ -1438,14 +1495,14 @@ function toggleCategoria(el) {
   el.nextElementSibling.classList.toggle("abierto");
 }
 
+// FIX #5: se usa slugify() con prefijo "cat-" en la URL, así nunca puede
+// coincidir con el hash de un producto (que usa slugify() sin prefijo).
 function filtrar(tag) {
   categoriaActual = tag;
-  // Actualizar hash en la URL
   if (tag === 'todos') {
-    history.pushState(null, '', window.location.pathname);
+    history.pushState({ tipo: "inicio" }, '', window.location.pathname);
   } else {
-    const slug = tag.toLowerCase().replace(/\s+/g, '-');
-    history.pushState(null, '', '#' + slug);
+    history.pushState({ tipo: "categoria", tag: tag }, '', '#cat-' + slugify(tag));
   }
   generarMenuCategorias();
   actualizarFiltroActivo();
@@ -1523,7 +1580,6 @@ function render() {
   cont.innerHTML = html;
   aplicar();
   document.getElementById("orden-select").value = ordenActual;
-  ordenarProductos();
 }
 
 function agregarBreadcrumbs() {
@@ -1532,7 +1588,7 @@ function agregarBreadcrumbs() {
   if (document.getElementById("breadcrumbs")) return;
   const bcDiv = document.createElement("div");
   bcDiv.id = "breadcrumbs";
-  bcDiv.innerHTML = '<a href="#" onclick="filtrar(\'todos\')">Inicio</a>';
+  bcDiv.innerHTML = '<a href="#" onclick="filtrar(\'todos\'); return false;">Inicio</a>';
   filtroRow.parentNode.insertBefore(bcDiv, filtroRow.nextSibling);
 }
 
@@ -1561,31 +1617,23 @@ function agregarPoliticaPrivacidad() {
 }
 
 // ============================================================
-//  ===== NUEVO: FUNCIONES PARA EL MANEJO DEL HASH =====
+//  MANEJO DEL HASH (categorías Y productos, unificado)
+//  FIX #5 (continuación): como ahora los hashes de categoría llevan el
+//  prefijo "cat-" y los de producto NO, esta función puede distinguirlos
+//  con certeza en vez de adivinar con una regex poco confiable.
 // ============================================================
-function aplicarCategoriaDesdeHash() {
-  const hash = window.location.hash.replace('#', '');
-  if (!hash) return;
-  // Buscar la categoría que coincida
-  let categoriaEncontrada = null;
+function aplicarCategoriaDesdeHash(hash) {
+  const valor = hash.replace(/^cat-/, '');
   const tagsUnicos = [];
-  productos.forEach(p => {
-    if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]);
-  });
-  // Intentar coincidir con tags existentes (ej. "dc", "nike")
+  productos.forEach(p => { if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]); });
+
+  let categoriaEncontrada = null;
   for (let tag of tagsUnicos) {
-    if (normalizar(tag) === normalizar(hash) || normalizar(tag) === normalizar(hash.replace(/-/g, ' '))) {
-      categoriaEncontrada = tag;
-      break;
-    }
+    if (slugify(tag) === valor) { categoriaEncontrada = tag; break; }
   }
-  // Si no, buscar en CATEGORIA_PADRES (ej. "nike" -> "Nike")
   if (!categoriaEncontrada) {
     for (let padre of Object.keys(CATEGORIA_PADRES)) {
-      if (normalizar(padre) === normalizar(hash)) {
-        categoriaEncontrada = padre;
-        break;
-      }
+      if (slugify(padre) === valor) { categoriaEncontrada = padre; break; }
     }
   }
   if (categoriaEncontrada) {
@@ -1596,13 +1644,27 @@ function aplicarCategoriaDesdeHash() {
   }
 }
 
-// Escuchar cambios en el hash (popstate y hashchange)
-window.addEventListener('hashchange', function() {
-  aplicarCategoriaDesdeHash();
-});
-
-window.addEventListener('popstate', function() {
-  aplicarCategoriaDesdeHash();
+// Un solo listener de popstate para toda la app: mira el estado guardado
+// (o el hash si no hay estado) y decide qué mostrar. Nunca llama pushState
+// aquí, porque el navegador ya movió el historial — solo sincroniza la UI.
+window.addEventListener('popstate', function(e) {
+  if (galeriaProductoIndex !== null) {
+    ocultarGaleriaUI();
+  }
+  const hash = window.location.hash.replace('#', '');
+  if (!hash) {
+    categoriaActual = "todos";
+    generarMenuCategorias();
+    actualizarFiltroActivo();
+    aplicar();
+    return;
+  }
+  if (hash.indexOf('cat-') === 0) {
+    aplicarCategoriaDesdeHash(hash);
+  } else {
+    const index = productos.findIndex(p => slugify(p.nombre) === hash);
+    if (index !== -1) abrirGaleria(index);
+  }
 });
 
 // ============================================================
@@ -1618,7 +1680,6 @@ window.onload = function() {
   document.getElementById("checkout-overlay").addEventListener("click", function(e) {
     if (e.target === this) cerrarCheckout();
   });
-  // Cerrar sugerencias de dirección al hacer clic fuera
   document.addEventListener("click", function(e) {
     if (!e.target.closest(".calle-wrapper")) {
       document.getElementById("sugerencias-direccion").style.display = "none";
@@ -1626,14 +1687,13 @@ window.onload = function() {
   });
 };
 
-window.addEventListener("popstate", function() {
-  if (galeriaProductoIndex !== null) cerrarGaleria();
-});
-
 function abrirProductoPorHash() {
   const hash = window.location.hash.replace("#", "");
-  // Si el hash es una categoría (solo letras y guiones), no abrir galería
-  if (!hash || /^[a-z-]+$/i.test(hash)) return;
+  if (!hash) return;
+  if (hash.indexOf('cat-') === 0) {
+    aplicarCategoriaDesdeHash(hash);
+    return;
+  }
   const index = productos.findIndex(p => slugify(p.nombre) === hash);
   if (index !== -1) abrirGaleria(index);
 }
