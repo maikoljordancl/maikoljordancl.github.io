@@ -407,7 +407,7 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 <div class="cart-total-resumen" style="background:#0f0f0f;border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid #1f1f1f;">
 <div class="cart-total-row" style="display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;"><span>Subtotal</span><span id="checkout-subtotal"></span></div>
-<div class="cart-total-row" style="display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;"><span>Envío</span><span>$5.000</span></div>
+<div class="cart-total-row" style="display:flex;justify-content:space-between;margin-bottom:8px;color:#aaa;font-size:15px;"><span>Envío</span><span id="checkout-envio-html">$3.490</span></div>
 <div class="cart-total-row descuento" id="checkout-descuento-row" style="display:none;color:#3ddc84;justify-content:space-between;margin-bottom:8px;font-size:15px;"><span id="checkout-descuento-label">Descuento</span><span id="checkout-descuento-valor"></span></div>
 <div class="cart-total-final" style="display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:white;margin-bottom:15px;"><span>TOTAL</span><span id="checkout-total"></span></div>
 </div>
@@ -496,6 +496,7 @@ maikoljordancl@gmail.com
 // ============================================================
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/1sunQ0MoXRI-HoL2MzTwCwHEgEcM4C2rgzsQR-U854AM/export?format=csv";
 const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
+const COSTO_ENVIO = 3490; // FIX: valor único del envío, usado en toda la app
 
 const CUPONES = {
   "SIKMAS26": { tipo: "fijo", valor: 5000, descripcion: "$5.000 de descuento" }
@@ -745,6 +746,12 @@ function usarMiUbicacion() {
 
 // ============================================================
 //  NOTIFICACIONES PUSH
+//  FIX NOTIFICACIÓN: "beforeunload" casi nunca alcanza a disparar la
+//  notificación porque el navegador ya está descargando la página. Se
+//  reemplaza por "visibilitychange": cuando el usuario cambia de pestaña o
+//  minimiza (la página sigue viva en segundo plano), se programa un
+//  recordatorio a los 5 minutos si sigue con el carrito lleno. Si vuelve
+//  antes a la pestaña, se cancela el aviso.
 // ============================================================
 function solicitarPermisoNotificacion() {
   if (!("Notification" in window)) return;
@@ -758,7 +765,15 @@ function mostrarNotificacionRecordatorio() {
     icon: "logo.webp"
   });
 }
-window.addEventListener("beforeunload", () => setTimeout(mostrarNotificacionRecordatorio, 1000));
+let notifTimeout = null;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearTimeout(notifTimeout);
+    notifTimeout = setTimeout(mostrarNotificacionRecordatorio, 5 * 60 * 1000); // 5 min tras salir de la pestaña
+  } else {
+    clearTimeout(notifTimeout);
+  }
+});
 
 // ============================================================
 //  BÚSQUEDA INTELIGENTE
@@ -974,15 +989,15 @@ function actualizarResumenCheckout() {
     </div>`;
   });
   html += `<div class="resumen-total"><span>Subtotal</span><span>$${subtotal.toLocaleString("es-CL")}</span></div>`;
-  html += `<div class="resumen-total" style="border-top:none;padding-top:0;font-size:16px;"><span>Envío</span><span>$5.000</span></div>`;
-  const total = subtotal + 5000;
+  html += `<div class="resumen-total" style="border-top:none;padding-top:0;font-size:16px;"><span>Envío</span><span>$${COSTO_ENVIO.toLocaleString("es-CL")}</span></div>`;
+  const total = subtotal + COSTO_ENVIO;
   html += `<div class="resumen-total" style="border-top:none;padding-top:0;font-size:20px;color:#e60012;"><span>TOTAL</span><span>$${total.toLocaleString("es-CL")}</span></div>`;
   cont.innerHTML = html;
 }
 function actualizarTotalesCheckout() {
   let subtotal = 0;
   carrito.forEach(item => subtotal += item.precio);
-  const envio = 5000;
+  const envio = COSTO_ENVIO;
   const descuento = calcularDescuento(subtotal, envio);
   const total = subtotal + envio - descuento;
   document.getElementById("checkout-subtotal").textContent = "$" + subtotal.toLocaleString("es-CL");
@@ -1096,7 +1111,7 @@ async function confirmarPedidoCheckout() {
 
   let subtotal = 0;
   carrito.forEach(item => subtotal += item.precio);
-  const envio = 5000;
+  const envio = COSTO_ENVIO;
   const descuento = calcularDescuento(subtotal, envio);
   const total = subtotal + envio - descuento;
   const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
@@ -1116,7 +1131,7 @@ async function confirmarPedidoCheckout() {
     "💳 Método de pago": metodoPagoTexto,
     "👟 Productos": productosTexto,
     "💰 Subtotal": "$" + subtotal.toLocaleString("es-CL"),
-    "🚚 Envío": "$5.000",
+    "🚚 Envío": "$" + envio.toLocaleString("es-CL"),
     "💵 TOTAL": "$" + total.toLocaleString("es-CL")
   };
   if (descuento > 0 && cuponAplicado) {
@@ -1135,7 +1150,7 @@ async function confirmarPedidoCheckout() {
     mensaje += "- " + item.nombre + " (Talla: " + item.talla + ") - $" + item.precio.toLocaleString("es-CL") + "\n";
   });
   mensaje += "\n💰 *Subtotal:* $" + subtotal.toLocaleString("es-CL");
-  mensaje += "\n🚚 *Envío:* $5.000";
+  mensaje += "\n🚚 *Envío:* $" + envio.toLocaleString("es-CL");
   if (descuento > 0 && cuponAplicado) {
     mensaje += "\n🏷️ *Cupón (" + cuponAplicado.codigo + "):* -$" + descuento.toLocaleString("es-CL");
   }
@@ -1607,7 +1622,7 @@ function agregarPoliticaPrivacidad() {
     e.preventDefault();
     alert("TÉRMINOS Y CONDICIONES\n\n" +
           "1. Los precios incluyen IVA.\n" +
-          "2. Envíos a todo Chile por $5.000.\n" +
+          "2. Envíos a todo Chile por $" + COSTO_ENVIO.toLocaleString("es-CL") + ".\n" +
           "3. No se aceptan devoluciones por cambio de talla, solo cambios por defectos de fábrica.\n" +
           "4. Al realizar un pedido, aceptas recibir comunicaciones por WhatsApp.\n" +
           "5. Tus datos serán utilizados únicamente para la gestión de envíos y no serán compartidos con terceros.\n\n" +
