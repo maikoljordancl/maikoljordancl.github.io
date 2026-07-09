@@ -79,7 +79,9 @@ h1{margin-top:10px;font-size:34px;}
 .foto-badge{position:absolute;top:10px;right:10px;background:rgba(15,15,15,0.85);border:1px solid rgba(255,255,255,0.15);color:white;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;backdrop-filter:blur(2px);}
 .img-zoom-icon{position:absolute;bottom:10px;right:10px;width:32px;height:32px;background:rgba(15,15,15,0.7);border:1px solid rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);transition:0.2s;}
 .card h3{font-size:18px;margin-top:5px;}
-.precio{color:#e60012;font-size:22px;font-weight:bold;}
+.precio{color:#e60012;font-size:22px;font-weight:bold;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.precio-original{color:#777;font-size:14px;font-weight:normal;text-decoration:line-through;}
+.badge-descuento{background:#3ddc84;color:#0b0b0b;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:20px;}
 select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;color:white;font-weight:bold;outline:none;cursor:pointer;}
 .btn{background:#e60012;border:none;padding:12px;border-radius:10px;color:white;font-weight:bold;cursor:pointer;transition:0.3s;}
 .btn:hover{background:#b8000e;}
@@ -183,7 +185,7 @@ select{width:100%;padding:10px;border:none;border-radius:8px;background:#222;col
 .galeria-info{flex:1;overflow-y:auto;background:#0f0f0f;padding:20px 20px 100px;}
 .galeria-info-marca{color:#e60012;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
 .galeria-info-nombre{color:white;font-size:22px;font-weight:bold;letter-spacing:0.2px;margin-bottom:10px;line-height:1.25;}
-.galeria-info-precio{color:#e60012;font-size:27px;font-weight:bold;margin-bottom:14px;}
+.galeria-info-precio{color:#e60012;font-size:27px;font-weight:bold;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .galeria-info-descripcion{color:#999;font-size:13.5px;line-height:1.55;margin-bottom:22px;}
 .galeria-seccion-titulo{color:white;font-size:14px;font-weight:bold;margin-bottom:10px;}
 .galeria-tallas-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
@@ -497,6 +499,7 @@ maikoljordancl@gmail.com
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/1sunQ0MoXRI-HoL2MzTwCwHEgEcM4C2rgzsQR-U854AM/export?format=csv";
 const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 const COSTO_ENVIO = 3490; // FIX: valor único del envío, usado en toda la app
+const DESCUENTO_GENERAL = 0.15; // 15% de descuento a todo el catálogo, excepto modelos DC
 
 const CUPONES = {
   "SIKMAS26": { tipo: "fijo", valor: 5000, descripcion: "$5.000 de descuento" }
@@ -523,6 +526,17 @@ let pasoActual = 1;
 // ============================================================
 function normalizar(s) {
   return (s || "").toString().trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+// Descuento general del 15%: aplica a todo el catálogo excepto los modelos DC
+// (ej. "DC Court Graffik"). Se detecta "dc" como palabra completa en el nombre,
+// para no confundirlo con otras siglas que puedan contener esas letras.
+function esProductoExcluidoDescuento(p) {
+  return /(^|\s)dc(\s|$)/.test(normalizar(p.nombre));
+}
+function precioConDescuento(p) {
+  if (esProductoExcluidoDescuento(p)) return p.precio;
+  return Math.round(p.precio * (1 - DESCUENTO_GENERAL));
 }
 
 function parsearFilaCSV(linea) {
@@ -808,7 +822,7 @@ document.addEventListener("DOMContentLoaded", function() {
           <img src="${p.imagenes[0]}" onerror="this.src='logo.webp'">
           <div class="sugerencia-info">
             <div class="sugerencia-nombre">${p.nombre}</div>
-            <div class="sugerencia-precio">$${p.precio.toLocaleString("es-CL")}</div>
+            <div class="sugerencia-precio">$${precioConDescuento(p).toLocaleString("es-CL")}</div>
           </div>
         </div>`;
       });
@@ -838,8 +852,8 @@ function ordenarProductos() {
   let indicesOrdenados = [];
   switch (ordenActual) {
     case "default": indicesOrdenados = ordenOriginal.filter(i => indicesVisibles.includes(i)); break;
-    case "precio-asc": indicesOrdenados = indicesVisibles.slice().sort((a,b) => productos[a].precio - productos[b].precio); break;
-    case "precio-desc": indicesOrdenados = indicesVisibles.slice().sort((a,b) => productos[b].precio - productos[a].precio); break;
+    case "precio-asc": indicesOrdenados = indicesVisibles.slice().sort((a,b) => precioConDescuento(productos[a]) - precioConDescuento(productos[b])); break;
+    case "precio-desc": indicesOrdenados = indicesVisibles.slice().sort((a,b) => precioConDescuento(productos[b]) - precioConDescuento(productos[a])); break;
     case "nombre": indicesOrdenados = indicesVisibles.slice().sort((a,b) => productos[a].nombre.localeCompare(productos[b].nombre)); break;
     default: indicesOrdenados = indicesVisibles;
   }
@@ -866,7 +880,7 @@ function vaciarCarrito() {
 function agregarAlCarrito(index) {
   const p = productos[index];
   const talla = document.getElementById("talla-" + index).value;
-  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: talla });
+  carrito.push({ nombre: p.nombre, precio: precioConDescuento(p), imagen: p.imagenes[0], talla: talla });
   guardarCarrito();
   actualizarCarrito();
   mostrarToast(p.nombre, p.imagenes[0]);
@@ -875,7 +889,7 @@ function agregarAlCarrito(index) {
 function comprarAhoraDesdeCard(index) {
   const p = productos[index];
   const talla = parseInt(document.getElementById("talla-" + index).value);
-  carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: talla });
+  carrito.push({ nombre: p.nombre, precio: precioConDescuento(p), imagen: p.imagenes[0], talla: talla });
   guardarCarrito();
   actualizarCarrito();
   abrirCheckout();
@@ -891,7 +905,7 @@ function cambiarTallaEnCarrito(i, nuevaTalla) {
 function agregarDesdeGaleria() {
   const p = productos[galeriaProductoIndex];
   for (let i = 0; i < galeriaCantidad; i++) {
-    carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: galeriaTallaSeleccionada });
+    carrito.push({ nombre: p.nombre, precio: precioConDescuento(p), imagen: p.imagenes[0], talla: galeriaTallaSeleccionada });
   }
   guardarCarrito();
   actualizarCarrito();
@@ -902,7 +916,7 @@ function agregarDesdeGaleria() {
 function comprarAhora() {
   const p = productos[galeriaProductoIndex];
   for (let i = 0; i < galeriaCantidad; i++) {
-    carrito.push({ nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0], talla: galeriaTallaSeleccionada });
+    carrito.push({ nombre: p.nombre, precio: precioConDescuento(p), imagen: p.imagenes[0], talla: galeriaTallaSeleccionada });
   }
   guardarCarrito();
   actualizarCarrito();
@@ -1283,7 +1297,10 @@ function mostrarFotoGaleria() {
   document.querySelector(".galeria-next").style.display = fotos.length > 1 ? "flex" : "none";
   document.getElementById("galeria-marca").textContent = (p.tags[0] || "MAIKOL JORDAN");
   document.getElementById("galeria-nombre").textContent = p.nombre;
-  document.getElementById("galeria-precio").textContent = "$" + p.precio.toLocaleString("es-CL");
+  const galeriaPrecioFinal = precioConDescuento(p);
+  document.getElementById("galeria-precio").innerHTML = esProductoExcluidoDescuento(p)
+    ? "$" + p.precio.toLocaleString("es-CL")
+    : `<span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${galeriaPrecioFinal.toLocaleString("es-CL")}<span class="badge-descuento">-15%</span>`;
   document.getElementById("galeria-descripcion").textContent = generarDescripcion(p.nombre);
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
   const grid = document.getElementById("galeria-tallas-grid");
@@ -1577,6 +1594,10 @@ function render() {
     p.tallas.forEach(t => opcionesTalla += `<option value="${t}" ${t===41?'selected':''}>Talla: ${t}</option>`);
     const badgeFotos = p.imagenes.length > 1 ? `<span class="foto-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.3"/></svg>${p.imagenes.length}</span>` : '';
     const zoomIcon = `<div class="img-zoom-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`;
+    const precioFinalCard = precioConDescuento(p);
+    const precioHtml = esProductoExcluidoDescuento(p)
+      ? `<div class="precio">$${p.precio.toLocaleString("es-CL")}</div>`
+      : `<div class="precio"><span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${precioFinalCard.toLocaleString("es-CL")}<span class="badge-descuento">-15%</span></div>`;
     html += `<div class="card" data-index="${index}">
       <div class="img-wrapper" onclick="abrirGaleria(${index})">
         <img src="${p.imagenes[0]}" class="img-producto" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.src='logo.webp'">
@@ -1584,7 +1605,7 @@ function render() {
         ${zoomIcon}
       </div>
       <h3>${p.nombre}</h3>
-      <div class="precio">$${p.precio.toLocaleString("es-CL")}</div>
+      ${precioHtml}
       <select id="talla-${index}" onclick="event.stopPropagation()">${opcionesTalla}</select>
       <div class="card-botones">
         <button class="btn btn-card-carrito" onclick="event.stopPropagation(); agregarAlCarrito(${index})" aria-label="Agregar al carrito">🛒 Agregar</button>
