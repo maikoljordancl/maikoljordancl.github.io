@@ -500,6 +500,7 @@ const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/1sunQ0MoXRI-HoL2M
 const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 const COSTO_ENVIO = 3490; // FIX: valor único del envío, usado en toda la app
 const DESCUENTO_GENERAL = 0.15; // 15% de descuento a todo el catálogo, excepto modelos DC
+const PISO_PRECIO_DESCUENTO = 65990; // ningún producto puede quedar por debajo de este precio tras el descuento
 
 const CUPONES = {
   "SIKMAS26": { tipo: "fijo", valor: 5000, descripcion: "$5.000 de descuento" }
@@ -536,7 +537,13 @@ function esProductoExcluidoDescuento(p) {
 }
 function precioConDescuento(p) {
   if (esProductoExcluidoDescuento(p)) return p.precio;
-  return Math.round(p.precio * (1 - DESCUENTO_GENERAL));
+  const descontado = Math.round(p.precio * (1 - DESCUENTO_GENERAL));
+  if (descontado < PISO_PRECIO_DESCUENTO) {
+    // Si ya con el precio original no se alcanza el piso, no se aplica descuento.
+    // Si sí se alcanza, se aplica un descuento menor para llegar justo al piso.
+    return p.precio > PISO_PRECIO_DESCUENTO ? PISO_PRECIO_DESCUENTO : p.precio;
+  }
+  return descontado;
 }
 
 function parsearFilaCSV(linea) {
@@ -1298,9 +1305,10 @@ function mostrarFotoGaleria() {
   document.getElementById("galeria-marca").textContent = (p.tags[0] || "MAIKOL JORDAN");
   document.getElementById("galeria-nombre").textContent = p.nombre;
   const galeriaPrecioFinal = precioConDescuento(p);
-  document.getElementById("galeria-precio").innerHTML = esProductoExcluidoDescuento(p)
+  const pctDescuentoGaleria = Math.round((1 - galeriaPrecioFinal / p.precio) * 100);
+  document.getElementById("galeria-precio").innerHTML = (esProductoExcluidoDescuento(p) || pctDescuentoGaleria <= 0)
     ? "$" + p.precio.toLocaleString("es-CL")
-    : `<span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${galeriaPrecioFinal.toLocaleString("es-CL")}<span class="badge-descuento">-15%</span>`;
+    : `<span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${galeriaPrecioFinal.toLocaleString("es-CL")}<span class="badge-descuento">-${pctDescuentoGaleria}%</span>`;
   document.getElementById("galeria-descripcion").textContent = generarDescripcion(p.nombre);
   document.getElementById("galeria-cantidad").textContent = galeriaCantidad;
   const grid = document.getElementById("galeria-tallas-grid");
@@ -1595,9 +1603,10 @@ function render() {
     const badgeFotos = p.imagenes.length > 1 ? `<span class="foto-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.3"/></svg>${p.imagenes.length}</span>` : '';
     const zoomIcon = `<div class="img-zoom-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`;
     const precioFinalCard = precioConDescuento(p);
-    const precioHtml = esProductoExcluidoDescuento(p)
+    const pctDescuentoCard = Math.round((1 - precioFinalCard / p.precio) * 100);
+    const precioHtml = (esProductoExcluidoDescuento(p) || pctDescuentoCard <= 0)
       ? `<div class="precio">$${p.precio.toLocaleString("es-CL")}</div>`
-      : `<div class="precio"><span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${precioFinalCard.toLocaleString("es-CL")}<span class="badge-descuento">-15%</span></div>`;
+      : `<div class="precio"><span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${precioFinalCard.toLocaleString("es-CL")}<span class="badge-descuento">-${pctDescuentoCard}%</span></div>`;
     html += `<div class="card" data-index="${index}">
       <div class="img-wrapper" onclick="abrirGaleria(${index})">
         <img src="${p.imagenes[0]}" class="img-producto" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.src='logo.webp'">
