@@ -121,6 +121,19 @@ header span{color:#e60012;}
 <input type="text" id="f-tallas" placeholder="Ej: 38,39,40,41,42,43">
 </div>
 </div>
+<div class="form-row">
+<div>
+<label>% Descuento (vacío = usa el general de la tienda)</label>
+<input type="number" id="f-descuento" placeholder="Ej: 5" step="0.1">
+</div>
+<div>
+<label>Visibilidad</label>
+<select id="f-visible">
+<option value="true">Visible en la tienda</option>
+<option value="false">Oculto (sin stock, etc.)</option>
+</select>
+</div>
+</div>
 
 <label>Imágenes</label>
 <div class="imagenes-zona" id="zonaImagenes" onclick="document.getElementById('fileInput').click()">
@@ -137,10 +150,34 @@ header span{color:#e60012;}
 </div>
 
 <div class="filtro-categoria-box">
+<label>Buscar por nombre</label>
+<input type="text" id="buscarNombre" placeholder="Ej: Retro 4" oninput="renderLista()">
+</div>
+
+<div class="filtro-categoria-box">
 <label>Filtrar por categoría</label>
 <select id="filtroCategoria" onchange="renderLista()">
 <option value="todas">Todas las categorías</option>
 </select>
+</div>
+
+<div class="form-box activo" id="masivoBox">
+<h3>⚡ Acciones masivas por categoría</h3>
+<div class="form-row">
+<div>
+<label>Categoría</label>
+<select id="m-categoria"></select>
+</div>
+<div>
+<label>Porcentaje (ej: 5 o -10)</label>
+<input type="number" id="m-porcentaje" placeholder="Ej: 5" step="0.1">
+</div>
+</div>
+<div class="form-botones">
+<button class="btn" onclick="aplicarDescuentoMasivo()">🏷️ Aplicar descuento</button>
+<button class="btn btn-secundario" onclick="ajustarPrecioMasivo()">💰 Ajustar precio base</button>
+</div>
+<div class="upload-status" id="masivoStatus"></div>
 </div>
 
 <div class="lista-productos" id="listaProductos">
@@ -197,31 +234,97 @@ function renderOpcionesCategoria() {
   select.innerHTML = '<option value="todas">Todas las categorías</option>' +
     categorias.map(c => `<option value="${c}">${c}</option>`).join("");
   if (categorias.includes(valorActual)) select.value = valorActual;
+
+  const selectMasivo = document.getElementById("m-categoria");
+  const valorMasivoActual = selectMasivo.value;
+  selectMasivo.innerHTML = categorias.map(c => `<option value="${c}">${c}</option>`).join("");
+  if (categorias.includes(valorMasivoActual)) selectMasivo.value = valorMasivoActual;
 }
 
 function renderLista() {
   const lista = document.getElementById("listaProductos");
-  const filtro = document.getElementById("filtroCategoria").value;
-  const productosFiltrados = filtro === "todas" ? productos : productos.filter(p => p.categoria === filtro);
+  const filtroCategoria = document.getElementById("filtroCategoria").value;
+  const busqueda = document.getElementById("buscarNombre").value.trim().toLowerCase();
+  let productosFiltrados = filtroCategoria === "todas" ? productos : productos.filter(p => p.categoria === filtroCategoria);
+  if (busqueda) {
+    productosFiltrados = productosFiltrados.filter(p => (p.nombre || "").toLowerCase().includes(busqueda));
+  }
   if (productosFiltrados.length === 0) {
-    lista.innerHTML = '<div class="vacio">No hay productos en esta categoría.</div>';
+    lista.innerHTML = '<div class="vacio">No hay productos que coincidan.</div>';
     return;
   }
   lista.innerHTML = productosFiltrados.map(p => {
     const primeraImg = (p.imagenes || "").split(";")[0] || "";
-    return `<div class="item">
+    const oculto = p.visible === false;
+    const tieneDescuento = p.descuento !== "" && p.descuento !== null && p.descuento !== undefined && !isNaN(p.descuento) && Number(p.descuento) > 0;
+    const badges = (oculto ? '<span style="color:#ff6b6b;">🚫 Oculto</span> ' : '') + (tieneDescuento ? `<span style="color:#3ddc84;">🏷️ -${p.descuento}%</span>` : '');
+    return `<div class="item" style="${oculto ? 'opacity:0.5;' : ''}">
       <img src="${primeraImg}" onerror="this.style.opacity=0">
       <div class="item-info">
         <div class="item-nombre">${p.nombre}</div>
         <div class="item-detalle">${p.categoria || "Sin categoría"} · Tallas: ${p.tallas || "-"}</div>
         <div class="item-precio">$${Number(p.precio).toLocaleString("es-CL")}</div>
+        ${badges ? `<div style="font-size:11px;margin-top:2px;">${badges}</div>` : ''}
       </div>
       <div class="item-botones">
         <button onclick="editarProducto(${p.fila})">✏️</button>
+        <button onclick="toggleVisibilidad(${p.fila}, ${!oculto})">${oculto ? '👁️' : '🚫'}</button>
         <button class="btn-eliminar" onclick="eliminarProducto(${p.fila}, '${(p.nombre||'').replace(/'/g,"")}')">🗑️</button>
       </div>
     </div>`;
   }).join("");
+}
+
+async function toggleVisibilidad(fila, ocultar) {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ accion: "cambiarVisibilidad", fila, visible: !ocultar, password: claveSesion })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+    cargarProductos();
+  } catch (e) {
+    mostrarMensaje("❌ Error: " + e.message, "error");
+  }
+}
+
+async function aplicarDescuentoMasivo() {
+  const categoria = document.getElementById("m-categoria").value;
+  const porcentaje = document.getElementById("m-porcentaje").value;
+  if (!categoria || porcentaje === "") { mostrarMensajeMasivo("Elige categoría y porcentaje", "error"); return; }
+  if (!confirm(`¿Aplicar ${porcentaje}% de descuento a TODOS los productos de "${categoria}"?`)) return;
+  await ejecutarAccionMasiva("descuentoMasivo", categoria, porcentaje);
+}
+
+async function ajustarPrecioMasivo() {
+  const categoria = document.getElementById("m-categoria").value;
+  const porcentaje = document.getElementById("m-porcentaje").value;
+  if (!categoria || porcentaje === "") { mostrarMensajeMasivo("Elige categoría y porcentaje", "error"); return; }
+  if (!confirm(`⚠️ Esto cambia el PRECIO BASE (permanente) de todos los productos de "${categoria}" en ${porcentaje}%. ¿Continuar?`)) return;
+  await ejecutarAccionMasiva("ajustarPrecioMasivo", categoria, porcentaje);
+}
+
+async function ejecutarAccionMasiva(accion, categoria, porcentaje) {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ accion, categoria, porcentaje: Number(porcentaje), password: claveSesion })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+    mostrarMensajeMasivo("✅ Aplicado con éxito", "ok");
+    cargarProductos();
+  } catch (e) {
+    mostrarMensajeMasivo("❌ Error: " + e.message, "error");
+  }
+}
+
+function mostrarMensajeMasivo(texto, tipo) {
+  const el = document.getElementById("masivoStatus");
+  el.textContent = texto;
+  el.style.color = tipo === "ok" ? "#3ddc84" : "#ff6b6b";
+  setTimeout(() => { el.textContent = ""; }, 4000);
 }
 
 function abrirFormulario() {
@@ -232,6 +335,8 @@ function abrirFormulario() {
   document.getElementById("f-precio").value = "";
   document.getElementById("f-categoria").value = "";
   document.getElementById("f-tallas").value = "";
+  document.getElementById("f-descuento").value = "";
+  document.getElementById("f-visible").value = "true";
   renderImagenesPreview();
   document.getElementById("formBox").classList.add("activo");
   document.getElementById("formBox").scrollIntoView({ behavior: "smooth" });
@@ -251,6 +356,8 @@ function editarProducto(fila) {
   document.getElementById("f-precio").value = p.precio || "";
   document.getElementById("f-categoria").value = p.categoria || "";
   document.getElementById("f-tallas").value = (p.tallas || "").toString().split(";").join(",");
+  document.getElementById("f-descuento").value = (p.descuento !== null && p.descuento !== undefined && p.descuento !== "") ? p.descuento : "";
+  document.getElementById("f-visible").value = p.visible === false ? "false" : "true";
   renderImagenesPreview();
   document.getElementById("formBox").classList.add("activo");
   document.getElementById("formBox").scrollIntoView({ behavior: "smooth" });
@@ -330,6 +437,8 @@ async function guardarProducto() {
   const precio = document.getElementById("f-precio").value.trim();
   const categoria = document.getElementById("f-categoria").value.trim();
   const tallasInput = document.getElementById("f-tallas").value.trim();
+  const descuento = document.getElementById("f-descuento").value.trim();
+  const visible = document.getElementById("f-visible").value === "true";
 
   if (!nombre || !precio) {
     mostrarMensaje("❌ Completa al menos nombre y precio", "error");
@@ -347,7 +456,7 @@ async function guardarProducto() {
     const res = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify({
-        accion, fila: filaEnEdicion, nombre, precio, categoria, tallas, imagenes,
+        accion, fila: filaEnEdicion, nombre, precio, categoria, tallas, imagenes, descuento, visible,
         password: claveSesion
       })
     });
