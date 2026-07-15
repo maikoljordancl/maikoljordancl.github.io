@@ -200,9 +200,21 @@ let imagenesActuales = []; // URLs ya subidas a Cloudinary para el producto en e
 let filaEnEdicion = null; // null = agregando nuevo, número = editando fila existente
 let claveSesion = null;
 
+function mostrarOcultarPassword() {
+  const input = document.getElementById("passwordInput");
+  const btn = document.getElementById("toggleEyeBtn");
+  if (input.type === "password") {
+    input.type = "text";
+    btn.textContent = "🙈";
+  } else {
+    input.type = "password";
+    btn.textContent = "👁️";
+  }
+}
+
 function iniciarSesion() {
-  const val = document.getElementById("passwordInput").value;
-  if (val !== ADMIN_PASSWORD) {
+  const val = document.getElementById("passwordInput").value.trim();
+  if (val !== ADMIN_PASSWORD.trim()) {
     document.getElementById("loginError").textContent = "❌ Contraseña incorrecta";
     return;
   }
@@ -334,7 +346,7 @@ function abrirFormulario() {
   document.getElementById("f-nombre").value = "";
   document.getElementById("f-precio").value = "";
   document.getElementById("f-categoria").value = "";
-  document.getElementById("f-tallas").value = "";
+  document.getElementById("f-tallas").value = "36,37,38,39,40,41,42,43,44,45,46";
   document.getElementById("f-descuento").value = "";
   document.getElementById("f-visible").value = "true";
   renderImagenesPreview();
