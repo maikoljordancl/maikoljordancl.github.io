@@ -31,6 +31,10 @@ header span{color:#e60012;}
 .btn:hover{background:#b8000e;}
 .btn-secundario{background:#1a1a1a;border:1px solid #2a2a2a;}
 .btn-secundario:hover{border-color:#e60012;}
+.filtro-categoria-box{margin-bottom:16px;}
+.filtro-categoria-box label{font-size:12px;color:#888;display:block;margin-bottom:4px;}
+.filtro-categoria-box select{width:100%;padding:11px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:8px;color:white;font-size:14px;outline:none;}
+.filtro-categoria-box select:focus{border-color:#e60012;}
 
 /* FORM */
 .form-box{background:#151515;border:1px solid #2a2a2a;border-radius:16px;padding:20px;margin-bottom:24px;display:none;}
@@ -132,6 +136,13 @@ header span{color:#e60012;}
 </div>
 </div>
 
+<div class="filtro-categoria-box">
+<label>Filtrar por categoría</label>
+<select id="filtroCategoria" onchange="renderLista()">
+<option value="todas">Todas las categorías</option>
+</select>
+</div>
+
 <div class="lista-productos" id="listaProductos">
 <div class="cargando">Cargando productos...</div>
 </div>
@@ -144,7 +155,7 @@ header span{color:#e60012;}
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAtoDbzuZHm_51vRkP11afMjuoOb6B8HecCgHmLzZBgEQSIYurUnQsUC0g4QmPmj9K4g/exec";
 const CLOUDINARY_CLOUD_NAME = "i1cyngly";
 const CLOUDINARY_UPLOAD_PRESET = "maikoljordan_admin";
-const ADMIN_PASSWORD = "Fornai774554."; // debe ser IGUAL a la del Apps Script
+const ADMIN_PASSWORD = "xdlol"; // debe ser IGUAL a la del Apps Script
 
 // ============================================================
 let productos = [];
@@ -172,19 +183,31 @@ async function cargarProductos() {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || "Error desconocido");
     productos = data.productos;
+    renderOpcionesCategoria();
     renderLista();
   } catch (e) {
     lista.innerHTML = `<div class="vacio">❌ Error de conexión: ${e.message || e}</div>`;
   }
 }
 
+function renderOpcionesCategoria() {
+  const select = document.getElementById("filtroCategoria");
+  const valorActual = select.value || "todas";
+  const categorias = [...new Set(productos.map(p => p.categoria).filter(Boolean))].sort();
+  select.innerHTML = '<option value="todas">Todas las categorías</option>' +
+    categorias.map(c => `<option value="${c}">${c}</option>`).join("");
+  if (categorias.includes(valorActual)) select.value = valorActual;
+}
+
 function renderLista() {
   const lista = document.getElementById("listaProductos");
-  if (productos.length === 0) {
-    lista.innerHTML = '<div class="vacio">No hay productos aún.</div>';
+  const filtro = document.getElementById("filtroCategoria").value;
+  const productosFiltrados = filtro === "todas" ? productos : productos.filter(p => p.categoria === filtro);
+  if (productosFiltrados.length === 0) {
+    lista.innerHTML = '<div class="vacio">No hay productos en esta categoría.</div>';
     return;
   }
-  lista.innerHTML = productos.map(p => {
+  lista.innerHTML = productosFiltrados.map(p => {
     const primeraImg = (p.imagenes || "").split(";")[0] || "";
     return `<div class="item">
       <img src="${primeraImg}" onerror="this.style.opacity=0">
