@@ -536,11 +536,15 @@ function esProductoExcluidoDescuento(p) {
   return /(^|\s)dc(\s|$)/.test(normalizar(p.nombre));
 }
 function precioConDescuento(p) {
-  if (esProductoExcluidoDescuento(p)) return p.precio;
-  const descontado = Math.round(p.precio * (1 - DESCUENTO_GENERAL));
+  let pct;
+  if (p.descuento !== null && p.descuento !== undefined && !isNaN(p.descuento)) {
+    pct = p.descuento / 100; // override manual desde el panel: manda siempre, incluso en DC
+  } else {
+    pct = esProductoExcluidoDescuento(p) ? 0 : DESCUENTO_GENERAL;
+  }
+  if (pct <= 0) return p.precio;
+  const descontado = Math.round(p.precio * (1 - pct));
   if (descontado < PISO_PRECIO_DESCUENTO) {
-    // Si ya con el precio original no se alcanza el piso, no se aplica descuento.
-    // Si sí se alcanza, se aplica un descuento menor para llegar justo al piso.
     return p.precio > PISO_PRECIO_DESCUENTO ? PISO_PRECIO_DESCUENTO : p.precio;
   }
   return descontado;
@@ -1306,7 +1310,7 @@ function mostrarFotoGaleria() {
   document.getElementById("galeria-nombre").textContent = p.nombre;
   const galeriaPrecioFinal = precioConDescuento(p);
   const pctDescuentoGaleria = Math.round((1 - galeriaPrecioFinal / p.precio) * 100);
-  document.getElementById("galeria-precio").innerHTML = (esProductoExcluidoDescuento(p) || pctDescuentoGaleria <= 0)
+  document.getElementById("galeria-precio").innerHTML = (pctDescuentoGaleria <= 0)
     ? "$" + p.precio.toLocaleString("es-CL")
     : `<span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${galeriaPrecioFinal.toLocaleString("es-CL")}<span class="badge-descuento">-${pctDescuentoGaleria}%</span>`;
   document.getElementById("galeria-descripcion").textContent = generarDescripcion(p.nombre);
@@ -1449,14 +1453,17 @@ async function cargarProductos() {
     const lineas = textoCSV.split("\n").map(l => l.trim()).filter(l => l.length > 0);
     productos = lineas.slice(1).map(linea => {
       const columnas = parsearFilaCSV(linea);
+      const visibleTexto = columnas[6] !== undefined ? normalizar(columnas[6].replace(/\"/g, "")) : "";
       return {
         nombre: columnas[0] ? columnas[0].replace(/"/g, "") : "Modelo sin nombre",
         precio: columnas[1] ? parseInt(columnas[1].replace(/[^0-9]/g, "")) || 0 : 0,
         imagenes: columnas[2] ? columnas[2].split(";").map(s => s.trim()).filter(s => s.length > 0) : ["logo.webp"],
         tags: [columnas[3] ? columnas[3] : "Otros"],
-        tallas: columnas[4] ? columnas[4].split(";").map(t => parseInt(t.trim())).filter(t => !isNaN(t)) : [37,38,39,40,41,42,43,44,45]
+        tallas: columnas[4] ? columnas[4].split(";").map(t => parseInt(t.trim())).filter(t => !isNaN(t)) : [37,38,39,40,41,42,43,44,45],
+        descuento: (columnas[5] !== undefined && columnas[5].trim() !== "") ? parseFloat(columnas[5].replace(",", ".")) : null,
+        visible: visibleTexto === "" ? true : !["false", "no", "0", "oculto"].includes(visibleTexto)
       };
-    });
+    }).filter(p => p.visible);
     const PALABRAS_DESTACADAS = ["dc court graffik", "tn plus", "shox tl", "dior b30", "balenciaga track graffiti", "dolce & gabbana", "dolce e gabbana"];
     function esDestacado(p) {
       const texto = normalizar(p.nombre) + " " + normalizar(p.tags[0] || "");
@@ -1604,7 +1611,7 @@ function render() {
     const zoomIcon = `<div class="img-zoom-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`;
     const precioFinalCard = precioConDescuento(p);
     const pctDescuentoCard = Math.round((1 - precioFinalCard / p.precio) * 100);
-    const precioHtml = (esProductoExcluidoDescuento(p) || pctDescuentoCard <= 0)
+    const precioHtml = (pctDescuentoCard <= 0)
       ? `<div class="precio">$${p.precio.toLocaleString("es-CL")}</div>`
       : `<div class="precio"><span class="precio-original">$${p.precio.toLocaleString("es-CL")}</span>$${precioFinalCard.toLocaleString("es-CL")}<span class="badge-descuento">-${pctDescuentoCard}%</span></div>`;
     html += `<div class="card" data-index="${index}">
