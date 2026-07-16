@@ -5,78 +5,86 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin - Maikol Jordan</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{background:#0b0b0b;color:white;min-height:100vh;}
-header{background:#000;padding:20px;text-align:center;border-bottom:3px solid #e60012;}
-header h1{font-size:22px;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #171010 0%, #0b0b0b 45%);color:white;min-height:100vh;}
+header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);padding:18px 20px;text-align:center;border-bottom:2px solid #e60012;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+header h1{font-size:19px;letter-spacing:0.3px;}
 header span{color:#e60012;}
 
 /* LOGIN */
 .login-screen{display:flex;align-items:center;justify-content:center;min-height:80vh;padding:20px;}
-.login-box{background:#151515;border:1px solid #2a2a2a;border-radius:16px;padding:30px;max-width:340px;width:100%;}
-.login-box h2{margin-bottom:20px;text-align:center;}
-.password-wrapper{position:relative;margin-bottom:14px;}
-.password-wrapper input{width:100%;padding:12px 40px 12px 12px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;color:white;font-size:15px;outline:none;}
-.password-wrapper input:focus{border-color:#e60012;}
-.toggle-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:4px;}
-.login-box button.btn-entrar{width:100%;padding:12px;background:#e60012;border:none;border-radius:10px;color:white;font-weight:bold;cursor:pointer;}
-.login-box button.btn-entrar:hover{background:#b8000e;}
-.login-error{color:#ff6b6b;font-size:13px;text-align:center;margin-top:10px;min-height:16px;}
+.login-box{background:linear-gradient(160deg,#181818,#121212);border:1px solid #2a2a2a;border-radius:20px;padding:34px 28px;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,0.6);}
+.login-box h2{margin-bottom:22px;text-align:center;font-size:19px;}
+.password-wrapper{position:relative;margin-bottom:16px;}
+.password-wrapper input{width:100%;padding:13px 42px 13px 14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:12px;color:white;font-size:15px;outline:none;transition:0.2s;}
+.password-wrapper input:focus{border-color:#e60012;box-shadow:0 0 0 3px rgba(230,0,18,0.15);}
+.toggle-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:6px;}
+.login-box button.btn-entrar{width:100%;padding:13px;background:#e60012;border:none;border-radius:12px;color:white;font-weight:bold;cursor:pointer;box-shadow:0 6px 16px rgba(230,0,18,0.3);transition:0.2s;}
+.login-box button.btn-entrar:active{transform:scale(0.98);}
+.login-box button.btn-entrar:hover{background:#c8000f;}
+.login-error{color:#ff6b6b;font-size:13px;text-align:center;margin-top:12px;min-height:16px;}
 
 /* PANEL */
 .panel{display:none;padding:20px;max-width:900px;margin:0 auto;}
 .panel.activo{display:block;}
 .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
-.btn{background:#e60012;border:none;padding:12px 18px;border-radius:10px;color:white;font-weight:bold;cursor:pointer;transition:0.2s;}
-.btn:hover{background:#b8000e;}
-.btn-secundario{background:#1a1a1a;border:1px solid #2a2a2a;}
-.btn-secundario:hover{border-color:#e60012;}
-.filtro-categoria-box{margin-bottom:16px;}
-.filtro-categoria-box label{font-size:12px;color:#888;display:block;margin-bottom:4px;}
-.filtro-categoria-box select{width:100%;padding:11px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:8px;color:white;font-size:14px;outline:none;}
-.filtro-categoria-box select:focus{border-color:#e60012;}
+.btn{background:#e60012;border:none;padding:13px 18px;border-radius:12px;color:white;font-weight:bold;cursor:pointer;transition:0.15s;box-shadow:0 4px 14px rgba(230,0,18,0.25);}
+.btn:hover{background:#c8000f;}
+.btn:active{transform:scale(0.97);}
+.btn-secundario{background:#171717;border:1px solid #2a2a2a;box-shadow:none;}
+.btn-secundario:hover{border-color:#e60012;background:#1c1414;}
+.filtro-categoria-box{margin-bottom:14px;}
+.filtro-categoria-box label{font-size:12px;color:#999;display:block;margin-bottom:5px;font-weight:600;letter-spacing:0.2px;}
+.filtro-categoria-box input,.filtro-categoria-box select{width:100%;padding:12px;background:#161616;border:1px solid #2a2a2a;border-radius:10px;color:white;font-size:14px;outline:none;transition:0.2s;}
+.filtro-categoria-box input:focus,.filtro-categoria-box select:focus{border-color:#e60012;box-shadow:0 0 0 3px rgba(230,0,18,0.12);}
 
 /* FORM */
-.form-box{background:#151515;border:1px solid #2a2a2a;border-radius:16px;padding:20px;margin-bottom:24px;display:none;}
+.form-box{background:linear-gradient(160deg,#171717,#121212);border:1px solid #2a2a2a;border-radius:18px;padding:22px;margin-bottom:22px;display:none;box-shadow:0 10px 30px rgba(0,0,0,0.35);}
 .form-box.activo{display:block;}
-.form-box h3{margin-bottom:16px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-box h3{margin-bottom:18px;font-size:16px;display:flex;align-items:center;gap:8px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 .form-row.single{grid-template-columns:1fr;}
-.form-box input, .form-box select{width:100%;padding:11px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:8px;color:white;font-size:14px;outline:none;}
-.form-box input:focus, .form-box select:focus{border-color:#e60012;}
-.form-box label{font-size:12px;color:#888;display:block;margin-bottom:4px;}
-.imagenes-zona{border:2px dashed #333;border-radius:10px;padding:16px;text-align:center;margin-bottom:12px;cursor:pointer;transition:0.2s;}
-.imagenes-zona:hover{border-color:#e60012;}
-.imagenes-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
-.img-mini{position:relative;width:70px;height:70px;border-radius:8px;overflow:hidden;background:#222;}
+.form-box input, .form-box select{width:100%;padding:12px;background:#181818;border:1px solid #2a2a2a;border-radius:10px;color:white;font-size:14px;outline:none;transition:0.2s;}
+.form-box input:focus, .form-box select:focus{border-color:#e60012;box-shadow:0 0 0 3px rgba(230,0,18,0.12);}
+.form-box label{font-size:12px;color:#999;display:block;margin-bottom:5px;font-weight:600;letter-spacing:0.2px;}
+.imagenes-zona{border:2px dashed #3a3a3a;border-radius:14px;padding:20px;text-align:center;margin-bottom:12px;cursor:pointer;transition:0.2s;color:#bbb;font-size:14px;}
+.imagenes-zona:hover{border-color:#e60012;color:white;background:rgba(230,0,18,0.05);}
+.ia-imagen-box{background:rgba(230,0,18,0.06);border:1px solid rgba(230,0,18,0.25);border-radius:12px;padding:12px;margin-bottom:12px;}
+.ia-imagen-box label{color:#ff8a8a;}
+.ia-imagen-box input[type="text"]{flex:1;}
+.imagenes-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.img-mini{position:relative;width:72px;height:72px;border-radius:10px;overflow:hidden;background:#222;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
 .img-mini img{width:100%;height:100%;object-fit:cover;}
-.img-mini button{position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.8);color:#ff6b6b;border:none;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:12px;}
-.form-botones{display:flex;gap:10px;margin-top:16px;}
-.upload-status{font-size:13px;color:#888;margin-top:8px;min-height:16px;}
+.img-mini button{position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.85);color:#ff6b6b;border:none;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:12px;}
+.form-botones{display:flex;gap:10px;margin-top:18px;}
+.upload-status{font-size:13px;color:#999;margin-top:10px;min-height:16px;}
 
 /* LISTA */
-.lista-productos{display:flex;flex-direction:column;gap:10px;}
-.item{background:#151515;border:1px solid #2a2a2a;border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;}
-.item img{width:60px;height:60px;object-fit:cover;border-radius:8px;background:#222;flex-shrink:0;}
+.lista-productos{display:flex;flex-direction:column;gap:12px;}
+.item{background:linear-gradient(160deg,#161616,#111);border:1px solid #262626;border-radius:14px;padding:13px;display:flex;gap:13px;align-items:center;transition:0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+.item:active{transform:scale(0.995);}
+.item img{width:62px;height:62px;object-fit:cover;border-radius:10px;background:#222;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,0.4);}
 .item-info{flex:1;min-width:0;}
-.item-nombre{font-weight:bold;font-size:14px;}
-.item-detalle{color:#888;font-size:12px;margin-top:2px;}
-.item-precio{color:#e60012;font-weight:bold;font-size:14px;margin-top:2px;}
-.item-botones{display:flex;gap:6px;flex-shrink:0;}
-.item-botones button{background:#1a1a1a;border:1px solid #2a2a2a;color:white;padding:8px 10px;border-radius:8px;font-size:12px;cursor:pointer;}
+.item-nombre{font-weight:bold;font-size:14.5px;}
+.item-detalle{color:#999;font-size:12px;margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.chip-categoria{background:rgba(230,0,18,0.12);color:#ff5c66;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.item-precio{color:#e60012;font-weight:bold;font-size:14.5px;margin-top:4px;}
+.precio-tachado{color:#777;font-weight:normal;text-decoration:line-through;font-size:12px;margin-right:6px;}
+.item-botones{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.item-botones button{background:#1c1c1c;border:1px solid #2a2a2a;color:white;padding:8px 10px;border-radius:9px;font-size:13px;cursor:pointer;transition:0.15s;}
 .item-botones button:hover{border-color:#e60012;}
 .item-botones .btn-eliminar:hover{border-color:#ff6b6b;color:#ff6b6b;}
-.cargando{text-align:center;color:#888;padding:40px;}
-.vacio{text-align:center;color:#555;padding:40px;}
-.mensaje{padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin-bottom:16px;display:none;}
-.mensaje.ok{display:block;background:#16261c;color:#3ddc84;border:1px solid #3ddc84;}
-.mensaje.error{display:block;background:#2a1010;color:#ff6b6b;border:1px solid #ff6b6b;}
+.cargando{text-align:center;color:#888;padding:50px 20px;}
+.vacio{text-align:center;color:#666;padding:50px 20px;}
+.mensaje{padding:13px;border-radius:12px;text-align:center;font-weight:bold;margin-bottom:18px;display:none;}
+.mensaje.ok{display:block;background:#122a1c;color:#3ddc84;border:1px solid #245c3a;}
+.mensaje.error{display:block;background:#2a1414;color:#ff6b6b;border:1px solid #5c2424;}
 </style>
 </head>
 <body>
 
 <header>
-<h1>MAIKOL <span>JORDAN</span> — Panel de Administración</h1>
+<h1>MAIKOL <span>JORDAN</span> · Administración</h1>
 </header>
 
 <div class="login-screen" id="loginScreen">
@@ -136,6 +144,20 @@ header span{color:#e60012;}
 </div>
 
 <label>Imágenes</label>
+
+<div class="ia-imagen-box">
+<label style="margin-bottom:6px;">🤖 Generar fotos con IA (a partir de una foto real de la zapatilla)</label>
+<div class="imagenes-zona" id="zonaRefIA" style="padding:12px;margin-bottom:8px;" onclick="document.getElementById('fileInputRefIA').click()">
+<span id="refIAtexto">📷 Toca para subir una foto de referencia de esta zapatilla</span>
+</div>
+<input type="file" id="fileInputRefIA" accept="image/*" style="display:none;" onchange="cargarImagenReferencia(event)">
+<div style="display:flex;gap:8px;">
+<button type="button" class="btn btn-secundario" style="flex:1;" onclick="generarPortadaIA()">🖼️ Generar portada</button>
+<button type="button" class="btn btn-secundario" style="flex:1;" onclick="generarProductoIA()">📸 Generar 4 fotos</button>
+</div>
+<div class="upload-status" id="iaStatus"></div>
+</div>
+
 <div class="imagenes-zona" id="zonaImagenes" onclick="document.getElementById('fileInput').click()">
 📸 Toca para elegir imágenes (puedes elegir varias)
 </div>
@@ -193,6 +215,30 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAtoDbzuZHm_51
 const CLOUDINARY_CLOUD_NAME = "i1cyngly";
 const CLOUDINARY_UPLOAD_PRESET = "maikoljordan_admin";
 const ADMIN_PASSWORD = "xdlol"; // debe ser IGUAL a la del Apps Script
+const DESCUENTO_GENERAL = 0.15; // debe coincidir con el de index.html
+const PISO_PRECIO_DESCUENTO = 65990; // debe coincidir con el de index.html
+
+function normalizarTexto(s) {
+  return (s || "").toString().trim().toLowerCase().replace(/\s+/g, " ");
+}
+function esExcluidoDC(p) {
+  return /(^|\s)dc(\s|$)/.test(normalizarTexto(p.nombre));
+}
+function precioConDescuentoPreview(p) {
+  const precioBase = Number(p.precio) || 0;
+  let pct;
+  if (p.descuento !== null && p.descuento !== undefined && p.descuento !== "" && !isNaN(p.descuento)) {
+    pct = Number(p.descuento) / 100;
+  } else {
+    pct = esExcluidoDC(p) ? 0 : DESCUENTO_GENERAL;
+  }
+  if (pct <= 0) return precioBase;
+  const descontado = Math.round(precioBase * (1 - pct));
+  if (descontado < PISO_PRECIO_DESCUENTO) {
+    return precioBase > PISO_PRECIO_DESCUENTO ? PISO_PRECIO_DESCUENTO : precioBase;
+  }
+  return descontado;
+}
 
 // ============================================================
 let productos = [];
@@ -270,12 +316,17 @@ function renderLista() {
     const oculto = p.visible === false;
     const tieneDescuento = p.descuento !== "" && p.descuento !== null && p.descuento !== undefined && !isNaN(p.descuento) && Number(p.descuento) > 0;
     const badges = (oculto ? '<span style="color:#ff6b6b;">🚫 Oculto</span> ' : '') + (tieneDescuento ? `<span style="color:#3ddc84;">🏷️ -${p.descuento}%</span>` : '');
+    const precioFinal = precioConDescuentoPreview(p);
+    const hayRebaja = precioFinal < Number(p.precio);
+    const precioHtml = hayRebaja
+      ? `<div class="item-precio"><span class="precio-tachado">$${Number(p.precio).toLocaleString("es-CL")}</span> $${precioFinal.toLocaleString("es-CL")}</div>`
+      : `<div class="item-precio">$${Number(p.precio).toLocaleString("es-CL")}</div>`;
     return `<div class="item" style="${oculto ? 'opacity:0.5;' : ''}">
       <img src="${primeraImg}" onerror="this.style.opacity=0">
       <div class="item-info">
         <div class="item-nombre">${p.nombre}</div>
-        <div class="item-detalle">${p.categoria || "Sin categoría"} · Tallas: ${p.tallas || "-"}</div>
-        <div class="item-precio">$${Number(p.precio).toLocaleString("es-CL")}</div>
+        <div class="item-detalle"><span class="chip-categoria">${p.categoria || "Sin categoría"}</span> Tallas: ${p.tallas || "-"}</div>
+        ${precioHtml}
         ${badges ? `<div style="font-size:11px;margin-top:2px;">${badges}</div>` : ''}
       </div>
       <div class="item-botones">
@@ -342,6 +393,9 @@ function mostrarMensajeMasivo(texto, tipo) {
 function abrirFormulario() {
   filaEnEdicion = null;
   imagenesActuales = [];
+  imagenReferenciaIA = null;
+  document.getElementById("refIAtexto").textContent = "📷 Toca para subir una foto de referencia de esta zapatilla";
+  document.getElementById("iaStatus").textContent = "";
   document.getElementById("formTitulo").textContent = "Agregar producto";
   document.getElementById("f-nombre").value = "";
   document.getElementById("f-precio").value = "";
@@ -363,6 +417,9 @@ function editarProducto(fila) {
   if (!p) return;
   filaEnEdicion = fila;
   imagenesActuales = (p.imagenes || "").split(";").map(s => s.trim()).filter(Boolean);
+  imagenReferenciaIA = null;
+  document.getElementById("refIAtexto").textContent = "📷 Toca para subir una foto de referencia de esta zapatilla";
+  document.getElementById("iaStatus").textContent = "";
   document.getElementById("formTitulo").textContent = "Editar producto";
   document.getElementById("f-nombre").value = p.nombre || "";
   document.getElementById("f-precio").value = p.precio || "";
@@ -426,6 +483,89 @@ async function subirImagenCloudinary(file) {
   return data.secure_url;
 }
 
+// ============================================================
+//  GENERACIÓN DE IMÁGENES CON IA (Gemini, vía función serverless)
+// ============================================================
+let imagenReferenciaIA = null; // { base64, mimeType }
+
+function cargarImagenReferencia(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const base64 = reader.result.split(",")[1];
+    imagenReferenciaIA = { base64, mimeType: file.type };
+    document.getElementById("refIAtexto").textContent = "✅ Foto de referencia cargada: " + file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+function nombreModeloActual() {
+  return document.getElementById("f-nombre").value.trim();
+}
+
+async function generarPortadaIA() {
+  const status = document.getElementById("iaStatus");
+  const nombreModelo = nombreModeloActual();
+  if (!nombreModelo) { status.textContent = "❌ Escribe primero el nombre del modelo arriba"; return; }
+  if (!imagenReferenciaIA) { status.textContent = "❌ Sube primero una foto de referencia de la zapatilla"; return; }
+
+  status.textContent = "🎨 Generando portada, espera unos segundos...";
+  try {
+    const url = await llamarGenerarImagen({ modo: "portada", nombreModelo });
+    imagenesActuales.push(url);
+    renderImagenesPreview();
+    status.textContent = "✅ Portada generada y agregada";
+  } catch (e) {
+    status.textContent = "❌ Error: " + e.message;
+  }
+}
+
+async function generarProductoIA() {
+  const status = document.getElementById("iaStatus");
+  const nombreModelo = nombreModeloActual();
+  if (!nombreModelo) { status.textContent = "❌ Escribe primero el nombre del modelo arriba"; return; }
+  if (!imagenReferenciaIA) { status.textContent = "❌ Sube primero una foto de referencia de la zapatilla"; return; }
+
+  for (let i = 0; i < 4; i++) {
+    status.textContent = `🎨 Generando foto ${i + 1} de 4...`;
+    try {
+      const url = await llamarGenerarImagen({ modo: "producto", nombreModelo, anguloIndex: i });
+      imagenesActuales.push(url);
+      renderImagenesPreview();
+    } catch (e) {
+      status.textContent = `❌ Error en foto ${i + 1}: ` + e.message;
+      return;
+    }
+  }
+  status.textContent = "✅ 4 fotos generadas y agregadas";
+}
+
+async function llamarGenerarImagen({ modo, nombreModelo, anguloIndex }) {
+  const res = await fetch("/api/generate-image", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      modo, nombreModelo, anguloIndex,
+      imagenBase64: imagenReferenciaIA.base64,
+      imagenMimeType: imagenReferenciaIA.mimeType,
+      password: claveSesion
+    })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || "Error desconocido");
+  const blob = base64ToBlob(data.base64, data.mimeType);
+  return await subirImagenCloudinary(blob);
+}
+
+function base64ToBlob(base64, mimeType) {
+  const byteChars = atob(base64);
+  const byteNumbers = new Array(byteChars.length);
+  for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType || "image/png" });
+}
+
 function renderImagenesPreview() {
   const cont = document.getElementById("imagenesPreview");
   cont.innerHTML = imagenesActuales.map((url, i) => `
@@ -455,6 +595,11 @@ async function guardarProducto() {
   if (!nombre || !precio) {
     mostrarMensaje("❌ Completa al menos nombre y precio", "error");
     return;
+  }
+
+  const yaExiste = productos.some(p => p.fila !== filaEnEdicion && normalizarTexto(p.nombre) === normalizarTexto(nombre));
+  if (yaExiste) {
+    if (!confirm(`⚠️ Ya existe un producto llamado "${nombre}". ¿Guardarlo de todas formas?`)) return;
   }
   if (imagenesActuales.length === 0) {
     if (!confirm("No agregaste imágenes. ¿Guardar de todas formas?")) return;
