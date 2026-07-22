@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maikol Jordan</title>
+<title>Maikol Jordan — Zapatillas Jordan, Nike y más | Envíos a todo Chile</title>
+<meta name="description" content="Tienda online de zapatillas Jordan, Nike, Louis Vuitton y Dior en Chile. Envíos a todo el país, pago con Mercado Pago, transferencia o WhatsApp. Estilo, calidad y exclusividad.">
+<meta name="theme-color" content="#0b0b0b">
+<link rel="icon" type="image/webp" href="logo.webp">
+<link rel="apple-touch-icon" href="logo.webp">
+<link rel="canonical" href="https://maikoljordan.cl/">
+
+<!-- Open Graph por defecto (los links en WhatsApp/Facebook no ejecutan JS, así que esto asegura que la vista previa siempre se vea bien; el JS puede sobreescribir esto en páginas de producto específicas) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maikol Jordan — Zapatillas Jordan, Nike y más">
+<meta property="og:description" content="Estilo, calidad y exclusividad. Envíos a todo Chile.">
+<meta property="og:image" content="https://maikoljordan.cl/logo.webp">
+<meta property="og:url" content="https://maikoljordan.cl/">
+<meta name="twitter:card" content="summary_large_image">
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EN8SLMRST"></script>
@@ -387,12 +400,12 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="checkout-paso-titulo">💳 Método de pago</div>
 <div class="metodos-grid">
 <div class="metodo-pago selected" id="metodo-mp" onclick="seleccionarMetodoCheckout('mp')">
-<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💳</span> PayPal <span class="badge-mejor">⭐ Mejor opción</span></div><img src="https://img.icons8.com/color/48/paypal.png" style="height:26px;width:auto;" alt="PayPal"></div>
-<div class="metodo-pago-desc">Paga con tarjeta de crédito, débito o tu cuenta PayPal</div>
+<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <span class="badge-mejor">⭐ Mejor opción</span></div><img src="mp-chico.png" alt="Mercado Pago" style="height:30px;width:auto;"></div>
+<div class="metodo-pago-desc">Paga con tarjeta o débito — rápido y seguro</div>
 </div>
 <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodoCheckout('transferencia')">
 <div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div><img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" alt="Banco"></div>
-<div class="metodo-pago-desc">Transfiere directo a nuestra cuenta BCI/MACH</div>
+<div class="metodo-pago-desc">Acepta cualquier banco — BCI, Santander, Banco Estado, Falabella</div>
 </div>
 <div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodoCheckout('wsp')">
 <div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div><img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" alt="WhatsApp"></div>
@@ -401,9 +414,10 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 <div class="transferencia-info" id="transferencia-info">
 <p>Transfiere y envía el comprobante por WhatsApp:</p>
-<p>👤 <strong>Maikol Jordan</strong></p>
-<p>🏦 <strong>Bci/Mach — Cuenta Corriente</strong></p>
-<p>🔢 <strong>N° cuenta: 777922975341</strong></p>
+<p>👤 <strong>Michael Gajardo</strong></p>
+<p>🪪 <strong>RUT: 74654258</strong></p>
+<p>🏦 <strong>Mercado Pago — Cuenta Vista</strong></p>
+<p>🔢 <strong>N° cuenta: 1043755162</strong></p>
 <p>📧 <strong>maikoljordancl@gmail.com</strong></p>
 </div>
 <div class="cart-total-resumen" style="background:#0f0f0f;border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid #1f1f1f;">
@@ -487,7 +501,7 @@ maikoljordancl@gmail.com
 </div>
 <div class="footer-bottom">
 <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
-<div class="footer-logos"><img src="https://img.icons8.com/color/96/paypal.png" alt="PayPal Seguro" style="width:60px;height:auto;display:block;margin:0 auto;"></div>
+<div class="footer-logos"><img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:160px;height:auto;display:block;margin:0 auto;"></div>
 </div>
 </footer>
 
@@ -498,19 +512,6 @@ maikoljordancl@gmail.com
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/1sunQ0MoXRI-HoL2MzTwCwHEgEcM4C2rgzsQR-U854AM/export?format=csv";
 const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 const COSTO_ENVIO = 3490; // FIX: valor único del envío, usado en toda la app
-const PAYPAL_BUSINESS_EMAIL = "johantcgo@icloud.com";
-const TIPO_CAMBIO_RESPALDO = 950; // usado solo si falla la consulta en vivo del dólar
-
-async function obtenerTipoCambioUSD() {
-  try {
-    const res = await fetch("https://mindicador.cl/api/dolar");
-    const data = await res.json();
-    const valor = data?.serie?.[0]?.valor;
-    return (typeof valor === "number" && valor > 0) ? valor : TIPO_CAMBIO_RESPALDO;
-  } catch (e) {
-    return TIPO_CAMBIO_RESPALDO;
-  }
-}
 const DESCUENTO_GENERAL = 0.15; // 15% de descuento a todo el catálogo, excepto modelos DC
 const PISO_PRECIO_DESCUENTO = 65990; // ningún producto puede quedar por debajo de este precio tras el descuento
 
@@ -842,7 +843,7 @@ document.addEventListener("DOMContentLoaded", function() {
       resultados.slice(0, 6).forEach(p => {
         const idx = productos.indexOf(p);
         html += `<div class="sugerencia-item" onclick="seleccionarSugerencia(${idx})">
-          <img src="${p.imagenes[0]}" onerror="this.src='logo.webp'">
+          <img src="${p.imagenes[0]}" alt="${p.nombre}" loading="lazy" onerror="this.src='logo.webp'">
           <div class="sugerencia-info">
             <div class="sugerencia-nombre">${p.nombre}</div>
             <div class="sugerencia-precio">$${precioConDescuento(p).toLocaleString("es-CL")}</div>
@@ -971,7 +972,7 @@ function actualizarCarrito() {
     let opcionesTalla = "";
     tallasDisponibles.forEach(t => opcionesTalla += `<option value="${t}" ${t == item.talla ? 'selected' : ''}>${t}</option>`);
     htmlItems += `<div class="cart-item">
-      <img src="${item.imagen}" onerror="this.src='logo.webp'">
+      <img src="${item.imagen}" alt="${item.nombre}" onerror="this.src='logo.webp'">
       <div class="cart-item-info">
         <div class="cart-item-name">${item.nombre}</div>
         <div class="cart-item-talla">Talla: <select class="cambiar-talla" onchange="cambiarTallaEnCarrito(${i}, this.value)">${opcionesTalla}</select></div>
@@ -1017,7 +1018,7 @@ function actualizarResumenCheckout() {
   carrito.forEach(item => {
     subtotal += item.precio;
     html += `<div class="resumen-item">
-      <img src="${item.imagen}" onerror="this.src='logo.webp'">
+      <img src="${item.imagen}" alt="${item.nombre}" onerror="this.src='logo.webp'">
       <div class="resumen-item-info">
         <div class="resumen-item-nombre">${item.nombre}</div>
         <div class="resumen-item-talla">Talla: ${item.talla}</div>
@@ -1056,7 +1057,7 @@ function seleccionarMetodoCheckout(tipo) {
   else transInfo.classList.remove("show");
   if (tipo === "mp") {
     btnConfirmar.className = "btn-checkout primario";
-    btnConfirmar.textContent = "💳 Pagar con PayPal";
+    btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
   } else if (tipo === "transferencia") {
     btnConfirmar.className = "btn-checkout primario";
     btnConfirmar.textContent = "🏦 Notificar Transferencia por WhatsApp";
@@ -1151,7 +1152,7 @@ async function confirmarPedidoCheckout() {
   const envio = COSTO_ENVIO;
   const descuento = calcularDescuento(subtotal, envio);
   const total = subtotal + envio - descuento;
-  const metodoPagoTexto = metodoPago === "mp" ? "PayPal (Tarjeta/Débito)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
+  const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
 
   let productosTexto = "";
   carrito.forEach((item, i) => {
@@ -1197,36 +1198,31 @@ async function confirmarPedidoCheckout() {
 
   if (metodoPago === "mp") {
     const btn = document.getElementById("btn-confirmar-checkout");
-    btn.textContent = "Calculando tipo de cambio...";
+    btn.textContent = "Procesando...";
     btn.disabled = true;
     try {
-      const tipoCambio = await obtenerTipoCambioUSD();
-      const totalUSD = Math.max(1, (total / tipoCambio)).toFixed(2);
-      const confirmado = confirm(
-        "PayPal no procesa pesos chilenos, así que el cobro será en dólares.\n\n" +
-        "Total: $" + total.toLocaleString("es-CL") + " CLP ≈ USD $" + totalUSD +
-        " (tipo de cambio de hoy: $" + Math.round(tipoCambio).toLocaleString("es-CL") + " CLP/USD)\n\n" +
-        "¿Continuar a PayPal?"
-      );
-      if (!confirmado) {
-        btn.textContent = "💳 Pagar con PayPal";
-        btn.disabled = false;
-        return;
-      }
-      const params = new URLSearchParams({
-        cmd: "_xclick",
-        business: PAYPAL_BUSINESS_EMAIL,
-        item_name: "Pedido Maikol Jordan - " + nombre,
-        amount: totalUSD,
-        currency_code: "USD",
-        no_shipping: "1",
-        return: window.location.origin,
-        cancel_return: window.location.origin
+      const response = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: carrito,
+          comprador: { nombre, whatsapp, direccion, region, comuna, cp },
+          cupon: cuponAplicado ? cuponAplicado.codigo : null,
+          descuento: descuento,
+          total: total
+        })
       });
-      window.location.href = "https://www.paypal.com/cgi-bin/webscr?" + params.toString();
+      const data = await response.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("Error al procesar el pago. Intenta de nuevo.");
+        btn.textContent = "💳 Pagar con Mercado Pago";
+        btn.disabled = false;
+      }
     } catch (error) {
-      alert("Error al calcular el pago. Intenta de nuevo.");
-      btn.textContent = "💳 Pagar con PayPal";
+      alert("Error de conexión. Intenta de nuevo.");
+      btn.textContent = "💳 Pagar con Mercado Pago";
       btn.disabled = false;
     }
   } else {
@@ -1670,19 +1666,39 @@ function agregarPoliticaPrivacidad() {
   const termsLink = document.createElement("a");
   termsLink.id = "link-politica";
   termsLink.href = "#";
-  termsLink.textContent = "Política de Privacidad";
-  termsLink.style.cssText = "color:#888;font-size:12px;display:inline-block;margin-top:10px;text-decoration:underline;";
+  termsLink.textContent = "Términos y Política de Privacidad";
+  termsLink.style.cssText = "color:#888;font-size:12px;display:inline-block;margin-top:10px;text-decoration:underline;cursor:pointer;";
   termsLink.onclick = function(e) {
     e.preventDefault();
-    alert("TÉRMINOS Y CONDICIONES\n\n" +
-          "1. Los precios incluyen IVA.\n" +
-          "2. Envíos a todo Chile por $" + COSTO_ENVIO.toLocaleString("es-CL") + ".\n" +
-          "3. No se aceptan devoluciones por cambio de talla, solo cambios por defectos de fábrica.\n" +
-          "4. Al realizar un pedido, aceptas recibir comunicaciones por WhatsApp.\n" +
-          "5. Tus datos serán utilizados únicamente para la gestión de envíos y no serán compartidos con terceros.\n\n" +
-          "Para más información, contáctanos por WhatsApp.");
+    abrirModalPolitica();
   };
   footer.appendChild(termsLink);
+}
+
+function abrirModalPolitica() {
+  if (document.getElementById("modalPolitica")) {
+    document.getElementById("modalPolitica").style.display = "flex";
+    return;
+  }
+  const overlay = document.createElement("div");
+  overlay.id = "modalPolitica";
+  overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;";
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.style.display = "none"; };
+  overlay.innerHTML = `
+    <div style="background:#141414;border:1px solid #2a2a2a;border-radius:16px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;padding:26px;position:relative;">
+      <button onclick="document.getElementById('modalPolitica').style.display='none'" style="position:absolute;top:14px;right:14px;background:none;border:none;color:#888;font-size:22px;cursor:pointer;line-height:1;">&times;</button>
+      <h2 style="color:#e60012;margin-bottom:16px;font-size:19px;">Términos y Política de Privacidad</h2>
+      <div style="font-size:14px;line-height:1.7;color:#ccc;">
+        <p style="margin-bottom:10px;"><strong style="color:white;">1. Precios y pagos.</strong> Todos los precios publicados incluyen IVA. Aceptamos Mercado Pago (tarjeta/débito), transferencia bancaria y coordinación por WhatsApp.</p>
+        <p style="margin-bottom:10px;"><strong style="color:white;">2. Envíos.</strong> Realizamos envíos a todo Chile por $${COSTO_ENVIO.toLocaleString("es-CL")}. Los tiempos de entrega varían según tu región.</p>
+        <p style="margin-bottom:10px;"><strong style="color:white;">3. Cambios y devoluciones.</strong> No se aceptan devoluciones por cambio de talla u opinión. Solo se aceptan cambios por defectos de fábrica, reportados dentro de las 48 horas de recibido el producto.</p>
+        <p style="margin-bottom:10px;"><strong style="color:white;">4. Comunicaciones.</strong> Al realizar un pedido, aceptas recibir mensajes de WhatsApp relacionados con la gestión de tu compra y envío.</p>
+        <p style="margin-bottom:10px;"><strong style="color:white;">5. Privacidad de tus datos.</strong> Tu nombre, dirección y contacto se usan únicamente para gestionar tu pedido y envío. No compartimos tus datos con terceros ajenos a la logística de tu compra.</p>
+        <p style="margin-bottom:0;"><strong style="color:white;">6. Contacto.</strong> Para dudas, reclamos o seguimiento de tu pedido, escríbenos directo por WhatsApp.</p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
 }
 
 // ============================================================
