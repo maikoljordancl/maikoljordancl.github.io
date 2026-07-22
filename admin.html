@@ -79,6 +79,15 @@ header span{color:#e60012;}
 .mensaje{padding:13px;border-radius:12px;text-align:center;font-weight:bold;margin-bottom:18px;display:none;}
 .mensaje.ok{display:block;background:#122a1c;color:#3ddc84;border:1px solid #245c3a;}
 .mensaje.error{display:block;background:#2a1414;color:#ff6b6b;border:1px solid #5c2424;}
+.stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.stat-card{flex:1;min-width:110px;background:linear-gradient(160deg,#171717,#121212);border:1px solid #262626;border-radius:12px;padding:12px;text-align:center;}
+.stat-card .valor{font-size:18px;font-weight:bold;color:#e60012;}
+.stat-card .etiqueta{font-size:11px;color:#999;margin-top:2px;}
+.marca-grupo{background:#161616;border:1px solid #262626;border-radius:12px;padding:12px;margin-bottom:10px;}
+.marca-grupo-titulo{font-weight:bold;font-size:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.marca-grupo-titulo button{background:none;border:none;color:#ff6b6b;font-size:13px;cursor:pointer;}
+.chip-sub{display:inline-flex;align-items:center;gap:5px;background:rgba(230,0,18,0.1);color:#ff8a8a;padding:4px 9px;border-radius:20px;font-size:12px;margin:3px 4px 0 0;}
+.chip-sub button{background:none;border:none;color:#ff8a8a;cursor:pointer;font-size:12px;padding:0;line-height:1;}
 </style>
 </head>
 <body>
@@ -102,9 +111,39 @@ header span{color:#e60012;}
 <div class="panel" id="panel">
 <div class="mensaje" id="mensaje"></div>
 
+<div class="stats-bar" id="statsBar"></div>
+
 <div class="toolbar">
 <button class="btn" onclick="abrirFormulario()">➕ Agregar producto</button>
 <button class="btn btn-secundario" onclick="cargarProductos()">🔄 Actualizar lista</button>
+<button class="btn btn-secundario" onclick="toggleCategoriasBox()">🗂️ Categorías</button>
+<button class="btn btn-secundario" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+</div>
+
+<div class="form-box" id="categoriasBox">
+<h3>🗂️ Gestor de categorías</h3>
+<div class="form-row">
+<div>
+<label>Nueva marca (ej: Jordan, Nike, New Balance)</label>
+<input type="text" id="cat-nueva-marca" placeholder="Ej: Jordan">
+</div>
+<div style="display:flex;align-items:flex-end;">
+<button class="btn btn-secundario" style="width:100%;" onclick="agregarMarca()">➕ Agregar marca</button>
+</div>
+</div>
+<div class="form-row">
+<div>
+<label>Marca</label>
+<select id="cat-marca-select" onchange="renderListaCategorias()"></select>
+</div>
+<div>
+<label>Nueva categoría dentro de esa marca</label>
+<input type="text" id="cat-nueva-categoria" placeholder="Ej: Retro 1">
+</div>
+</div>
+<button class="btn btn-secundario" style="width:100%;margin-bottom:14px;" onclick="agregarCategoriaHija()">➕ Agregar categoría</button>
+<div id="listaCategoriasBox"></div>
+<div class="upload-status" id="categoriasStatus"></div>
 </div>
 
 <div class="form-box" id="formBox">
@@ -121,9 +160,25 @@ header span{color:#e60012;}
 </div>
 <div class="form-row">
 <div>
-<label>Categoría</label>
-<input type="text" id="f-categoria" placeholder="Ej: Jordan Retro 4">
+<label>Marca</label>
+<select id="f-marca" onchange="renderSubcategoriasForm()">
+<option value="">Sin marca</option>
+</select>
 </div>
+<div>
+<label>Categoría dentro de la marca</label>
+<select id="f-subcategoria">
+<option value="">Sin categoría</option>
+</select>
+</div>
+</div>
+<div class="form-row single">
+<div>
+<label><input type="checkbox" id="f-categoria-manual-check" onchange="toggleCategoriaManual()" style="width:auto;margin-right:6px;">Escribir categoría manual (para casos que no calzan arriba)</label>
+<input type="text" id="f-categoria" placeholder="Ej: Jordan Retro 4" style="display:none;">
+</div>
+</div>
+<div class="form-row">
 <div>
 <label>Tallas (separadas por coma)</label>
 <input type="text" id="f-tallas" placeholder="Ej: 38,39,40,41,42,43">
@@ -146,7 +201,7 @@ header span{color:#e60012;}
 <label>Imágenes</label>
 
 <div class="ia-imagen-box">
-<label style="margin-bottom:6px;">🤖 Generar fotos con IA (a partir de una foto real de la zapatilla)</label>
+<label style="margin-bottom:6px;">🤖 Generar fotos con IA (sube una foto real de la zapatilla)</label>
 <div class="imagenes-zona" id="zonaRefIA" style="padding:12px;margin-bottom:8px;" onclick="document.getElementById('fileInputRefIA').click()">
 <span id="refIAtexto">📷 Toca para subir una foto de referencia de esta zapatilla</span>
 </div>
@@ -242,6 +297,7 @@ function precioConDescuentoPreview(p) {
 
 // ============================================================
 let productos = [];
+let categoriasData = []; // [{marca, categoria}]
 let imagenesActuales = []; // URLs ya subidas a Cloudinary para el producto en edición
 let filaEnEdicion = null; // null = agregando nuevo, número = editando fila existente
 let claveSesion = null;
@@ -278,8 +334,13 @@ async function cargarProductos() {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || "Error desconocido");
     productos = data.productos;
+    categoriasData = data.categorias || [];
     renderOpcionesCategoria();
     renderLista();
+    renderEstadisticas();
+    renderSelectMarcasCategorias();
+    renderListaCategorias();
+    renderMarcasForm();
   } catch (e) {
     lista.innerHTML = `<div class="vacio">❌ Error de conexión: ${e.message || e}</div>`;
   }
@@ -297,6 +358,233 @@ function renderOpcionesCategoria() {
   const valorMasivoActual = selectMasivo.value;
   selectMasivo.innerHTML = categorias.map(c => `<option value="${c}">${c}</option>`).join("");
   if (categorias.includes(valorMasivoActual)) selectMasivo.value = valorMasivoActual;
+}
+
+// ============================================================
+//  ESTADÍSTICAS RÁPIDAS
+// ============================================================
+function renderEstadisticas() {
+  const total = productos.length;
+  const valorInventario = productos.reduce((sum, p) => sum + (Number(p.precio) || 0), 0);
+  const ocultos = productos.filter(p => p.visible === false).length;
+  const sinImagenes = productos.filter(p => !p.imagenes || !p.imagenes.trim()).length;
+  document.getElementById("statsBar").innerHTML = `
+    <div class="stat-card"><div class="valor">${total}</div><div class="etiqueta">Productos</div></div>
+    <div class="stat-card"><div class="valor">$${valorInventario.toLocaleString("es-CL")}</div><div class="etiqueta">Valor inventario</div></div>
+    <div class="stat-card"><div class="valor">${ocultos}</div><div class="etiqueta">Ocultos</div></div>
+    <div class="stat-card"><div class="valor">${sinImagenes}</div><div class="etiqueta">Sin imágenes</div></div>
+  `;
+}
+
+// ============================================================
+//  EXPORTAR CATÁLOGO A CSV
+// ============================================================
+function exportarCSV() {
+  const encabezados = ["Nombre", "Precio", "Imagenes", "Categoria", "Tallas", "Descuento", "Visible"];
+  const filas = productos.map(p => [
+    p.nombre, p.precio, p.imagenes, p.categoria, p.tallas,
+    p.descuento || "", p.visible === false ? "FALSE" : "TRUE"
+  ]);
+  const csv = [encabezados, ...filas]
+    .map(fila => fila.map(v => `"${(v ?? "").toString().replace(/"/g, '""')}"`).join(","))
+    .join("\n");
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `catalogo-maikoljordan-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+//  GESTOR DE CATEGORÍAS (marca → subcategorías)
+// ============================================================
+function toggleCategoriasBox() {
+  document.getElementById("categoriasBox").classList.toggle("activo");
+}
+
+function marcasUnicas() {
+  return [...new Set(categoriasData.map(c => c.marca))].sort();
+}
+
+function renderSelectMarcasCategorias() {
+  const select = document.getElementById("cat-marca-select");
+  const valorActual = select.value;
+  const marcas = marcasUnicas();
+  select.innerHTML = marcas.length
+    ? marcas.map(m => `<option value="${m}">${m}</option>`).join("")
+    : '<option value="">— agrega una marca primero —</option>';
+  if (marcas.includes(valorActual)) select.value = valorActual;
+}
+
+async function agregarMarca() {
+  const input = document.getElementById("cat-nueva-marca");
+  const marca = input.value.trim();
+  const status = document.getElementById("categoriasStatus");
+  if (!marca) { status.textContent = "❌ Escribe un nombre de marca"; return; }
+  status.textContent = "⏳ Agregando marca...";
+  try {
+    await llamarCategoriaAPI("agregarCategoria", { marca, categoria: "" });
+    input.value = "";
+    status.textContent = "✅ Marca agregada";
+    await cargarProductos();
+  } catch (e) {
+    status.textContent = "❌ Error: " + e.message;
+  }
+}
+
+async function agregarCategoriaHija() {
+  const marca = document.getElementById("cat-marca-select").value;
+  const input = document.getElementById("cat-nueva-categoria");
+  const categoria = input.value.trim();
+  const status = document.getElementById("categoriasStatus");
+  if (!marca) { status.textContent = "❌ Primero agrega y elige una marca"; return; }
+  if (!categoria) { status.textContent = "❌ Escribe el nombre de la categoría"; return; }
+  status.textContent = "⏳ Agregando categoría...";
+  try {
+    await llamarCategoriaAPI("agregarCategoria", { marca, categoria });
+    input.value = "";
+    status.textContent = "✅ Categoría agregada";
+    await cargarProductos();
+  } catch (e) {
+    status.textContent = "❌ Error: " + e.message;
+  }
+}
+
+async function eliminarCategoria(marca, categoria) {
+  const status = document.getElementById("categoriasStatus");
+  const etiqueta = categoria ? `${marca} → ${categoria}` : `la marca "${marca}" completa (y todas sus categorías)`;
+  if (!confirm(`¿Eliminar ${etiqueta}? Esto no borra los productos, solo la opción del listado.`)) return;
+  status.textContent = "⏳ Eliminando...";
+  try {
+    if (!categoria) {
+      // Eliminar la marca completa: borra la marca y todas sus categorías hijas
+      const hijas = categoriasData.filter(c => c.marca === marca);
+      for (const h of hijas) {
+        await llamarCategoriaAPI("eliminarCategoria", { marca: h.marca, categoria: h.categoria });
+      }
+    } else {
+      await llamarCategoriaAPI("eliminarCategoria", { marca, categoria });
+    }
+    status.textContent = "✅ Eliminado";
+    await cargarProductos();
+  } catch (e) {
+    status.textContent = "❌ Error: " + e.message;
+  }
+}
+
+async function llamarCategoriaAPI(accion, { marca, categoria }) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({ accion, marca, categoria, password: claveSesion })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || "Error desconocido");
+}
+
+function renderListaCategorias() {
+  const cont = document.getElementById("listaCategoriasBox");
+  const marcas = marcasUnicas();
+  if (marcas.length === 0) {
+    cont.innerHTML = '<div class="vacio" style="padding:20px;">Aún no has agregado marcas.</div>';
+    return;
+  }
+  cont.innerHTML = marcas.map(marca => {
+    const hijas = categoriasData.filter(c => c.marca === marca && c.categoria);
+    return `<div class="marca-grupo">
+      <div class="marca-grupo-titulo">
+        <span>${marca}</span>
+        <button onclick="eliminarCategoria('${marca.replace(/'/g, "")}', '')">🗑️ eliminar marca</button>
+      </div>
+      <div>${hijas.length ? hijas.map(h => `<span class="chip-sub">${h.categoria} <button onclick="eliminarCategoria('${marca.replace(/'/g, "")}', '${h.categoria.replace(/'/g, "")}')">✕</button></span>`).join("") : '<span style="color:#666;font-size:12px;">Sin categorías todavía</span>'}</div>
+    </div>`;
+  }).join("");
+}
+
+// Selects del formulario de producto (marca / subcategoría)
+function renderMarcasForm() {
+  const select = document.getElementById("f-marca");
+  const valorActual = select.value;
+  const marcas = marcasUnicas();
+  select.innerHTML = '<option value="">Sin marca</option>' + marcas.map(m => `<option value="${m}">${m}</option>`).join("");
+  if (marcas.includes(valorActual)) select.value = valorActual;
+  renderSubcategoriasForm();
+}
+
+function renderSubcategoriasForm() {
+  const marca = document.getElementById("f-marca").value;
+  const select = document.getElementById("f-subcategoria");
+  const valorActual = select.value;
+  const hijas = categoriasData.filter(c => c.marca === marca && c.categoria);
+  select.innerHTML = '<option value="">Sin categoría</option>' + hijas.map(h => `<option value="${h.categoria}">${h.categoria}</option>`).join("");
+  if (hijas.some(h => h.categoria === valorActual)) select.value = valorActual;
+}
+
+function toggleCategoriaManual() {
+  const check = document.getElementById("f-categoria-manual-check").checked;
+  document.getElementById("f-categoria").style.display = check ? "block" : "none";
+  document.getElementById("f-marca").parentElement.style.opacity = check ? "0.4" : "1";
+  document.getElementById("f-subcategoria").parentElement.style.opacity = check ? "0.4" : "1";
+}
+
+function categoriaFinalDelForm() {
+  const manualCheck = document.getElementById("f-categoria-manual-check").checked;
+  if (manualCheck) return document.getElementById("f-categoria").value.trim();
+  const marca = document.getElementById("f-marca").value;
+  const sub = document.getElementById("f-subcategoria").value;
+  if (marca && sub) return `${marca} - ${sub}`;
+  return marca || sub || "";
+}
+
+// Intenta separar una categoría guardada tipo "Marca - Sub" en los selects; si no calza, usa el campo manual
+function aplicarCategoriaAlForm(categoriaGuardada) {
+  document.getElementById("f-categoria-manual-check").checked = false;
+  document.getElementById("f-categoria").style.display = "none";
+  document.getElementById("f-categoria").value = "";
+  if (!categoriaGuardada) {
+    document.getElementById("f-marca").value = "";
+    renderSubcategoriasForm();
+    return;
+  }
+  const partes = categoriaGuardada.split(" - ");
+  const marcas = marcasUnicas();
+  if (partes.length === 2 && marcas.includes(partes[0])) {
+    document.getElementById("f-marca").value = partes[0];
+    renderSubcategoriasForm();
+    document.getElementById("f-subcategoria").value = partes[1];
+  } else if (marcas.includes(categoriaGuardada)) {
+    document.getElementById("f-marca").value = categoriaGuardada;
+    renderSubcategoriasForm();
+  } else {
+    // No calza con ninguna marca conocida: usar campo manual para no perder el dato
+    document.getElementById("f-categoria-manual-check").checked = true;
+    document.getElementById("f-categoria").style.display = "block";
+    document.getElementById("f-categoria").value = categoriaGuardada;
+  }
+}
+
+// ============================================================
+//  DUPLICAR PRODUCTO
+// ============================================================
+function duplicarProducto(fila) {
+  const p = productos.find(x => x.fila === fila);
+  if (!p) return;
+  filaEnEdicion = null; // se guardará como NUEVO producto
+  imagenesActuales = (p.imagenes || "").split(";").map(s => s.trim()).filter(Boolean);
+  document.getElementById("formTitulo").textContent = "Agregar producto (duplicado de \"" + p.nombre + "\")";
+  document.getElementById("f-nombre").value = (p.nombre || "") + " (copia)";
+  document.getElementById("f-precio").value = p.precio || "";
+  aplicarCategoriaAlForm(p.categoria || "");
+  document.getElementById("f-tallas").value = (p.tallas || "").toString().split(";").join(",");
+  document.getElementById("f-descuento").value = (p.descuento !== null && p.descuento !== undefined && p.descuento !== "") ? p.descuento : "";
+  document.getElementById("f-visible").value = "true";
+  document.getElementById("iaStatus").textContent = "";
+  imagenReferenciaIA = null;
+  document.getElementById("refIAtexto").textContent = "📷 Toca para subir una foto de referencia de esta zapatilla";
+  renderImagenesPreview();
+  document.getElementById("formBox").classList.add("activo");
+  document.getElementById("formBox").scrollIntoView({ behavior: "smooth" });
 }
 
 function renderLista() {
@@ -331,6 +619,7 @@ function renderLista() {
       </div>
       <div class="item-botones">
         <button onclick="editarProducto(${p.fila})">✏️</button>
+        <button onclick="duplicarProducto(${p.fila})">📋</button>
         <button onclick="toggleVisibilidad(${p.fila}, ${!oculto})">${oculto ? '👁️' : '🚫'}</button>
         <button class="btn-eliminar" onclick="eliminarProducto(${p.fila}, '${(p.nombre||'').replace(/'/g,"")}')">🗑️</button>
       </div>
@@ -393,13 +682,14 @@ function mostrarMensajeMasivo(texto, tipo) {
 function abrirFormulario() {
   filaEnEdicion = null;
   imagenesActuales = [];
+  document.getElementById("iaStatus").textContent = "";
   imagenReferenciaIA = null;
   document.getElementById("refIAtexto").textContent = "📷 Toca para subir una foto de referencia de esta zapatilla";
-  document.getElementById("iaStatus").textContent = "";
   document.getElementById("formTitulo").textContent = "Agregar producto";
   document.getElementById("f-nombre").value = "";
   document.getElementById("f-precio").value = "";
   document.getElementById("f-categoria").value = "";
+  aplicarCategoriaAlForm("");
   document.getElementById("f-tallas").value = "36,37,38,39,40,41,42,43,44,45,46";
   document.getElementById("f-descuento").value = "";
   document.getElementById("f-visible").value = "true";
@@ -417,13 +707,14 @@ function editarProducto(fila) {
   if (!p) return;
   filaEnEdicion = fila;
   imagenesActuales = (p.imagenes || "").split(";").map(s => s.trim()).filter(Boolean);
+  document.getElementById("iaStatus").textContent = "";
   imagenReferenciaIA = null;
   document.getElementById("refIAtexto").textContent = "📷 Toca para subir una foto de referencia de esta zapatilla";
-  document.getElementById("iaStatus").textContent = "";
   document.getElementById("formTitulo").textContent = "Editar producto";
   document.getElementById("f-nombre").value = p.nombre || "";
   document.getElementById("f-precio").value = p.precio || "";
   document.getElementById("f-categoria").value = p.categoria || "";
+  aplicarCategoriaAlForm(p.categoria || "");
   document.getElementById("f-tallas").value = (p.tallas || "").toString().split(";").join(",");
   document.getElementById("f-descuento").value = (p.descuento !== null && p.descuento !== undefined && p.descuento !== "") ? p.descuento : "";
   document.getElementById("f-visible").value = p.visible === false ? "false" : "true";
@@ -484,7 +775,7 @@ async function subirImagenCloudinary(file) {
 }
 
 // ============================================================
-//  GENERACIÓN DE IMÁGENES CON IA (Gemini, vía función serverless)
+//  GENERACIÓN DE IMÁGENES CON IA (Qwen Image Edit, vía Hugging Face, gratis)
 // ============================================================
 let imagenReferenciaIA = null; // { base64, mimeType }
 
@@ -587,7 +878,7 @@ function quitarImagen(i) {
 async function guardarProducto() {
   const nombre = document.getElementById("f-nombre").value.trim();
   const precio = document.getElementById("f-precio").value.trim();
-  const categoria = document.getElementById("f-categoria").value.trim();
+  const categoria = categoriaFinalDelForm();
   const tallasInput = document.getElementById("f-tallas").value.trim();
   const descuento = document.getElementById("f-descuento").value.trim();
   const visible = document.getElementById("f-visible").value === "true";
