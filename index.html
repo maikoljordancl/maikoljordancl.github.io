@@ -387,12 +387,12 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="checkout-paso-titulo">💳 Método de pago</div>
 <div class="metodos-grid">
 <div class="metodo-pago selected" id="metodo-mp" onclick="seleccionarMetodoCheckout('mp')">
-<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💳</span> Mercado Pago <span class="badge-mejor">⭐ Mejor opción</span></div><img src="mp-chico.png" alt="Mercado Pago" style="height:30px;width:auto;"></div>
-<div class="metodo-pago-desc">Paga con tarjeta o débito — rápido y seguro</div>
+<div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💳</span> PayPal <span class="badge-mejor">⭐ Mejor opción</span></div><img src="https://img.icons8.com/color/48/paypal.png" style="height:26px;width:auto;" alt="PayPal"></div>
+<div class="metodo-pago-desc">Paga con tarjeta de crédito, débito o tu cuenta PayPal</div>
 </div>
 <div class="metodo-pago" id="metodo-transferencia" onclick="seleccionarMetodoCheckout('transferencia')">
 <div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>🏦</span> Transferencia bancaria</div><img src="https://img.icons8.com/color/48/bank.png" style="height:20px;width:auto;" alt="Banco"></div>
-<div class="metodo-pago-desc">Acepta cualquier banco — BCI, Santander, Banco Estado, Falabella</div>
+<div class="metodo-pago-desc">Transfiere directo a nuestra cuenta BCI/MACH</div>
 </div>
 <div class="metodo-pago" id="metodo-wsp" onclick="seleccionarMetodoCheckout('wsp')">
 <div class="metodo-pago-header"><div class="metodo-pago-titulo"><span>💬</span> WhatsApp</div><img src="https://img.icons8.com/color/48/whatsapp.png" style="height:20px;width:auto;" alt="WhatsApp"></div>
@@ -401,10 +401,9 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 </div>
 <div class="transferencia-info" id="transferencia-info">
 <p>Transfiere y envía el comprobante por WhatsApp:</p>
-<p>👤 <strong>Michael Gajardo</strong></p>
-<p>🪪 <strong>RUT: 74654258</strong></p>
-<p>🏦 <strong>Mercado Pago — Cuenta Vista</strong></p>
-<p>🔢 <strong>N° cuenta: 1043755162</strong></p>
+<p>👤 <strong>Maikol Jordan</strong></p>
+<p>🏦 <strong>Bci/Mach — Cuenta Corriente</strong></p>
+<p>🔢 <strong>N° cuenta: 777922975341</strong></p>
 <p>📧 <strong>maikoljordancl@gmail.com</strong></p>
 </div>
 <div class="cart-total-resumen" style="background:#0f0f0f;border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid #1f1f1f;">
@@ -488,7 +487,7 @@ maikoljordancl@gmail.com
 </div>
 <div class="footer-bottom">
 <div class="footer-text">© 2026 MAIKOL JORDAN — Todos los derechos reservados</div>
-<div class="footer-logos"><img src="mp-grande.png" alt="Mercado Pago Seguro" style="width:160px;height:auto;display:block;margin:0 auto;"></div>
+<div class="footer-logos"><img src="https://img.icons8.com/color/96/paypal.png" alt="PayPal Seguro" style="width:60px;height:auto;display:block;margin:0 auto;"></div>
 </div>
 </footer>
 
@@ -499,6 +498,19 @@ maikoljordancl@gmail.com
 const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/1sunQ0MoXRI-HoL2MzTwCwHEgEcM4C2rgzsQR-U854AM/export?format=csv";
 const FORMSPREE_URL = "https://formspree.io/f/meewnqqo";
 const COSTO_ENVIO = 3490; // FIX: valor único del envío, usado en toda la app
+const PAYPAL_BUSINESS_EMAIL = "johantcgo@icloud.com";
+const TIPO_CAMBIO_RESPALDO = 950; // usado solo si falla la consulta en vivo del dólar
+
+async function obtenerTipoCambioUSD() {
+  try {
+    const res = await fetch("https://mindicador.cl/api/dolar");
+    const data = await res.json();
+    const valor = data?.serie?.[0]?.valor;
+    return (typeof valor === "number" && valor > 0) ? valor : TIPO_CAMBIO_RESPALDO;
+  } catch (e) {
+    return TIPO_CAMBIO_RESPALDO;
+  }
+}
 const DESCUENTO_GENERAL = 0.15; // 15% de descuento a todo el catálogo, excepto modelos DC
 const PISO_PRECIO_DESCUENTO = 65990; // ningún producto puede quedar por debajo de este precio tras el descuento
 
@@ -1044,7 +1056,7 @@ function seleccionarMetodoCheckout(tipo) {
   else transInfo.classList.remove("show");
   if (tipo === "mp") {
     btnConfirmar.className = "btn-checkout primario";
-    btnConfirmar.textContent = "💳 Pagar con Mercado Pago";
+    btnConfirmar.textContent = "💳 Pagar con PayPal";
   } else if (tipo === "transferencia") {
     btnConfirmar.className = "btn-checkout primario";
     btnConfirmar.textContent = "🏦 Notificar Transferencia por WhatsApp";
@@ -1139,7 +1151,7 @@ async function confirmarPedidoCheckout() {
   const envio = COSTO_ENVIO;
   const descuento = calcularDescuento(subtotal, envio);
   const total = subtotal + envio - descuento;
-  const metodoPagoTexto = metodoPago === "mp" ? "Mercado Pago (Tarjeta)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
+  const metodoPagoTexto = metodoPago === "mp" ? "PayPal (Tarjeta/Débito)" : metodoPago === "transferencia" ? "Transferencia bancaria" : "WhatsApp";
 
   let productosTexto = "";
   carrito.forEach((item, i) => {
@@ -1185,31 +1197,36 @@ async function confirmarPedidoCheckout() {
 
   if (metodoPago === "mp") {
     const btn = document.getElementById("btn-confirmar-checkout");
-    btn.textContent = "Procesando...";
+    btn.textContent = "Calculando tipo de cambio...";
     btn.disabled = true;
     try {
-      const response = await fetch("/api/create-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: carrito,
-          comprador: { nombre, whatsapp, direccion, region, comuna, cp },
-          cupon: cuponAplicado ? cuponAplicado.codigo : null,
-          descuento: descuento,
-          total: total
-        })
-      });
-      const data = await response.json();
-      if (data.init_point) {
-        window.location.href = data.init_point;
-      } else {
-        alert("Error al procesar el pago. Intenta de nuevo.");
-        btn.textContent = "💳 Pagar con Mercado Pago";
+      const tipoCambio = await obtenerTipoCambioUSD();
+      const totalUSD = Math.max(1, (total / tipoCambio)).toFixed(2);
+      const confirmado = confirm(
+        "PayPal no procesa pesos chilenos, así que el cobro será en dólares.\n\n" +
+        "Total: $" + total.toLocaleString("es-CL") + " CLP ≈ USD $" + totalUSD +
+        " (tipo de cambio de hoy: $" + Math.round(tipoCambio).toLocaleString("es-CL") + " CLP/USD)\n\n" +
+        "¿Continuar a PayPal?"
+      );
+      if (!confirmado) {
+        btn.textContent = "💳 Pagar con PayPal";
         btn.disabled = false;
+        return;
       }
+      const params = new URLSearchParams({
+        cmd: "_xclick",
+        business: PAYPAL_BUSINESS_EMAIL,
+        item_name: "Pedido Maikol Jordan - " + nombre,
+        amount: totalUSD,
+        currency_code: "USD",
+        no_shipping: "1",
+        return: window.location.origin,
+        cancel_return: window.location.origin
+      });
+      window.location.href = "https://www.paypal.com/cgi-bin/webscr?" + params.toString();
     } catch (error) {
-      alert("Error de conexión. Intenta de nuevo.");
-      btn.textContent = "💳 Pagar con Mercado Pago";
+      alert("Error al calcular el pago. Intenta de nuevo.");
+      btn.textContent = "💳 Pagar con PayPal";
       btn.disabled = false;
     }
   } else {
