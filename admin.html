@@ -475,10 +475,8 @@ async function eliminarCategoria(marca, categoria) {
 }
 
 async function llamarCategoriaAPI(accion, { marca, categoria }) {
-  const res = await fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify({ accion, marca, categoria, password: claveSesion })
-  });
+  const params = new URLSearchParams({ accion, marca: marca || "", categoria: categoria || "", password: claveSesion });
+  const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
   const data = await res.json();
   if (!data.ok) throw new Error(data.error || "Error desconocido");
 }
@@ -629,10 +627,8 @@ function renderLista() {
 
 async function toggleVisibilidad(fila, ocultar) {
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({ accion: "cambiarVisibilidad", fila, visible: !ocultar, password: claveSesion })
-    });
+    const params = new URLSearchParams({ accion: "cambiarVisibilidad", fila, visible: String(!ocultar), password: claveSesion });
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     cargarProductos();
@@ -659,10 +655,8 @@ async function ajustarPrecioMasivo() {
 
 async function ejecutarAccionMasiva(accion, categoria, porcentaje) {
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({ accion, categoria, porcentaje: Number(porcentaje), password: claveSesion })
-    });
+    const params = new URLSearchParams({ accion, categoria, porcentaje: String(Number(porcentaje)), password: claveSesion });
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     mostrarMensajeMasivo("✅ Aplicado con éxito", "ok");
@@ -726,10 +720,8 @@ function editarProducto(fila) {
 async function eliminarProducto(fila, nombre) {
   if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({ accion: "eliminar", fila, password: claveSesion })
-    });
+    const params = new URLSearchParams({ accion: "eliminar", fila, password: claveSesion });
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     mostrarMensaje("✅ Producto eliminado", "ok");
@@ -901,13 +893,11 @@ async function guardarProducto() {
   const accion = filaEnEdicion ? "editar" : "agregar";
 
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        accion, fila: filaEnEdicion, nombre, precio, categoria, tallas, imagenes, descuento, visible,
-        password: claveSesion
-      })
+    const params = new URLSearchParams({
+      accion, fila: filaEnEdicion || "", nombre, precio, categoria, tallas, imagenes,
+      descuento: descuento || "", visible: String(visible), password: claveSesion
     });
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     mostrarMensaje("✅ Producto guardado", "ok");
