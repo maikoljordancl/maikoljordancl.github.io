@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
     const imagenBlob = new Blob([imagenBuffer], { type: imagenMimeType || "image/jpeg" });
 
     const resultado = await client.imageToImage({
-      provider: "fal-ai",
+      provider: "auto",
       model: "Qwen/Qwen-Image-Edit",
       inputs: imagenBlob,
       parameters: { prompt }
