@@ -330,7 +330,7 @@ async function cargarProductos() {
   const lista = document.getElementById("listaProductos");
   lista.innerHTML = '<div class="cargando">Cargando productos...</div>';
   try {
-    const res = await fetch(APPS_SCRIPT_URL);
+    const res = await fetch(APPS_SCRIPT_URL + "?_=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || "Error desconocido");
     productos = data.productos;
@@ -476,7 +476,7 @@ async function eliminarCategoria(marca, categoria) {
 
 async function llamarCategoriaAPI(accion, { marca, categoria }) {
   const params = new URLSearchParams({ accion, marca: marca || "", categoria: categoria || "", password: claveSesion });
-  const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
+  const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
   const data = await res.json();
   if (!data.ok) throw new Error(data.error || "Error desconocido");
 }
@@ -628,7 +628,7 @@ function renderLista() {
 async function toggleVisibilidad(fila, ocultar) {
   try {
     const params = new URLSearchParams({ accion: "cambiarVisibilidad", fila, visible: String(!ocultar), password: claveSesion });
-    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     cargarProductos();
@@ -656,7 +656,7 @@ async function ajustarPrecioMasivo() {
 async function ejecutarAccionMasiva(accion, categoria, porcentaje) {
   try {
     const params = new URLSearchParams({ accion, categoria, porcentaje: String(Number(porcentaje)), password: claveSesion });
-    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     mostrarMensajeMasivo("✅ Aplicado con éxito", "ok");
@@ -721,7 +721,7 @@ async function eliminarProducto(fila, nombre) {
   if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
   try {
     const params = new URLSearchParams({ accion: "eliminar", fila, password: claveSesion });
-    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     mostrarMensaje("✅ Producto eliminado", "ok");
@@ -897,7 +897,7 @@ async function guardarProducto() {
       accion, fila: filaEnEdicion || "", nombre, precio, categoria, tallas, imagenes,
       descuento: descuento || "", visible: String(visible), password: claveSesion
     });
-    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     mostrarMensaje("✅ Producto guardado", "ok");
