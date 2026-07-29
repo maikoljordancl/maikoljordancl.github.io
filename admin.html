@@ -475,10 +475,11 @@ async function eliminarCategoria(marca, categoria) {
 }
 
 async function llamarCategoriaAPI(accion, { marca, categoria }) {
-  const params = new URLSearchParams({ accion, marca: marca || "", categoria: categoria || "", password: claveSesion });
+  const params = new URLSearchParams({ accion, marca: marca || "", categoria: categoria || "", password: claveSesion, _: Date.now() });
   const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
   const data = await res.json();
   if (!data.ok) throw new Error(data.error || "Error desconocido");
+  if (data.categorias) categoriasData = data.categorias;
 }
 
 function renderListaCategorias() {
@@ -627,7 +628,7 @@ function renderLista() {
 
 async function toggleVisibilidad(fila, ocultar) {
   try {
-    const params = new URLSearchParams({ accion: "cambiarVisibilidad", fila, visible: String(!ocultar), password: claveSesion });
+    const params = new URLSearchParams({ accion: "cambiarVisibilidad", fila, visible: String(!ocultar), password: claveSesion, _: Date.now() });
     const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
@@ -655,7 +656,7 @@ async function ajustarPrecioMasivo() {
 
 async function ejecutarAccionMasiva(accion, categoria, porcentaje) {
   try {
-    const params = new URLSearchParams({ accion, categoria, porcentaje: String(Number(porcentaje)), password: claveSesion });
+    const params = new URLSearchParams({ accion, categoria, porcentaje: String(Number(porcentaje)), password: claveSesion, _: Date.now() });
     const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
@@ -720,7 +721,7 @@ function editarProducto(fila) {
 async function eliminarProducto(fila, nombre) {
   if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
   try {
-    const params = new URLSearchParams({ accion: "eliminar", fila, password: claveSesion });
+    const params = new URLSearchParams({ accion: "eliminar", fila, password: claveSesion, _: Date.now() });
     const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
@@ -895,7 +896,7 @@ async function guardarProducto() {
   try {
     const params = new URLSearchParams({
       accion, fila: filaEnEdicion || "", nombre, precio, categoria, tallas, imagenes,
-      descuento: descuento || "", visible: String(visible), password: claveSesion
+      descuento: descuento || "", visible: String(visible), password: claveSesion, _: Date.now()
     });
     const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
     const data = await res.json();
