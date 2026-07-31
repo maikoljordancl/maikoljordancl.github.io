@@ -404,8 +404,35 @@ function toggleCategoriasBox() {
   document.getElementById("categoriasBox").classList.toggle("activo");
 }
 
+// Marcas conocidas de tu catálogo — se usan para detectar automáticamente la marca
+// dentro de productos viejos que tienen la categoría como texto libre (ej: "Jordan Retro 4").
+// Ordenadas de más larga a más corta para que "New Balance" se detecte antes que "New".
+const MARCAS_CONOCIDAS = [
+  "New Balance", "Louis Vuitton", "Under Armour", "Nike", "Jordan", "Adidas",
+  "Dior", "Gucci", "Versace", "Puma", "Reebok", "Converse", "Vans", "Asics",
+  "Balenciaga", "Fila", "Champion", "Skechers"
+].sort((a, b) => b.length - a.length);
+
+function detectarMarcaEnTexto(texto) {
+  if (!texto) return null;
+  const limpio = texto.toString().trim();
+  const encontrada = MARCAS_CONOCIDAS.find(m => limpio.toLowerCase().startsWith(m.toLowerCase()));
+  return encontrada || null;
+}
+
+function marcasDetectadasEnProductos() {
+  const marcas = new Set();
+  productos.forEach(p => {
+    const marca = detectarMarcaEnTexto(p.categoria) || detectarMarcaEnTexto(p.nombre);
+    if (marca) marcas.add(marca);
+  });
+  return [...marcas];
+}
+
 function marcasUnicas() {
-  return [...new Set(categoriasData.map(c => c.marca))].sort();
+  const deGestor = categoriasData.map(c => c.marca);
+  const deProductosViejos = marcasDetectadasEnProductos();
+  return [...new Set([...deGestor, ...deProductosViejos])].sort();
 }
 
 function renderSelectMarcasCategorias() {
@@ -484,9 +511,9 @@ async function llamarCategoriaAPI(accion, { marca, categoria }) {
 
 function renderListaCategorias() {
   const cont = document.getElementById("listaCategoriasBox");
-  const marcas = marcasUnicas();
+  const marcas = [...new Set(categoriasData.map(c => c.marca))].sort();
   if (marcas.length === 0) {
-    cont.innerHTML = '<div class="vacio" style="padding:20px;">Aún no has agregado marcas.</div>';
+    cont.innerHTML = '<div class="vacio" style="padding:20px;">Aún no has agregado marcas manualmente. (Las marcas detectadas en tus productos existentes ya aparecen como opción al agregar/editar un producto, sin necesidad de agregarlas aquí.)</div>';
     return;
   }
   cont.innerHTML = marcas.map(marca => {
