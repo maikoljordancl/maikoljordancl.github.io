@@ -542,16 +542,21 @@ function renderMarcasForm() {
   renderSubcategoriasForm();
 }
 
-function subcategoriasDetectadasParaMarca(marca) {
+function subcategoriasDetectadasParaMarca(marcaObjetivo) {
   const subs = new Set();
   productos.forEach(p => {
-    [p.categoria, p.nombre].forEach(fuenteRaw => {
-      const fuente = (fuenteRaw || "").toString().trim();
-      if (fuente.toLowerCase().startsWith(marca.toLowerCase())) {
-        const resto = fuente.slice(marca.length).replace(/^[-:–,]+\s*/, "").trim();
-        if (resto) subs.add(resto);
-      }
-    });
+    // A qué marca pertenece este producto (misma lógica que para detectar la marca)
+    const marcaDelProducto = detectarMarcaEnTexto(p.categoria) || detectarMarcaEnTexto(p.nombre);
+    if (marcaDelProducto !== marcaObjetivo) return;
+
+    // Usamos la categoría que ya tenía guardada el producto (suele estar limpia, ej: "Shox TL"),
+    // en vez de sacarla del nombre completo (que trae color/variante y ensucia la lista).
+    let candidato = (p.categoria || "").toString().trim();
+    if (!candidato) return;
+    if (candidato.toLowerCase().startsWith(marcaObjetivo.toLowerCase())) {
+      candidato = candidato.slice(marcaObjetivo.length).replace(/^[-:–,]+\s*/, "").trim();
+    }
+    if (candidato) subs.add(candidato);
   });
   return [...subs];
 }
