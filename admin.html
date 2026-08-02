@@ -545,11 +545,13 @@ function renderMarcasForm() {
 function subcategoriasDetectadasParaMarca(marca) {
   const subs = new Set();
   productos.forEach(p => {
-    const fuente = (p.categoria || p.nombre || "").toString().trim();
-    if (fuente.toLowerCase().startsWith(marca.toLowerCase())) {
-      const resto = fuente.slice(marca.length).replace(/^[-:–,]+\s*/, "").trim();
-      if (resto) subs.add(resto);
-    }
+    [p.categoria, p.nombre].forEach(fuenteRaw => {
+      const fuente = (fuenteRaw || "").toString().trim();
+      if (fuente.toLowerCase().startsWith(marca.toLowerCase())) {
+        const resto = fuente.slice(marca.length).replace(/^[-:–,]+\s*/, "").trim();
+        if (resto) subs.add(resto);
+      }
+    });
   });
   return [...subs];
 }
