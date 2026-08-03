@@ -219,6 +219,12 @@ header span{color:#e60012;}
 <div class="upload-status" id="iaStatus"></div>
 </div>
 
+<div class="imagenes-zona" id="zonaCollage" style="border-color:#3a7bd5;" onclick="document.getElementById('fileInputCollage').click()">
+🧩 Toca para subir un collage (2x2) — se divide solo en 4 fotos
+</div>
+<input type="file" id="fileInputCollage" accept="image/*" style="display:none;" onchange="procesarCollage(event)">
+<div class="upload-status" id="collageStatus"></div>
+
 <div class="imagenes-zona" id="zonaImagenes" onclick="document.getElementById('fileInput').click()">
 📸 Toca para elegir imágenes (puedes elegir varias)
 </div>
@@ -832,6 +838,70 @@ async function subirImagenCloudinary(file) {
   const data = await res.json();
   if (!data.secure_url) throw new Error("Sin URL de respuesta");
   return data.secure_url;
+}
+
+// ============================================================
+//  DIVIDIR COLLAGE 2x2 EN 4 FOTOS (recorte con Canvas, 100% en el navegador)
+// ============================================================
+function cargarImagenComoElemento(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("No se pudo leer la imagen"));
+    img.src = url;
+  });
+}
+
+function recortarCuadrante(img, sx, sy, sw, sh) {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = sw;
+    canvas.height = sh;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("No se pudo recortar")), "image/jpeg", 0.92);
+  });
+}
+
+async function procesarCollage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const status = document.getElementById("collageStatus");
+  status.textContent = "🧩 Leyendo collage...";
+
+  try {
+    const img = await cargarImagenComoElemento(file);
+    const mitadAncho = img.width / 2;
+    const mitadAlto = img.height / 2;
+    // Margen de seguridad (2%) para no capturar las líneas blancas/negras entre cuadrantes
+    const margenX = mitadAncho * 0.02;
+    const margenY = mitadAlto * 0.02;
+
+    const cuadrantes = [
+      { sx: 0, sy: 0 },                  // arriba-izquierda
+      { sx: mitadAncho, sy: 0 },         // arriba-derecha
+      { sx: 0, sy: mitadAlto },          // abajo-izquierda
+      { sx: mitadAncho, sy: mitadAlto }  // abajo-derecha
+    ];
+
+    for (let i = 0; i < cuadrantes.length; i++) {
+      status.textContent = `🧩 Subiendo foto ${i + 1} de 4...`;
+      const c = cuadrantes[i];
+      const blob = await recortarCuadrante(
+        img,
+        c.sx + margenX, c.sy + margenY,
+        mitadAncho - margenX * 2, mitadAlto - margenY * 2
+      );
+      const url = await subirImagenCloudinary(blob);
+      imagenesActuales.push(url);
+      renderImagenesPreview();
+    }
+    status.textContent = "✅ Collage dividido en 4 fotos y subidas";
+  } catch (e) {
+    status.textContent = "❌ Error: " + e.message;
+  }
+  event.target.value = "";
 }
 
 // ============================================================
