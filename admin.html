@@ -605,8 +605,10 @@ function categoriaFinalDelForm() {
   if (manualCheck) return document.getElementById("f-categoria").value.trim();
   const marca = document.getElementById("f-marca").value;
   const sub = document.getElementById("f-subcategoria").value;
-  if (marca && sub) return `${marca} - ${sub}`;
-  return marca || sub || "";
+  // Guardamos solo el nombre limpio (ej: "Shox TL"), sin pegarle la marca adelante,
+  // para no romper la convención ya usada en tu catálogo y en el filtro de la tienda.
+  // La marca queda igual asociada porque MODELO_A_MARCA/MARCAS_CONOCIDAS la detecta después.
+  return sub || marca || "";
 }
 
 // Intenta separar una categoría guardada tipo "Marca - Sub" en los selects; si no calza, usa el campo manual
@@ -622,6 +624,7 @@ function aplicarCategoriaAlForm(categoriaGuardada) {
   const partes = categoriaGuardada.split(" - ");
   const marcas = marcasUnicas();
   if (partes.length === 2 && marcas.includes(partes[0])) {
+    // Formato viejo "Marca - Sub" (por si quedó algún producto guardado así antes del fix)
     document.getElementById("f-marca").value = partes[0];
     renderSubcategoriasForm();
     document.getElementById("f-subcategoria").value = partes[1];
@@ -629,10 +632,20 @@ function aplicarCategoriaAlForm(categoriaGuardada) {
     document.getElementById("f-marca").value = categoriaGuardada;
     renderSubcategoriasForm();
   } else {
-    // No calza con ninguna marca conocida: usar campo manual para no perder el dato
-    document.getElementById("f-categoria-manual-check").checked = true;
-    document.getElementById("f-categoria").style.display = "block";
-    document.getElementById("f-categoria").value = categoriaGuardada;
+    const marcaDetectada = detectarMarcaEnTexto(categoriaGuardada);
+    if (marcaDetectada) {
+      // Categoría limpia (ej: "Shox TL") — detectamos a qué marca pertenece automáticamente
+      document.getElementById("f-marca").value = marcaDetectada;
+      renderSubcategoriasForm();
+      if (categoriaGuardada.toLowerCase() !== marcaDetectada.toLowerCase()) {
+        document.getElementById("f-subcategoria").value = categoriaGuardada;
+      }
+    } else {
+      // No calza con ninguna marca conocida: usar campo manual para no perder el dato
+      document.getElementById("f-categoria-manual-check").checked = true;
+      document.getElementById("f-categoria").style.display = "block";
+      document.getElementById("f-categoria").value = categoriaGuardada;
+    }
   }
 }
 
