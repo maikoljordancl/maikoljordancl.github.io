@@ -146,6 +146,22 @@ header span{color:#e60012;}
 <button class="btn btn-secundario" style="width:100%;margin-bottom:14px;" onclick="agregarCategoriaHija()">➕ Agregar categoría</button>
 <div id="listaCategoriasBox"></div>
 <div class="upload-status" id="categoriasStatus"></div>
+
+<div style="border-top:1px solid #2a2a2a;margin-top:16px;padding-top:14px;">
+<label style="margin-bottom:6px;">✏️ Renombrar categoría en TODOS los productos que la usan</label>
+<div class="form-row">
+<div>
+<label>Categoría actual (elige una)</label>
+<select id="cat-renombrar-vieja"></select>
+</div>
+<div>
+<label>Nombre nuevo</label>
+<input type="text" id="cat-renombrar-nueva" placeholder="Ej: Shox TL">
+</div>
+</div>
+<button class="btn btn-secundario" style="width:100%;" onclick="renombrarCategoriaEnMasa()">✏️ Renombrar en todos los productos</button>
+<div class="upload-status" id="renombrarStatus"></div>
+</div>
 </div>
 
 <div class="form-box" id="formBox">
@@ -353,6 +369,7 @@ async function cargarProductos() {
     renderSelectMarcasCategorias();
     renderListaCategorias();
     renderMarcasForm();
+    renderSelectCategoriasParaRenombrar();
   } catch (e) {
     lista.innerHTML = `<div class="vacio">❌ Error de conexión: ${e.message || e}</div>`;
   }
@@ -498,6 +515,41 @@ async function agregarCategoriaHija() {
     await llamarCategoriaAPI("agregarCategoria", { marca, categoria });
     input.value = "";
     status.textContent = "✅ Categoría agregada";
+    await cargarProductos();
+  } catch (e) {
+    status.textContent = "❌ Error: " + e.message;
+  }
+}
+
+function renderSelectCategoriasParaRenombrar() {
+  const select = document.getElementById("cat-renombrar-vieja");
+  if (!select) return;
+  const valorActual = select.value;
+  const categoriasExistentes = [...new Set(productos.map(p => (p.categoria || "").trim()).filter(Boolean))].sort();
+  select.innerHTML = categoriasExistentes.length
+    ? categoriasExistentes.map(c => `<option value="${c}">${c} (${productos.filter(p => (p.categoria||"").trim() === c).length} productos)</option>`).join("")
+    : '<option value="">— no hay categorías en tus productos —</option>';
+  if (categoriasExistentes.includes(valorActual)) select.value = valorActual;
+}
+
+async function renombrarCategoriaEnMasa() {
+  const categoriaVieja = document.getElementById("cat-renombrar-vieja").value;
+  const categoriaNueva = document.getElementById("cat-renombrar-nueva").value.trim();
+  const status = document.getElementById("renombrarStatus");
+  if (!categoriaVieja) { status.textContent = "❌ Elige la categoría que quieres renombrar"; return; }
+  if (!categoriaNueva) { status.textContent = "❌ Escribe el nombre nuevo"; return; }
+  const cantidad = productos.filter(p => (p.categoria || "").trim() === categoriaVieja).length;
+  if (!confirm(`¿Cambiar "${categoriaVieja}" por "${categoriaNueva}" en ${cantidad} producto(s)? Esta acción no se puede deshacer.`)) return;
+  status.textContent = "⏳ Renombrando en todos los productos...";
+  try {
+    const params = new URLSearchParams({
+      accion: "renombrarCategoriaProductos", categoriaVieja, categoriaNueva, password: claveSesion, _: Date.now()
+    });
+    const res = await fetch(APPS_SCRIPT_URL + "?" + params.toString(), { cache: "no-store" });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Error desconocido");
+    status.textContent = `✅ Renombrado en ${data.cambiados} producto(s)`;
+    document.getElementById("cat-renombrar-nueva").value = "";
     await cargarProductos();
   } catch (e) {
     status.textContent = "❌ Error: " + e.message;
