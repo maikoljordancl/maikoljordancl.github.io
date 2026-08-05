@@ -91,6 +91,21 @@ h1{margin-top:10px;font-size:34px;}
 .img-wrapper{position:relative;cursor:pointer;}
 .foto-badge{position:absolute;top:10px;right:10px;background:rgba(15,15,15,0.85);border:1px solid rgba(255,255,255,0.15);color:white;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;backdrop-filter:blur(2px);}
 .img-zoom-icon{position:absolute;bottom:10px;right:10px;width:32px;height:32px;background:rgba(15,15,15,0.7);border:1px solid rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);transition:0.2s;}
+.fav-btn{position:absolute;top:10px;left:10px;width:32px;height:32px;background:rgba(15,15,15,0.7);border:1px solid rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);font-size:15px;cursor:pointer;z-index:2;transition:0.2s;padding:0;}
+.fav-btn:active{transform:scale(0.85);}
+.fav-btn.activo{background:rgba(230,0,18,0.85);border-color:#e60012;}
+.share-btn{background:#1f1f1f;border:1px solid #333;color:white;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:bold;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.share-btn.activo{background:rgba(230,0,18,0.18);border-color:#e60012;color:#ff8a8a;}
+.faq-section{max-width:800px;margin:40px auto;padding:0 20px;}
+.faq-titulo{font-size:22px;font-weight:bold;text-align:center;margin-bottom:22px;}
+.faq-titulo span{color:#e60012;}
+.faq-item{background:#151515;border:1px solid #2a2a2a;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.faq-pregunta{padding:16px 18px;font-weight:bold;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.faq-pregunta .chev{transition:0.25s;color:#e60012;font-size:14px;flex-shrink:0;}
+.faq-item.abierto .faq-pregunta .chev{transform:rotate(180deg);}
+.faq-respuesta{max-height:0;overflow:hidden;transition:0.25s ease;color:#bbb;font-size:14px;line-height:1.6;}
+.faq-item.abierto .faq-respuesta{max-height:300px;}
+.faq-respuesta-inner{padding:0 18px 16px;}
 .card h3{font-size:18px;margin-top:5px;}
 .precio{color:#e60012;font-size:22px;font-weight:bold;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .precio-original{color:#777;font-size:14px;font-weight:normal;text-decoration:line-through;}
@@ -447,6 +462,10 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 <div class="galeria-info">
 <div class="galeria-info-marca" id="galeria-marca"></div>
 <div class="galeria-info-nombre" id="galeria-nombre"></div>
+<div style="display:flex;gap:8px;margin:8px 0 2px;">
+<button class="share-btn" id="galeria-fav-btn" onclick="toggleFavoritoGaleria()">🤍 Favorito</button>
+<button class="share-btn" onclick="compartirProducto()">📤 Compartir</button>
+</div>
 <div class="galeria-info-precio" id="galeria-precio"></div>
 <div class="galeria-info-descripcion" id="galeria-descripcion"></div>
 <div class="galeria-seccion-titulo">Seleccioná tu talla</div>
@@ -474,6 +493,11 @@ footer{text-align:center;padding:0;margin-top:20px;background:#000;border-top:3p
 
 <div class="aviso-consulta">
 <p>👀 ¿No encuentras el modelo o color que buscas? <a href="https://wa.me/56931402987?text=Hola%2C%20estoy%20buscando%20un%20modelo%20o%20color%20que%20no%20veo%20en%20el%20cat%C3%A1logo%2C%20%C2%BFme%20pueden%20ayudar%3F" target="_blank">Consúltanos por WhatsApp</a>, puede que tengamos más stock disponible.</p>
+</div>
+
+<div class="faq-section">
+<div class="faq-titulo">Preguntas <span>Frecuentes</span></div>
+<div id="faq-lista"></div>
 </div>
 
 <footer>
@@ -518,13 +542,36 @@ const CUPONES = {
 };
 
 const CATEGORIA_PADRES = {
-  "Nike": ["Air Force 1", "TN Plus", "Air Max 97", "Shox TL", "Air Max 95"],
+  "Nike": ["Air Force 1", "TN Plus", "Air Max 97", "Shox TL", "Air Max 95", "DC Court Graffik"],
   "Jordan": ["Jordan Retro 1", "Jordan Retro 3", "Jordan Retro 4", "Jordan Retro 5", "Jordan Retro 6", "Jordan Retro 8", "Jordan Retro 9", "Jordan Retro 11", "Jordan Retro 12", "Jordan Retro 13", "Jordan Retro 14", "Jordan Retro 312"],
   "Louis Vuitton": ["LV Trainer", "LV Skate"],
   "Dior": ["Dior B22", "Dior B28", "Dior B30"]
 };
 
 let productos = [];
+const FAVORITOS_KEY = "mj_favoritos_v1";
+let favoritos = new Set(JSON.parse(localStorage.getItem(FAVORITOS_KEY) || "[]"));
+
+function esFavorito(nombre) {
+  return favoritos.has(nombre);
+}
+
+function toggleFavorito(index, event) {
+  if (event) event.stopPropagation();
+  const p = productos[index];
+  if (!p) return;
+  if (favoritos.has(p.nombre)) favoritos.delete(p.nombre);
+  else favoritos.add(p.nombre);
+  localStorage.setItem(FAVORITOS_KEY, JSON.stringify([...favoritos]));
+  const btn = document.querySelector(`.card[data-index="${index}"] .fav-btn`);
+  if (btn) {
+    const activo = favoritos.has(p.nombre);
+    btn.classList.toggle("activo", activo);
+    btn.textContent = activo ? "❤️" : "🤍";
+  }
+  if (categoriaActual === "favoritos") aplicar();
+  generarMenuCategorias();
+}
 let categoriaActual = "todos";
 let carrito = [];
 let metodoPago = "mp";
@@ -1250,6 +1297,39 @@ let galeriaTallaSeleccionada = null;
 let galeriaCantidad = 1;
 let galeriaTouchStartX = null;
 
+function toggleFavoritoGaleria() {
+  if (galeriaProductoIndex === null) return;
+  toggleFavorito(galeriaProductoIndex);
+  const p = productos[galeriaProductoIndex];
+  const favBtnGaleria = document.getElementById("galeria-fav-btn");
+  if (favBtnGaleria && p) {
+    const activo = esFavorito(p.nombre);
+    favBtnGaleria.textContent = activo ? "❤️ Favorito" : "🤍 Favorito";
+    favBtnGaleria.classList.toggle("activo", activo);
+  }
+}
+
+async function compartirProducto() {
+  if (galeriaProductoIndex === null) return;
+  const p = productos[galeriaProductoIndex];
+  const url = window.location.origin + "/#" + slugify(p.nombre);
+  const textoCompartir = `Mira esta zapatilla: ${p.nombre} — ${url}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: p.nombre, text: `Mira esta zapatilla: ${p.nombre}`, url: url });
+    } catch (e) { /* el usuario canceló, no hacer nada */ }
+  } else if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(textoCompartir);
+      alert("✅ Link copiado — pégalo donde quieras compartirlo");
+    } catch (e) {
+      window.open(`https://wa.me/?text=${encodeURIComponent(textoCompartir)}`, "_blank");
+    }
+  } else {
+    window.open(`https://wa.me/?text=${encodeURIComponent(textoCompartir)}`, "_blank");
+  }
+}
+
 function abrirGaleria(index) {
   if (typeof index !== 'number' || index < 0 || index >= productos.length) return;
   galeriaProductoIndex = index;
@@ -1316,6 +1396,12 @@ function mostrarFotoGaleria() {
   document.querySelector(".galeria-next").style.display = fotos.length > 1 ? "flex" : "none";
   document.getElementById("galeria-marca").textContent = (p.tags[0] || "MAIKOL JORDAN");
   document.getElementById("galeria-nombre").textContent = p.nombre;
+  const favBtnGaleria = document.getElementById("galeria-fav-btn");
+  if (favBtnGaleria) {
+    const activo = esFavorito(p.nombre);
+    favBtnGaleria.textContent = activo ? "❤️ Favorito" : "🤍 Favorito";
+    favBtnGaleria.classList.toggle("activo", activo);
+  }
   const galeriaPrecioFinal = precioConDescuento(p);
   const pctDescuentoGaleria = Math.round((1 - galeriaPrecioFinal / p.precio) * 100);
   document.getElementById("galeria-precio").innerHTML = (pctDescuentoGaleria <= 0)
@@ -1515,6 +1601,7 @@ function generarMenuCategorias() {
   });
 
   let html = `<div class="cat-item${categoriaActual==='todos'?' activo':''}" onclick="filtrar('todos')">Todos</div>`;
+  html += `<div class="cat-item${categoriaActual==='favoritos'?' activo':''}" onclick="filtrar('favoritos')">❤️ Favoritos <span id="favoritos-count" style="opacity:0.6;">${favoritos.size}</span></div>`;
 
   Object.keys(CATEGORIA_PADRES).forEach(padreLabel => {
     const padreNorm = normalizar(padreLabel);
@@ -1568,7 +1655,7 @@ function actualizarFiltroActivo() {
   const chip = document.getElementById("filtro-activo");
   const texto = document.getElementById("filtro-activo-texto");
   if (categoriaActual === "todos") chip.style.display = "none";
-  else { chip.style.display = "flex"; texto.textContent = categoriaActual; }
+  else { chip.style.display = "flex"; texto.textContent = categoriaActual === "favoritos" ? "❤️ Favoritos" : categoriaActual; }
 }
 function quitarFiltro() { filtrar("todos"); }
 function abrirCategorias() {
@@ -1598,7 +1685,11 @@ function aplicar() {
     const index = parseInt(card.dataset.index);
     const p = productos[index];
     if (!p) return;
-    const enCategoria = categoriaActual === "todos" || p.tags.some(t => tagsValidos.indexOf(normalizar(t)) !== -1);
+    const enCategoria = categoriaActual === "todos"
+      ? true
+      : categoriaActual === "favoritos"
+        ? favoritos.has(p.nombre)
+        : p.tags.some(t => tagsValidos.indexOf(normalizar(t)) !== -1);
     const enBusqueda = p.nombre.toLowerCase().indexOf(texto) !== -1;
     card.style.display = (enCategoria && enBusqueda) ? "flex" : "none";
   });
@@ -1625,6 +1716,7 @@ function render() {
     html += `<div class="card" data-index="${index}">
       <div class="img-wrapper" onclick="abrirGaleria(${index})">
         <img src="${p.imagenes[0]}" class="img-producto" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.src='logo.webp'">
+        <button class="fav-btn${esFavorito(p.nombre)?' activo':''}" onclick="toggleFavorito(${index}, event)" aria-label="Favorito">${esFavorito(p.nombre)?'❤️':'🤍'}</button>
         ${badgeFotos}
         ${zoomIcon}
       </div>
@@ -1655,6 +1747,33 @@ function agregarBreadcrumbs() {
 // ============================================================
 //  POLÍTICA DE PRIVACIDAD
 // ============================================================
+// ============================================================
+//  PREGUNTAS FRECUENTES
+// ============================================================
+function generarFAQ() {
+  const cont = document.getElementById("faq-lista");
+  if (!cont) return;
+  const preguntas = [
+    { q: "¿Qué métodos de pago aceptan?", a: "Puedes pagar con Mercado Pago (tarjeta de crédito o débito), coordinando por WhatsApp, o por transferencia bancaria directa." },
+    { q: "¿Hacen envíos a todo Chile?", a: `Sí, realizamos envíos a todo el país. El costo de envío es de $${COSTO_ENVIO.toLocaleString("es-CL")}.` },
+    { q: "¿Cuánto demora la entrega?", a: "Los tiempos varían según tu región — Región Metropolitana suele ser más rápido. Ante cualquier duda sobre tu pedido, escríbenos por WhatsApp y te confirmamos el estado." },
+    { q: "¿Puedo hacer cambios o devoluciones?", a: "No se aceptan cambios por talla u opinión. Solo se aceptan cambios por defectos de fábrica, reportados dentro de las 48 horas de recibido el producto." },
+    { q: "¿Cómo sé qué talla pedir?", a: "Cada producto muestra las tallas disponibles al momento de comprar. Si tienes dudas sobre cuál elegir, escríbenos por WhatsApp y te ayudamos a decidir." },
+    { q: "¿Cómo los contacto si tengo dudas?", a: "Escríbenos directo por WhatsApp tocando el botón verde flotante, o desde el botón de \"Consultas\" en cualquier momento." }
+  ];
+  cont.innerHTML = preguntas.map((item, i) => `
+    <div class="faq-item" id="faq-item-${i}">
+      <div class="faq-pregunta" onclick="toggleFAQ(${i})"><span>${item.q}</span><span class="chev">▾</span></div>
+      <div class="faq-respuesta"><div class="faq-respuesta-inner">${item.a}</div></div>
+    </div>
+  `).join("");
+}
+
+function toggleFAQ(i) {
+  const item = document.getElementById("faq-item-" + i);
+  if (item) item.classList.toggle("abierto");
+}
+
 function agregarPoliticaPrivacidad() {
   const footer = document.querySelector(".footer-bottom");
   if (!footer || document.getElementById("link-politica")) return;
@@ -1704,6 +1823,13 @@ function abrirModalPolitica() {
 // ============================================================
 function aplicarCategoriaDesdeHash(hash) {
   const valor = hash.replace(/^cat-/, '');
+  if (valor === "favoritos") {
+    categoriaActual = "favoritos";
+    generarMenuCategorias();
+    actualizarFiltroActivo();
+    aplicar();
+    return;
+  }
   const tagsUnicos = [];
   productos.forEach(p => { if (p.tags[0] && !tagsUnicos.includes(p.tags[0])) tagsUnicos.push(p.tags[0]); });
 
@@ -1753,6 +1879,7 @@ window.addEventListener('popstate', function(e) {
 window.onload = function() {
   cargarProductosConCache();
   agregarPoliticaPrivacidad();
+  generarFAQ();
   window.addEventListener("scroll", function() {
     const btn = document.getElementById("volver-arriba");
     btn.classList.toggle("visible", window.scrollY > 300);
