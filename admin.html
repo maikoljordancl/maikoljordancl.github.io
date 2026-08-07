@@ -112,6 +112,7 @@ header span{color:#e60012;}
 
 <div class="panel" id="panel">
 <div class="mensaje" id="mensaje"></div>
+<div id="avisoVersion" style="display:none;background:#3a1a00;border:2px solid #e6a000;color:#ffcc80;padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:13px;line-height:1.5;"></div>
 
 <div class="stats-bar" id="statsBar"></div>
 
@@ -295,6 +296,7 @@ header span{color:#e60012;}
 //  CONFIGURACIÓN — PEGA AQUÍ TUS DATOS
 // ============================================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzDfsGlncQ7-PHYYe8Y3YQYFln3UgjDag2evTEabB-TV9Kl0LeDsVkFtewvF6EXSBMJwg/exec";
+const VERSION_ESPERADA = "v7-flush-y-renombrar"; // debe coincidir con CODIGO_VERSION en Codigo.gs
 const CLOUDINARY_CLOUD_NAME = "i1cyngly";
 const CLOUDINARY_UPLOAD_PRESET = "maikoljordan_admin";
 const ADMIN_PASSWORD = "xdlol"; // debe ser IGUAL a la del Apps Script
@@ -361,6 +363,7 @@ async function cargarProductos() {
     const res = await fetch(APPS_SCRIPT_URL + "?_=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || "Error desconocido");
+    verificarVersionServidor(data.version);
     productos = data.productos;
     categoriasData = data.categorias || [];
     renderOpcionesCategoria();
@@ -372,6 +375,20 @@ async function cargarProductos() {
     renderSelectCategoriasParaRenombrar();
   } catch (e) {
     lista.innerHTML = `<div class="vacio">❌ Error de conexión: ${e.message || e}</div>`;
+  }
+}
+
+function verificarVersionServidor(versionRecibida) {
+  const aviso = document.getElementById("avisoVersion");
+  if (!aviso) return;
+  if (!versionRecibida) {
+    aviso.style.display = "block";
+    aviso.innerHTML = `⚠️ <strong>El Apps Script conectado es muy antiguo</strong> (no manda número de versión). Pega el Codigo.gs más reciente y crea una <strong>Nueva versión</strong> en "Administrar implementaciones".`;
+  } else if (versionRecibida !== VERSION_ESPERADA) {
+    aviso.style.display = "block";
+    aviso.innerHTML = `⚠️ <strong>El Apps Script desplegado no está actualizado.</strong><br>Versión desplegada: <strong>${versionRecibida}</strong> — versión esperada: <strong>${VERSION_ESPERADA}</strong>.<br>Ve a Apps Script → pega el código más reciente → Implementar → Administrar implementaciones → lápiz ✏️ → Nueva versión → Implementar.`;
+  } else {
+    aviso.style.display = "none";
   }
 }
 
